@@ -1,2 +1,0 @@
-# SAP workshops and demos
-
