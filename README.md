@@ -8,4 +8,4 @@ The documentation will be published using `docsify` documentation generation and
 
 # Documentation Link
 
-Public face documentation can be found here.
+Public face documentation can be found [here](https://redhat-sap.github.io/sap-workshops/).
