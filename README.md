@@ -1,6 +1,6 @@
 # SAP related workshops and demos
 
-This repository is meant to be used as the documentation repository for SAP related pre-sales activities during workshops and demos with Customer mainly.
+This repository is meant to be used as the documentation repository for SAP related pre-sales activities during workshops and demos with Customers.
 
 # Contributing
 
