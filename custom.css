@@ -5,3 +5,27 @@ p.tip {
     content: "!";
     background-color: #f66;
   }
+
+img[alt="rh-main"] {
+  height: 50px;
+  position: left;
+}
+
+img[alt="sap-main"] {
+  height: 50px;
+  position: right;
+}
+
+img[alt="rh-sap-side"] {
+  height: 50px;
+  padding-left: 30px;
+}
+
+img[alt="e2e-infra-layout"] {
+  height: 400px;
+  position: left;
+}
+
+img[alt="e2e-tower-full-workflow"] {
+  position: left;
+}
