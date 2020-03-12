@@ -35,3 +35,9 @@ Just by 'clicking a button' all these steps will be done automatically by Ansibl
 
 ![e2e-tower-full-workflow](img/tower-full-workflow.png)
 
+The whole lab can be run as a quick demo, to show the end to end automation or as a workshop depending on the audience, the time and the level of detail you want to show from the lab.
+
+### Running as a quick demo
+
+When running as a quick demo
+
