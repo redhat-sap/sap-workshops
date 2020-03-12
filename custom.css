@@ -29,3 +29,8 @@ img[alt="e2e-infra-layout"] {
 img[alt="e2e-tower-full-workflow"] {
   position: left;
 }
+
+img[alt="e2e-tower-workflow-gif"] {
+  position: left;
+  height: 800px;
+}

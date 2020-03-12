@@ -41,5 +41,5 @@ The whole lab can be run as a quick demo, to show the end to end automation or a
 
 When running as a quick demo, the first thing you need to do is login into the Ansible Tower web interface and launch the Workflow Template `SAP HANA and S/4HANA E2E deployment` that is already available. SAP HANA and SAP S/4HANA installation process will take a long time, so we you need to ensure the Tower Workflow is running in the background while you explain the key components of the set up.
 
-![](video/tower-workflow.webm)
+![e2e-tower-workflow-gif](img/tower-workflow.gif)
 
