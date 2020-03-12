@@ -54,8 +54,20 @@ Once you show how the process is run with just 'one click' you can briefly expla
 
 For the quick demo, you can navigate through all the required configurations to be done in order to be able to set up and run the Tower Workflow from the demo.
 
-### Credentials
+#### Credentials
 
-In order Tower to run Ansible Playbooks in remote hosts, the credentials to access these hosts via SSH must be configured. On the left pane click on `Credentials`. This will show you all the actual credentials configured in Ansible Tower. One credential called `ssh-key` is already configured. This is a `Machine Type` credential that will contain the user information and SSH private key in order to be able to connect to the remote hosts via SSH.
+In order Tower to run Ansible Playbooks in remote hosts, the credentials required to access these hosts via SSH must be configured. On the left pane click on `Credentials`. This will show you all the actual credentials configured in Ansible Tower. One credential called `ssh-key` is already configured. This is a `Machine Type` credential that will contain the user information and SSH private key in order to be able to connect to the remote hosts via SSH.
 
 ![e2e-tower-workflow-credentials-gif](img/tower-workflow-credentials.gif)
+
+#### Inventories
+
+Ansible inventories are one of the key components required while automating IT. The inventory will contain the logical information of the hosts and all the required variables we need to use with the multiple Ansible Roles and Playbooks. On the left pane click on `Inventories`. This will show you all the actual inventories configured in Ansible Tower. An inventory called `sap-hosts` is already configured. This is the inventory we are using with all the Roles and Playbooks used by the Tower Job Templates.
+
+To see more information about the inventory, click on the `sap-hosts` inventory and this will open another view where to see detailed information about the hosts, groups and variables configured. All the variables required have been configured already and these have been applied on the corresponding levels. Variables that are common to all the inventory hosts can be seen on the first screen when you click on the `sap-host` inventory. Once you are in the screen where this mentioned common variables appear (`sap_domain`, `sap_hostagent_installation_type`, etc...) you can click on the `HOSTS` button all the hosts configured under the inventory appear on the screen, `hana` and `s4hana` in this case.
+
+![e2e-tower-workflow-inventories-gif](img/tower-workflow-inventories-01.gif)
+
+You can now check the specific variables applied to the host clicking on each one and scrolling or expanding the variables field.
+
+![e2e-tower-workflow-inventories-gif](img/tower-workflow-inventories-02.gif)
