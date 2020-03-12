@@ -1,6 +1,8 @@
 # SAP E2E Automation
 > Automating SAP HANA and S/4HANA by SAP end to end using Ansible and Ansible Tower
 
+## Intro
+
 This workshop/demo can be used to demonstrate end to end automation for both HANA and S/4HANA using Ansible and Ansible Tower.
 
 ## High level architecture and components
@@ -74,4 +76,30 @@ You can now check the specific variables applied to the host clicking on each on
 
 #### Projects
 
-Ansible Tower projects are logical collection of Ansible playbooks. Using Tower projects you can manage playbooks and playbook directories by either placing them manually under the Project Base Path on your Tower server, or by placing your playbooks into a source code management (SCM) system supported by Tower. This is the approach 
+Ansible Tower projects are logical collection of Ansible playbooks. Using Tower projects you can manage playbooks and playbook directories by either placing them manually under the Project Base Path on your Tower server, or by placing your playbooks into a source code management (SCM) system supported by Tower. The last is the approach used here, where projects will pull the information from GitHub.
+
+All the projects are pointing to the same [GitHub Repository](https://github.com/redhat-sap/sap-tower-projects). This is a multi-branch repository where each branch is keeping different playbooks using different Ansible Roles.
+
+When configuring SCM based Tower projects, this information (git url and branch) we have provided is used to pull the information from each branch.
+
+On the left pane click on `Projects`. This will show you all the Tower projects configured. There is an equivalency between the number of projects configured and the Ansible Roles used. Basically each project will provide a Playbook from the mentioned GitHub repository, and this Playbook will use a Role to run each step of the Tower Workflow.
+
+![e2e-tower-workflow-projects-gif](img/tower-workflow-projects.gif)
+
+#### Job Templates
+
+Tower job templates are definitions and set of parameters for running Ansible jobs. In other words, it will use Playbooks from Tower projects explained on the previuos step with hosts from a selected inventories.
+
+On the left pane click on `Templates`. This will show you all the Tower job templates configured. As previously explained, there was an equivalency between the number of projects and Ansible Roles used here. If you click on any of the configured job templates, you can see that every job template is using the Playbook `play.yml` from a different project, which points to a diffrent branch on the GitHub repository previously explained. That playbook will use an specific Ansible Role (Red Hat Supported System Roles and Community Roles from Red Hat's SAP CoP) to perform the required actions to get the hosts from the inventory to the desired state.
+
+![e2e-tower-workflow-templates-gif](img/tower-workflow-templates-01.gif)
+
+As an example, let's review the whole flow:
+
+- `sap-hostagent` job template is using `play.yml` Playbook from `sap-hostagent` project which includes the `redhat_sap.sap_hostagent` Role as part of the Playbook
+- `sap-hostagent` project is using `https://github.com/redhat-sap/sap-tower-projects.git` repository specifically on the `sap-hostagent` branch
+- `sap-hostagent` branch from that repository contains the playbook `play.yml` previosly mentioned and a `roles` directory containing a `requirements.yml` file
+- `requirements.yml` file contains the reference to `redhat_sap.sap_hostagent` Ansible Galaxy Role
+- Ansible Tower will automatically pull that Role dring the job template execution, so this can be used by the `play.yml` Playbook
+
+#### Workflow Templates
