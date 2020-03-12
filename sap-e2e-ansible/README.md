@@ -10,7 +10,7 @@ The high level architecture consist on 4 different RHEL 8.x servers with the fol
 - bastion: this is meant to be used as the jump host for SSH access to the environment
 - tower: this is meant to be used as the Ansible and Ansible Tower host where to run the automation from
 - hana: this is meant to be used as the RHEL server where to deploy SAP HANA
-- s4hana: this is meant to be used as the RHEL server where to deploy S/4HANA by SAP
+- s4hana: this is meant to be used as the RHEL server where to deploy SAP S/4HANA
 
 ![e2e-infra-layout](img/infra_layout.png)
 
@@ -23,7 +23,7 @@ This enviroment is provioned using the Red Hat internal demo system. We at Red H
 The goal for this demo is to showcase how we can make SAP Solutions deployments easy and reliable using Ansible automation. In order to be able to demonstrate this, a Tower Workflow has been configured that will do the following:
 
 1. Enable all the required repositories in order to be able to deploy SAP software in RHEL
-2. Configure all the File Systems and mount points required while installing SAP HANA and S/4HANA by SAP
+2. Configure all the File Systems and mount points required while installing SAP HANA and SAP S/4HANA
 3. Install SAP Host Agent
 4. Run all the OS pre-requisites from SAP Notes for RHEL systems while deploying SAP workloads
 5. Run all the OS pre-requisites from SAP Notes for RHEL systems while deploying SAP HANA
@@ -31,7 +31,7 @@ The goal for this demo is to showcase how we can make SAP Solutions deployments 
 7. Deploy SAP HANA
 8. Deploy S/4HANA by SAP
 
-Just by 'clicking a button' all these steps will be done automatically by Ansible Tower using a Tower Workflow. The final result will be a SAP landscape in RHEL with SAP HANA and S/4HANA installed, configured and running.
+Just by 'clicking a button' all these steps will be done automatically by Ansible Tower using a Tower Workflow. The final result will be a SAP landscape in RHEL with SAP HANA and SAP S/4HANA installed, configured and running.
 
 ![e2e-tower-full-workflow](img/tower-full-workflow.png)
 
@@ -39,5 +39,7 @@ The whole lab can be run as a quick demo, to show the end to end automation or a
 
 ### Running as a quick demo
 
-When running as a quick demo
+When running as a quick demo, the first thing you need to do is login into the Ansible Tower web interface and launch the Workflow Template `SAP HANA and S/4HANA E2E deployment` that is already available. SAP HANA and SAP S/4HANA installation process will take a long time, so we you need to ensure the Tower Workflow is running in the background while you explain the key components of the set up.
+
+![](video/tower-workflow.webm)
 
