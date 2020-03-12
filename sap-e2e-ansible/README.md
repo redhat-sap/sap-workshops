@@ -39,7 +39,7 @@ The whole lab can be run as a quick demo, to show the end to end automation or a
 
 ### Running as a quick demo
 
-When running as a quick demo, the first thing you need to do is login into the Ansible Tower web interface and launch the Workflow Template `SAP HANA and S/4HANA E2E deployment` that is already available. SAP HANA and SAP S/4HANA installation process will take a long time, so we you need to ensure the Tower Workflow is running in the background while you explain the key components of the set up.
+When running as a quick demo, the first thing you need to do is login into the Ansible Tower web interface and launch the Workflow Template `SAP HANA and S/4HANA E2E deployment` that is already available. SAP HANA and SAP S/4HANA installation process will take a long time (the whole end to end process will take 40 minutes), so we you need to ensure the Tower Workflow is running in the background while you explain the key components of the set up.
 
 ![e2e-tower-workflow-gif](img/tower-workflow.gif)
 <!-- ![e2e-tower-workflow-gif](video/tower-workflow.mp4) -->
@@ -49,3 +49,13 @@ When running as a quick demo, the first thing you need to do is login into the A
 </video> -->
 <!-- 
 ![e2e-tower-workflow-gif](https://youtu.be/OTZbi4heRuM) -->
+
+Once you show how the process is run with just 'one click' you can briefly explain all the required set up to be done in Ansible Tower. As explained before, Ansible Tower will run a collection of different playbooks in the HANA and S/4HANA RHEL hosts in order to prepare, deploy and configure the software. These are covered by point 1 to 8 as previusly mentioned. Ansible Tower needs to be configured the same way we configure a typical Ansible Host that is going to manage remote hosts. Ansible Tower allows the user to add this information from a Web Interface, which is very useful for people with no previuos experience with Ansible or people who don't feel confortable using a terminal. Ansible Tower also provides a very poweful REST API that can be used to confgure and performs multiple actions in Ansible Tower remotly from extarnal systems or applications.
+
+For the quick demo, you can navigate through all the required configurations to be done in order to be able to set up and run the Tower Workflow from the demo.
+
+### Credentials
+
+In order Tower to run Ansible Playbooks in remote hosts, the credentials to access these hosts via SSH must be configured. On the left pane click on `Credentials`. This will show you all the actual credentials configured in Ansible Tower. One credential called `ssh-key` is already configured. This is a `Machine Type` credential that will contain the user information and SSH private key in order to be able to connect to the remote hosts via SSH.
+
+![e2e-tower-workflow-credentials-gif](img/tower-workflow-credentials.gif)
