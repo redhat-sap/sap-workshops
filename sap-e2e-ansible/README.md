@@ -71,3 +71,7 @@ To see more information about the inventory, click on the `sap-hosts` inventory 
 You can now check the specific variables applied to the host clicking on each one and scrolling or expanding the variables field.
 
 ![e2e-tower-workflow-inventories-gif](img/tower-workflow-inventories-02.gif)
+
+#### Projects
+
+Ansible Tower projects are logical collection of Ansible playbooks. Using Tower projects you can manage playbooks and playbook directories by either placing them manually under the Project Base Path on your Tower server, or by placing your playbooks into a source code management (SCM) system supported by Tower. This is the approach 
