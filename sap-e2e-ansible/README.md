@@ -1,5 +1,5 @@
 # SAP E2E Automation
-> Automating SAP HANA and S/4HANA by SAP end to end using Ansible and Ansible Tower
+> Automating SAP HANA and SAP S/4HANA end to end using Ansible and Ansible Tower
 
 ## Intro
 
