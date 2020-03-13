@@ -103,3 +103,8 @@ As an example, let's review the whole flow:
 - Ansible Tower will automatically pull that Role dring the job template execution, so this can be used by the `play.yml` Playbook
 
 #### Workflow Templates
+
+Tower Workflow job templates link together a sequence of disparate resources that accomplishes the task of tracking the full set of jobs that were part of the release process as a single unit. It basically allows you to create pipeline-like strategies to automate your IT landscape.
+
+Same as Tower job templates, you can access workflow templates by clicking `Templates` on the left pane link. It is easy to differentiate a `Tower Job Template` from a `Tower Workflow Template`. On a first view, you can already see the tag that Tower adds close to the template name, and these can be `Job Template` and `Workflow Template`. Also you will see an extra icon for the workflow templates, like a hierarchy chart. This icon represents the visualizer link for the workflow.
+
