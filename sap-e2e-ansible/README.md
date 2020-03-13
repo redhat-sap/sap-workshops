@@ -218,5 +218,21 @@ Check on the following example for one particular Ansible Role so you can unders
 
 ![project-template-role-gif](img/project-template-role.gif)
 
-
 ##### Community Supported Ansible Roles
+
+[Community Supported Ansible Roles](https://galaxy.ansible.com/redhat_sap) will subscribe the RHEL hosts where SAP HANA and S/4HANA will be deployed, as well deploy and configure both. In order to do this, Tower projects have been configured to consume these roles:
+
+- Project `sap-rhsm` is pointing to branch `sap-rhsm` from the following [GitHub repository](https://github.com/redhat-sap/sap-tower-projects/tree/sap-rhsm)
+- Project `sap-hostagent` is pointing to branch `sap-hostagent` from the following [GitHub repository](https://github.com/redhat-sap/sap-tower-projects/tree/sap-hostagent)
+- Project `sap-hana-deployment` is pointing to branch `sap-hana-deployment` from the following [GitHub repository](https://github.com/redhat-sap/sap-tower-projects/tree/sap-hana-deployment)
+- Project `sap-s4hana-deployment` is pointing to branch `sap-s4hana-deployment` from the following [GitHub repository](https://github.com/redhat-sap/sap-tower-projects/tree/sap-s4hana-deployment)
+
+All these Tower projects will be consumed by the following Tower job templates:
+
+- Job template `sap-repositories` will use `play.yml` playbook that will include the role `redhat_sap.sap_rhsm` that will be pulled automatically on the playbook run from the instructions described in `roles/requirements.yml`
+- Job template `sap-hostagent` will use `play.yml` playbook that will include the role `redhat_sap.sap_hostagent` that will be pulled automatically on the playbook run from the instructions described in `roles/requirements.yml`
+- Job template `sap-hana-deployment` will use `play.yml` playbook that will include the role `redhat_sap.sap_hana_deployment` that will be pulled automatically on the playbook run from the instructions described in `roles/requirements.yml`
+- Job template `sap-s4hana-deployment` will use `play.yml` playbook that will include the role `redhat_sap.sap_s4hana_deployment` that will be pulled automatically on the playbook run from the instructions described in `roles/requirements.yml`
+
+Similar to the previuos screen recording, you can browse all these projects and job templates, to understand and show how they are related and how the Ansible roles are pulled from their source repositories to be used during the job template execution.
+
