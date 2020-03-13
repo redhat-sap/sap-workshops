@@ -188,5 +188,35 @@ We have demonstrated that we can use Ansible to automate SAP HANA and SAP S/4HAN
 
 ### Running as a Workshop
 
-When running as a Workshop, the steps are very similar to the quick demo steps, but since this will be a workshop format, we should spend more time on each step explaining in detail how it works and going deeper into the technical components that are required to achive the end to end automation for SAP HANA and S/4HANA.
+When running as a workshop, the steps are very similar to the quick demo steps, but since this will be a workshop format, we should spend more time on each step explaining in detail how it works and going deeper into the technical components that are required to achive the end to end automation for SAP HANA and S/4HANA.
 
+Depending on the workshop lengh you may want to start launching the Workflow Template `SAP HANA and S/4HANA E2E deployment` as explained in the quick demo instructions. This will run the end to end process to automate SAP HANA and SAP S/4HANA deployment on the target hosts. You can review the workflow progress at any time clicking on the `Job` link from the left pane and checking the last job called `SAP HANA and S/4HANA E2E deployment` as explained in the quick demo steps.
+
+The flow for the workshop will be very similar to the quick demo. Please review the quick demo guide as we are going to focus here only in the differences, which is basically giving a bit more context of the process itself, external resources (Ansible Roles) used to achive the end to end automation and building the end to end Tower workflow from scratch.
+
+#### Ansible Roles
+
+As you could imagine at this point, all the automation used for this process is built using Ansible. We are going to use 2 different type of Ansible Roles here, Red Hat supported Ansible Roles and Community supported Ansible Roles.
+
+##### Red Hat Supported Ansible Roles
+
+[Red Hat Supported Ansible Roles](https://access.redhat.com/articles/4488731) (a.k.a System Roles) will prepare the RHEL hosts to deploy SAP software as well follow all the SAP Notes required to deploy SAP HANA and SAP S/4HANA. In order to do this, Tower projects have been configured to consume these roles:
+
+- Project `storage` is pointing to branch `storage` from the following [GitHub repository](https://github.com/redhat-sap/sap-tower-projects/tree/storage)
+- Project `sap-preconfigure` is pointing to branch `sap-preconfigure` from the following [GitHub repository](https://github.com/redhat-sap/sap-tower-projects/tree/sap-preconfigure)
+- Project `sap-hana-preconfigure` is pointing to branch `sap-hana-preconfigure` from the following [GitHub repository](https://github.com/redhat-sap/sap-tower-projects/tree/sap-hana-preconfigure)
+- Project `sap-netweaver-preconfigure` is pointing to branch `sap-netweaver-preconfigure` from the following [GitHub repository](https://github.com/redhat-sap/sap-tower-projects/tree/sap-netweaver-preconfigure)
+
+All these Tower projects will be consumed by the following Tower job templates:
+
+- Job template `sap-storage` will use `play.yml` playbook that will include the role `storage` that will be pulled automatically on the playbook run from the instructions described in `roles/requirements.yml`
+- Job template `sap-preconfigure` will use `play.yml` playbook that will include the role `sap-preconfigure` that will be pulled automatically on the playbook run from the instructions described in `roles/requirements.yml`
+- Job template `sap-hana-preconfigure` will use `play.yml` playbook that will include the role `sap-hana-preconfigure` that will be pulled automatically on the playbook run from the instructions described in `roles/requirements.yml`
+- Job template `sap-netweaver-preconfigure` will use `play.yml` playbook that will include the role `sap-netweaver-preconfigure` that will be pulled automatically on the playbook run from the instructions described in `roles/requirements.yml`
+
+Check on the following example for one particular Ansible Role so you can understand and explain the flow for the others:
+
+![project-template-role-gif](img/project-template-role.gif)
+
+
+##### Community Supported Ansible Roles
