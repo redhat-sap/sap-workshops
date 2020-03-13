@@ -236,3 +236,23 @@ All these Tower projects will be consumed by the following Tower job templates:
 
 Similar to the previuos screen recording, you can browse all these projects and job templates, to understand and show how they are related and how the Ansible roles are pulled from their source repositories to be used during the job template execution.
 
+#### Inventory variables
+
+As explained during the quick demo section, Ansible inventories are key components while using Ansible automation. Now you are familiar with all the Ansible roles that are used for the end to end automation here, you should review the `README.md` file for each role's GitHub repository, where the required variables and more information on how to use the role is explained.
+
+As an example check the `README.md` file for the `sap-hostagent` role [here](https://github.com/redhat-sap/sap-hostagent). Is a good practice to name the variables required for the role prefixing those with the role name, this way we can easily identy these in our inventory. If you click on `Inventories` on the left pane, and then click on the `sap-hosts` inventories, you will these variables that apply to every host in the inventory:
+
+```yaml
+sap_hostagent_installation_type: "rpm"
+sap_hostagent_rpm_remote_path: "/software/SAPHOSTAGENT"
+sap_hostagent_rpm_file_name: "saphostagentrpm_44-20009394.rpm"
+```
+
+The scope of these variables depend on where are they configured. In the above example these variables apply to all the Inventory hosts; this is because we want to install SAP Host Agent on every hosts. But this is not true for all the roles. If we are applying particular roles to particular host or group of hosts, for simplicity and clarity, these variables should be configured on the corresponding scope. As an example, check how we are applying variables for the `sap-hana-deployment` role:
+
+![inventory-variables-gif](img/inventory-variables.gif)
+
+The question now is, how do we limit some roles to be applied to specific hosts or groups of hosts? Let's review this on the next section
+
+#### Job templates
+
