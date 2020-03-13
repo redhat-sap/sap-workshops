@@ -248,11 +248,21 @@ sap_hostagent_rpm_remote_path: "/software/SAPHOSTAGENT"
 sap_hostagent_rpm_file_name: "saphostagentrpm_44-20009394.rpm"
 ```
 
-The scope of these variables depend on where are they configured. In the above example these variables apply to all the Inventory hosts; this is because we want to install SAP Host Agent on every hosts. But this is not true for all the roles. If we are applying particular roles to particular host or group of hosts, for simplicity and clarity, these variables should be configured on the corresponding scope. As an example, check how we are applying variables for the `sap-hana-deployment` role:
+The scope of these variables depend on where are those configured. In the above example these variables apply to all the Inventory hosts; this is because we want to install SAP Host Agent on every hosts. But this is not true for all the roles. If we are applying particular roles to particular host or group of hosts, for simplicity and clarity, these variables should be configured on the corresponding scope. As an example, check how we are applying variables for the `sap-hana-deployment` role:
 
 ![inventory-variables-gif](img/inventory-variables.gif)
 
-The question now is, how do we limit some roles to be applied to specific hosts or groups of hosts? Let's review this on the next section
+The question now is, how do we limit some roles to be applied to specific hosts or groups of hosts? Let's review this on the next section.
 
 #### Job templates
+
+As explained during the quick demo section, Tower job templates will execute a Playbook that is coming from a Tower Project. While explaining the Ansible roles, we have reviewed alredy this correspondency between available roles and the playbooks which include these roles from the different GitHub repositories.
+
+Job templates will allow us not only to run those required playbooks but also specify where do we want to run those (using the existing Tower inventories) and provide some extra options including credentials to use, privilege escalation, concurrency and others.
+
+We can see all this information from the job template detail. As an example we are going to check 2 different job templates, `sap-hana-preconfigure` and `sap-hostagent`. The first one is specific for the `hana` host, while the second one needs to be run on every host from our inventory since SAP Host Agent needs to be installed for both SAP HANA and SAP S/4HANA:
+
+![job-templates-gif](img/job-templates.gif)
+
+As you can see, we are using same inventory for both, but limiting to `hana` the first one to ensure `sap-hana-preconfigure` role is only applied to SAP HANA hosts and not SAP S/4HANA hosts.
 
