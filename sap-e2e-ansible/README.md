@@ -185,3 +185,8 @@ rheadm    6656  0.0  0.2 1150680 81356 ?       Sl   Mar12   0:06      \_ /usr/sa
 We should see all the `sapstart` processes running along `dw` processes that will handle user requests.
 
 We have demonstrated that we can use Ansible to automate SAP HANA and SAP S/4HANA deployments end to end **with just one click!!**
+
+### Running as a Workshop
+
+When running as a Workshop, the steps are very similar to the quick demo steps, but since this will be a workshop format, we should spend more time on each step explaining in detail how it works and going deeper into the technical components that are required to achive the end to end automation for SAP HANA and S/4HANA.
+
