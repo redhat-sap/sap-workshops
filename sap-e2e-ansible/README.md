@@ -266,3 +266,25 @@ We can see all this information from the job template detail. As an example we a
 
 As you can see, we are using same inventory for both, but limiting to `hana` the first one to ensure `sap-hana-preconfigure` role is only applied to SAP HANA hosts and not SAP S/4HANA hosts.
 
+#### Workflow templates
+
+Now you understand all the pieces from Ansible Tower, the only part we are missing is the how. We have job templates ready to be run in our environment, but how we do this? We could go to each Tower job template and execute them one by one manually. But this is not very useful as we want to automate a process that takes lot of time and we would need to wait for every job template to fnish, check the results and execute the next one if the previuos one was success. Also if we repeat this many times it could be the case we miss some steps.
+
+This is where workflow templates can help. Workflows allow to create complex automation processes that put together multiple job templates in a pipeline style allowing to decide the order these are executed and and take decisions based on previous job results.
+
+This setup already includes a Tower workflow that put all these roles together to create an end to end deployment pipeline for both SAP HANA and SAP S/4HANA. By this time, the workflow you executed it should finish already and as we show on the last step from the quick demo, we will end up with the `hana` and `s4hana` hosts running the desired SAP workloads in it.
+
+As the last exercise of the workshop, let's try to create a Tower workflow from scratch that put all the pieces together with the following logic.
+
+1. Register the systems with the required repositories for SAP workloads
+2. If previuos step success, configure the required file systems and mount points for SAP HANA and SAP S/4HANA
+3. If previuos step success, install SAP Host Agent on both systems
+4. If previuos step success, run the required configuration following SAP Notes to support SAP workloads on both systems
+5. If previuos step success, run in **paralel** the requirements following SAP Notes both for SAP HANA and SAP S/4HANA on each host
+6. If previuos **paralel** steps sucess, deploy HANA in the `hana` hosts
+7. If previuos step success, deploy S/4HANA in the `s4hana` hosts
+
+In case you have the time to test this new Tower workflow, notice it will fail if you have run previuosly the one which is coming with Tower already. You can request a new instance of this lab to test this, creating this workflow and running it without running the one is coming with Tower.
+
+This is how the process to create the workflow should look like:
+
