@@ -3,7 +3,7 @@
 
 Click on the following links in order to acces specific slides for each item:
 
-- [Introductions and Agenda Review](https://redhat-sap.github.io/sap-workshops/slides/intro.html)
+- [Introductions and Agenda Review](https://redhat-sap.github.io/sap-workshops/slides/1day-workshop/01/index.html)
 - [SAP | Red Hat strategy]()
 - [RHEL for SAP Solutions]()
 - [SAP HANA architectures on RHEL]()
