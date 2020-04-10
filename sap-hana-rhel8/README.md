@@ -1,94 +1,80 @@
 # SAP HANA on RHEL 8.x
 > Deploying SAP HANA on Red Hat Enterprise Linux 8.x
 
-
 ## Environment Setup Lab
 
-This lab has two parts. In the first part, you set up the lab environment. In the second part, which is optional, you download the installation media for SAP HANA^(R)^, platform edition or SAP HANA, express edition, and then upload it to the lab environment.
+This lab has two parts. In the first part, you set up the lab environment. In the second part, which is optional, you download the installation media for SAP HANA<sup>(R)</sup>, platform edition or SAP HANA, express edition, and then upload it to the lab environment.
 
-If you plan to install SAP HANA, Red Hat^(R)^ recommends that you begin the process now so that you can continue with the course while the download proceeds in the background. See the <<download>> section for the steps you need to get started.
+If you plan to install SAP HANA, Red Hat<sup>(R)</sup> recommends that you begin the process now so that you can continue with the course while the download proceeds in the background. See the <<download>> section for the steps you need to get started.
 
+### Goals
 
-.Goals
-* Review lab prerequisites
-* Set up and access the lab environment
-* Download the SAP HANA software
+- Review lab prerequisites
+- Set up and access the lab environment
+- Download the SAP HANA software
 
-.Prerequisites
+### Prerequisites
 
 You need the following accounts to access important information and necessary software:
 
-* *SAP S user account:* This account allows you to download software and generate license keys from the link:http://service.sap.com[SAP Service Marketplace^]. You need this account to download SAP HANA, platform edition.
-+
-NOTE: If you do not have an SAP S user account, contact your company's SAP administrator and request an account with _software download_ authorization. It may take up to two days to process your account request. You can also register and download the SAP HANA, express edition for this lab if you do not obtain an SAP S user account in time.
+- **SAP S user account:** This account allows you to download software and generate license keys from [SAP Service Marketplace](http://service.sap.com). You need this account to download SAP HANA, platform edition.
 
-* *Red Hat Customer Portal account:* The Red Hat Customer Portal account is also known as a Red Hat Network Classic or RHN account. This account allows you to download Red Hat software and access support articles from the link:http://access.redhat.com[Red Hat Customer Portal^].
-+
-NOTE: You can create a Red Hat Customer Portal account at link:http://www.redhat.com["redhat.com^"].
+- **Red Hat Customer Portal account:** The Red Hat Customer Portal account is also known as a Red Hat Network Classic or RHN account. This account allows you to download Red Hat software and access support articles from [Red Hat Customer Portal](http://access.redhat.com).
 
-.Lab Environment
+### IMPORTANT NOTES
 
-In this course, you do most of the hands-on practice exercises and lab work with a single dedicated computer system. This system is preinstalled with a Red Hat Enterprise Linux^(R)^ (RHEL) base server. A Red Hat Enterprise Linux for SAP Solutions subscription is provided on the system, as well as disk partitions with enough space to install SAP HANA. The entire environment is hosted in the cloud, but the system configuration resembles a bare-metal environment.
+- **If you do not have an SAP S user account, contact your company's SAP administrator and request an account with `software download` authorization. It may take up to two days to process your account request. You can also register and download the SAP HANA, express edition for this lab if you do not obtain an SAP S user account in time.**
 
-:numbered:
+- **You can create a Red Hat Customer Portal account at [redhat.com](http://www.redhat.com).**
 
-## Set Up Lab Environment
+### Lab Environment
 
-This section is extremely important. Please read and understand it before continuing with the course.
+In this course, you do most of the hands-on practice exercises and lab work with a single dedicated computer system. This system is preinstalled with a Red Hat Enterprise Linux<sup>(R)</sup> (RHEL) base server. A Red Hat Enterprise Linux for SAP Solutions subscription is provided on the system, as well as disk partitions with enough space to install SAP HANA. The entire environment is hosted in the cloud, but the system configuration resembles a bare-metal environment.
 
 ### Provision Lab Environment
 
-. Log in to the link:http://labs.opentlc.com[OPENTLC lab portal^].
-. Go to *Services -> Catalogs -> All Services -> OPENTLC Datacenter Infrastructure Labs*.
-. On the left side of the screen, click *RHEL for SAP HANA 7 Lab*.
-. On the right, click *Order*.
-. At the bottom right, click *Submit*.
+**This section is extremely important. Please read and understand it before continuing with the course.**
 
-IMPORTANT: You will receive an email with information about how to access your lab environment. It takes about 20 minutes for your lab to completely load and be accessible.
+- Log in to the [OPENTLC lab portal](http://labs.opentlc.com).
+- Go to **Services -> Catalogs -> All Services -> OPENTLC Datacenter Infrastructure Labs**.
+- On the left side of the screen, click **THIS CI DOES NOT EXIST YET**.
+- On the right, click **Order**.
+- At the bottom right, click **Submit**.
 
+You will receive an email with information about how to access your lab environment. It takes about 30 minutes for your lab to completely load and be accessible.
 
 ### Access System via SSH
 
-Your lab environment consists of a workstation and a Red Hat Enterprise Linux server. You must log in to `workstation` first and then log in to the RHEL server.
+Your lab environment consists of a bastion host and a Red Hat Enterprise Linux server. You must log in to `bastion host` first and then log in to the RHEL server.
 
-You access your workstation using an SSH client pointed to the host name that you received in your provisioning email. You must log in using your OPENTLC SSO account (the same credentials that you used to provision the lab) plus your OPENTLC SSO SSH key.
+You access your bastion using an SSH client pointed to the host name that you received in your provisioning email. You must log in using the provided credentials and keys in the email instructions.
 
-If you have not already registered your public SSH key with OPENTLC SSO, go to the link:https://www.opentlc.com/pwm/[OPENTLC Account Management page^], click *Update SSH Key*, and paste your public key there.
 
-NOTE: For more information on generating SSH keys, see link:https://www.opentlc.com/ssh.html[Setting Up an SSH Key Pair^].
+- Log in to `workstation` using SSH
+```bash
+$ ssh -i /path-to-your-ssh-key cloud-user@bastion-<GUID>.<DOMAIN>
+```
 
-. Log in to `workstation` using SSH:
-+
-[source,texinfo]
-----
-$ ssh -i /path-to-your-ssh-key/ opentlc-username@workstation-<GUID>.rhpds.opentlc.com
-----
+- Log in to the RHEL server using SSH:
+```bash
+[cloud-user@bastion-<GUID> ~]# ssh hana-<GUID>
+```
 
-. Become the `root` user using `sudo`:
-+
-* The `root` password on the system is `r3dh@t1!`.
-+
-[source,texinfo]
-----
-[opentlc-username@workstation ~]$ sudo su -
-----
+- Become root in the RHEL server:
+```bash
+[cloud-user@hana-<GUID> ~]# sudo -i
+[root@hana-<GUID> ~]#
+```
 
-. Log in to the RHEL server using SSH:
-+
-[source,texinfo]
-----
-[root@workstation ~]# ssh hana1.example.com
-----
-+
-NOTE: Unless noted otherwise, you execute all of the command line instructions in the lab as the `root` user.
+**Unless noted otherwise, you execute all of the command line instructions in the lab as the `root` user.**
 
-== Download SAP HANA Installation Media (Optional)
+### Download SAP HANA Installation Media (**Optional**)
 
 Due to End User License Agreement (EULA) restrictions, Red Hat OPEN cannot provide the installation media for SAP HANA in this training course. You must download the media yourself. You have two options to get the installation media in the environment:
 
-* *Option 1*: Register for SAP HANA, express edition, download the installer, and start the download in the environment. Download time is about 5 minutes and you do not need an SAP S user account for it.
+- **Option 1**: Register for SAP HANA, express edition, download the installer, and start the download in the environment. Download time is about 5 minutes and you do not need an SAP S user account for it.
 
-* *Option 2*: Download the SAP HANA, platform edition software from the SAP Service Marketplace. You need an SAP S user account and a couple of hours to upload the installation media.
+- **Option 2**: Download the SAP HANA, platform edition software from the SAP Service Marketplace. You need an SAP S user account and a couple of hours to upload the installation media.
 
 ### Option 1: Download SAP HANA Express Edition
 
@@ -101,9 +87,9 @@ SAP HANA, express edition is a streamlined version of SAP HANA, platform edition
 - System replication (HSR)
 - Dynamic tiering
 
-For a comprehensive list, see the link:http://news.sap.com/germany/files/2017/01/SAP-HANA-Express-Edition-FAQ-extern.pdf[SAP HANA express edition FAQ page^].
+For a comprehensive list, see the [SAP HANA express edition FAQ page](http://news.sap.com/germany/files/2017/01/SAP-HANA-Express-Edition-FAQ-extern.pdf.
 
-For this lab, you need to download the binary installer as described in detail on the link:https://www.sap.com/developer/tutorials/hxe-ua-installing-binary.html[express edition installation page^].
+For this lab, you need to download the binary installer as described in detail on the [express edition installation page](https://www.sap.com/developer/tutorials/hxe-ua-installing-binary.html).
 
 As the SAP tutorial only describes the graphical interface, which is not feasible for the training server in the cloud, you need to do the following:
 
