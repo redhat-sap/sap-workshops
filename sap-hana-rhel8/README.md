@@ -93,40 +93,35 @@ For this lab, you need to download the binary installer as described in detail o
 
 As the SAP tutorial only describes the graphical interface, which is not feasible for the training server in the cloud, you need to do the following:
 
-. Register for the express edition at link:https://www.sap.com/sap-hana-express["https://www.sap.com/sap-hana-express^"]:
-+
-image::images/hana01.png[]
+- Register for the express edition at ["https://www.sap.com/sap-hana-express](https://www.sap.com/sap-hana-express)
 
-. Download the platform-independent installer, `HXEDownloadManager.jar`:
-+
-image::images/hana02.png[]
+    ![hana-express](img/hana01.png)
 
-. Copy the installer to `workstation`:
-.. From Linux or macOS, copy the installer to `workstation`:
-+
-[source,texinfo]
-----
-$ scp HXEDownloadManager.jar opentlc-username@workstation-<GUID>.rhpds.opentlc.com:/upload/
-HXEDownloadManager.jar                             100%  561KB 971.1KB/s   00:00
-----
+- Download the platform-independent installer, `HXEDownloadManager.jar`:
 
-.. If you use MobaXterm on Windows, log in to `workstation` and drag the JAR file to the dialog box on the left, or use `winscp` to upload the files.
+    ![hana-express](img/hana02.png)
 
-. Log in to `workstation`, change to the `/upload` directory, and confirm that the file is there:
-+
-[source,texinfo]
-----
-$ ssh opentlc-username@workstation-<GUID>.rhpds.opentlc.com
-[opentlc-username@workstation ~]$ sudo -i
-[root@workstation ~]# cd /upload
-[root@workstation upload]# ls
-HXEDownloadManager.jar
-----
-. Download the express edition:
-+
-[source,texinfo]
-----
-[root@workstation upload]# java -jar HXEDownloadManager.jar -d . linuxx86_64 installer hxe.tgz
+- Copy the installer to `bastion`:
+
+    ```bash
+    $ scp HXEDownloadManager.jar cloud-user@bastion-<GUID>.<DOMAIN>:/nfs/
+    HXEDownloadManager.jar                             100%  561KB 971.1KB/s   00:00
+    ```
+
+- If you use MobaXterm on Windows, log in to `bastion` and drag the JAR file to the dialog box on the left, or use `winscp` to upload the files.
+
+- Log in to `bastion`, change to the `/nfs` directory, and confirm that the file is there:
+
+    ```bash
+    $ ssh cloud-user@bastion-<GUID>.<DOMAIN>
+    [cloud-user@bastion-<GUID> ~]$ ls /nfs
+    HXEDownloadManager.jar
+    ```
+
+- Download the express edition:
+```bash
+[cloud-user@bastion-<GUID> ~]$ cd /nfs
+[cloud-user@bastion-<GUID> nfs]$ java -jar HXEDownloadManager.jar -d . linuxx86_64 installer hxe.tgz
 Connecting to download server...
 
 SAP HANA, express edition version: 2.00.040.00.20190729.1
@@ -138,7 +133,7 @@ Concatenate download files to ./hxe.tgz...
 ./hxe.tgz created.
 Verify ./hxe.tgz file checksum...
 ./hxe.tgz file checksum is OK.
-----
+```
 
 ### Option 2: Download SAP HANA Platform Edition
 
@@ -148,49 +143,41 @@ IMPORTANT: Start the download as soon as possible. It may take a while to comple
 
 You can either download the full installation media or, to save time, download the much smaller service pack.
 
-. Download the full installation media from the SAP Service Marketplace:
+#### Download the full installation media from the SAP Service Marketplace:
 
-.. Point your browser to link:https://launchpad.support.sap.com/#/softwarecenter["https://launchpad.support.sap.com/#/softwarecenter^"].
-.. Select *Installations and Upgrades*.
-.. Select *A-Z Index -> H*.
-.. Select *SAP In-Memory (SAP HANA) -> HANA Platform Edition -> SAP HANA PLATFORM EDITION -> SAP HANA PLATFORM EDITION 2.0*.
-.. Select *Installation*.
-+
-[NOTE]
-====
+- Point your browser to [https://launchpad.support.sap.com/#/softwarecenter](https://launchpad.support.sap.com/#/softwarecenter).
+- Select **Installations and Upgrades**.
+- Select **A-Z Index -> H**.
+- Select **SAP In-Memory (SAP HANA) -> HANA Platform Edition -> SAP HANA PLATFORM EDITION -> SAP HANA PLATFORM EDITION 2.0**.
+- Select **Installation**.
+
 Here is an example of the download media. The media's object number may change when SAP releases updates, so use the description to confirm the version instead of the object number:
 
-image:images/SAPHANA2_Download.png[]
-====
+![HANA](img/SAPHANA2_Download.png)
 
-. Alternatively, download the SAP HANA 2.0 service pack from the SAP Service Marketplace:
+#### Alternatively, download the SAP HANA 2.0 service pack from the SAP Service Marketplace:
 
-.. Point your browser to link:https://launchpad.support.sap.com/#/softwarecenter["https://launchpad.support.sap.com/#/softwarecenter^"].
-.. Select *SUPPORT PACKAGES AND PATCHES*.
-.. Select *A-Z Index -> H*.
-.. Select *SAP HANA PLATFORM EDITION -> SAP HANA PLATFORM EDITION 2.0*.
-.. Select *SAP HANA DATABASE 2.0 -> LINUX ON X86_64 64BIT*.
-+
-[NOTE]
-====
+- Point your browser to [https://launchpad.support.sap.com/#/softwarecenter](https://launchpad.support.sap.com/#/softwarecenter).
+- Select **SUPPORT PACKAGES AND PATCHES**.
+- Select **A-Z Index -> H**.
+- Select **SAP HANA PLATFORM EDITION -> SAP HANA PLATFORM EDITION 2.0**.
+- Select **SAP HANA DATABASE 2.0 -> LINUX ON X86_64 64BIT**.
+- Navigate to **SUPPORT PACKAGES AND PATCHES -> A-Z -> S -> SAPCAR -> SAPCAR 7.21 -> Linux on x86_64 64bit -> SAPCAR_712-80000935.EXE** to download `SAPCAR`
+
 Here is an example of the download media. The media's object number may change when SAP releases updates, so use the description to confirm the version instead of the object number:
 
-image::images/SAPHANA2SPS_Download.png[]
-====
-.. Navigate to *SUPPORT PACKAGES AND PATCHES -> A-Z -> S -> SAPCAR -> SAPCAR 7.21 -> Linux on x86_64 64bit -> SAPCAR_712-80000935.EXE* to download `SAPCAR`.
+![HANA](img/SAPHANA2SPS_Download.png)
 
-. Upload the SAP HANA software from your client to the `/upload` directory on `workstation`:
-+
-[source,texinfo]
-----
-$ scp IMDB_SERVER20_00_0-80002031.SAR opentlc-username@workstation-<GUID>.rhpds.opentlc.com:/upload/
-$ scp SAPCAR_712-80000935.EXE opentlc-username@workstation-<GUID>.rhpds.opentlc.com:/upload/
-----
-+
-[IMPORTANT]
-====
-* Make sure you upload the SAP HANA software to the `/upload` directory on `workstation`, which is mounted to the RHEL server, so you do not have to transfer the file to the RHEL server.
+Upload the SAP HANA software from your client to the `/nfs` directory on `bastion`:
+```bash
+$ scp IMDB_SERVER20_00_0-80002031.SAR cloud-user@bastion-<GUID>.<DOMAIN>:/nfs/
+$ scp SAPCAR_712-80000935.EXE cloud-user@bastion-<GUID>.<DOMAIN>:/nfs/
+```
 
-* Start the upload as soon as you have access to the system. The upload may take several hours depending on the speed of your network connection.
+**IMPORTANT**
 
-* While the software upload is in progress, open another terminal, log in to the server, and prepare the system in parallel.
+- Make sure you upload the SAP HANA software to the `/nfs` directory on `bastion`, which is mounted to the RHEL server, so you do not have to transfer the file to the RHEL server.
+
+- Start the upload as soon as you have access to the system. The upload may take several hours depending on the speed of your network connection.
+
+- While the software upload is in progress, open another terminal, log in to the server, and prepare the system in parallel.
