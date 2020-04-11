@@ -7,13 +7,13 @@ This lab has two parts. In the first part, you set up the lab environment. In th
 
 If you plan to install SAP HANA, Red Hat<sup>(R)</sup> recommends that you begin the process now so that you can continue with the course while the download proceeds in the background. See the <<download>> section for the steps you need to get started.
 
-### Goals
+**Goals**
 
 - Review lab prerequisites
 - Set up and access the lab environment
 - Download the SAP HANA software
 
-### Prerequisites
+**Prerequisites**
 
 You need the following accounts to access important information and necessary software:
 
@@ -21,13 +21,13 @@ You need the following accounts to access important information and necessary so
 
 - **Red Hat Customer Portal account:** The Red Hat Customer Portal account is also known as a Red Hat Network Classic or RHN account. This account allows you to download Red Hat software and access support articles from [Red Hat Customer Portal](http://access.redhat.com).
 
-### IMPORTANT NOTES
+**IMPORTANT NOTES**
 
 - **If you do not have an SAP S user account, contact your company's SAP administrator and request an account with `software download` authorization. It may take up to two days to process your account request. You can also register and download the SAP HANA, express edition for this lab if you do not obtain an SAP S user account in time.**
 
 - **You can create a Red Hat Customer Portal account at [redhat.com](http://www.redhat.com).**
 
-### Lab Environment
+**Lab Environment**
 
 In this course, you do most of the hands-on practice exercises and lab work with a single dedicated computer system. This system is preinstalled with a Red Hat Enterprise Linux<sup>(R)</sup> (RHEL) base server. A Red Hat Enterprise Linux for SAP Solutions subscription is provided on the system, as well as disk partitions with enough space to install SAP HANA. The entire environment is hosted in the cloud, but the system configuration resembles a bare-metal environment.
 
@@ -50,25 +50,28 @@ Your lab environment consists of a bastion host and a Red Hat Enterprise Linux s
 You access your bastion using an SSH client pointed to the host name that you received in your provisioning email. You must log in using the provided credentials and keys in the email instructions.
 
 
-- Log in to `workstation` using SSH
-```bash
-$ ssh -i /path-to-your-ssh-key cloud-user@bastion-<GUID>.<DOMAIN>
-```
+- Log in to `workstation` using SSH:
+
+    ```bash
+    $ ssh -i /path-to-your-ssh-key cloud-user@bastion-<GUID>.<DOMAIN>
+    ```
 
 - Log in to the RHEL server using SSH:
-```bash
-[cloud-user@bastion-<GUID> ~]# ssh hana-<GUID>
-```
+
+    ```bash
+    [cloud-user@bastion-<GUID> ~]# ssh hana-<GUID>
+    ```
 
 - Become root in the RHEL server:
-```bash
-[cloud-user@hana-<GUID> ~]# sudo -i
-[root@hana-<GUID> ~]#
-```
+
+    ```bash
+    [cloud-user@hana-<GUID> ~]# sudo -i
+    [root@hana-<GUID> ~]#
+    ```
 
 **Unless noted otherwise, you execute all of the command line instructions in the lab as the `root` user.**
 
-### Download SAP HANA Installation Media (**Optional**)
+## Download SAP HANA Installation Media
 
 Due to End User License Agreement (EULA) restrictions, Red Hat OPEN cannot provide the installation media for SAP HANA in this training course. You must download the media yourself. You have two options to get the installation media in the environment:
 
@@ -119,21 +122,22 @@ As the SAP tutorial only describes the graphical interface, which is not feasibl
     ```
 
 - Download the express edition:
-```bash
-[cloud-user@bastion-<GUID> ~]$ cd /nfs
-[cloud-user@bastion-<GUID> nfs]$ java -jar HXEDownloadManager.jar -d . linuxx86_64 installer hxe.tgz
-Connecting to download server...
 
-SAP HANA, express edition version: 2.00.040.00.20190729.1
+    ```bash
+    [cloud-user@bastion-<GUID> ~]$ cd /nfs
+    [cloud-user@bastion-<GUID> nfs]$ java -jar HXEDownloadManager.jar -d . linuxx86_64 installer hxe.tgz
+    Connecting to download server...
 
-WARNING: The package(s) you chose to download require a minimum of 8 GB of memory to install.  You only have 1 GB on this system.
-Downloading "Server only installer"...
-hxe.tgz : 100%
-Concatenate download files to ./hxe.tgz...
-./hxe.tgz created.
-Verify ./hxe.tgz file checksum...
-./hxe.tgz file checksum is OK.
-```
+    SAP HANA, express edition version: 2.00.040.00.20190729.1
+
+    WARNING: The package(s) you chose to download require a minimum of 8 GB of memory to install.  You only have 1 GB on this system.
+    Downloading "Server only installer"...
+    hxe.tgz : 100%
+    Concatenate download files to ./hxe.tgz...
+    ./hxe.tgz created.
+    Verify ./hxe.tgz file checksum...
+    ./hxe.tgz file checksum is OK.
+    ```
 
 ### Option 2: Download SAP HANA Platform Edition
 
@@ -143,7 +147,7 @@ IMPORTANT: Start the download as soon as possible. It may take a while to comple
 
 You can either download the full installation media or, to save time, download the much smaller service pack.
 
-#### Download the full installation media from the SAP Service Marketplace:
+**1.- Download the full installation media from the SAP Service Marketplace:**
 
 - Point your browser to [https://launchpad.support.sap.com/#/softwarecenter](https://launchpad.support.sap.com/#/softwarecenter).
 - Select **Installations and Upgrades**.
@@ -155,7 +159,7 @@ Here is an example of the download media. The media's object number may change w
 
 ![HANA](img/SAPHANA2_Download.png)
 
-#### Alternatively, download the SAP HANA 2.0 service pack from the SAP Service Marketplace:
+**2.- Alternatively, download the SAP HANA 2.0 service pack from the SAP Service Marketplace:**
 
 - Point your browser to [https://launchpad.support.sap.com/#/softwarecenter](https://launchpad.support.sap.com/#/softwarecenter).
 - Select **SUPPORT PACKAGES AND PATCHES**.
@@ -169,6 +173,7 @@ Here is an example of the download media. The media's object number may change w
 ![HANA](img/SAPHANA2SPS_Download.png)
 
 Upload the SAP HANA software from your client to the `/nfs` directory on `bastion`:
+
 ```bash
 $ scp IMDB_SERVER20_00_0-80002031.SAR cloud-user@bastion-<GUID>.<DOMAIN>:/nfs/
 $ scp SAPCAR_712-80000935.EXE cloud-user@bastion-<GUID>.<DOMAIN>:/nfs/
