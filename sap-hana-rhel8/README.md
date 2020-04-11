@@ -186,3 +186,297 @@ $ scp SAPCAR_712-80000935.EXE cloud-user@bastion-<GUID>.<DOMAIN>:/nfs/
 - Start the upload as soon as you have access to the system. The upload may take several hours depending on the speed of your network connection.
 
 - While the software upload is in progress, open another terminal, log in to the server, and prepare the system in parallel.
+
+## Subscribe to RHEL for SAP Solutions EUS Channel
+
+The lab environment has a version of Red Hat Enterprise Linux 8 base server already installed and is subscribed to the proper RHEL for SAP Solutions repositories.
+
+NOTE: you do not need subscription-manager to subscribe or set the OS release for this enviroment. Follow the KB-Article [How to subscribe SAP HANA systems to the Update Services for SAP Solutions](https://access.redhat.com/solutions/3075991)
+
+- Login as root to your hana Server
+
+    ```bash
+    [cloud-user@bastion-<GUID> ~]# ssh hana-<GUID>
+    [cloud-user@hana-<GUID> ~]# sudo -i
+    [root@hana-<GUID> ~]#
+    ```
+
+- Check that the systems are subscribed to the correct channels
+
+```bash
+[root@hana-<GUID> ~]# yum repolist
+Geladene Plugins: search-disabled-repos
+Repo-ID                                                     Repo-Name:                                                                                                 Status
+rhel-7-server-e4s-optional-rpms                             Red Hat Enterprise Linux 7 Server - Update Services for SAP Solutions - Optional (RPMs)                    5.148
+rhel-7-server-e4s-rpms                                      Red Hat Enterprise Linux 7 Server - Update Services for SAP Solutions (RPMs)                               5.380
+rhel-sap-hana-for-rhel-7-server-e4s-rpms                    RHEL for SAP HANA (for RHEL 7 Server) Update Services for SAP Solutions (RPMs)                                 6
+repolist: 10.534
+```
+
+
+## Prepare Red Hat Enterprise Linux OS
+
+RedHat Enterprise Linux (RHEL) 7 introduced RHEL System Roles for SAP to assist with remotely or locally configuring RHEL7.6 and later, before installing SAP HANA or SAP NetWeaver software.
+
+RHEL System Roles for SAP development is based on the ​[Linux System Roles ​upstream project](https://linux-system-roles.github.io/).
+
+In this exercise you are going to use those System Roles to prepare the RHEL system to deploy SAP HANA.
+
+**Install Ansible Engine, RHEL System Roles and RHEL System Roles for SAP**
+
+```bash
+[root@hana-<GUID> ~]# yum install -y ansible rhel-system-roles rhel-system-roles-sap
+```
+
+
+
+
+
+
+
+## Extract SAP HANA Installation Media
+
+If you downloaded SAP HANA, express edition, unpack `hxe.tgz`:
+
+```bash
+[root@hana-<GUID> ~]# cd /software
+[root@hana-<GUID> software ~]# tar xzvf hxe.tgz
+setup_hxe.sh
+HANA_EXPRESS_20/change_key.sh
+HANA_EXPRESS_20/hxe_gc.sh
+HANA_EXPRESS_20/hxe_optimize.sh
+[...]
+[root@hana-<GUID> software ~]# ln -s HANA_EXPRESS_20/DATA_UNITS/HDB_LCM_LINUX_X86_64 SAP_HANA_DATABASE
+```
+
+If you downloaded the SAP HANA service pack, use the `SAPCAR` utility to unpack the SAP HANA service pack:
+
+```bash
+[root@hana-<GUID> ~]# cp /software/SAPCAR_712-80000935.EXE /bin/SAPCAR
+[root@hana-<GUID> ~]# chmod a+x /bin/SAPCAR
+[root@hana-<GUID> ~]# cd /software
+[root@hana-<GUID> software ~]# SAPCAR -manifest SIGNATURE.SMF -xvf IMDB_SERVER20_00_0-80002031.SAR
+[root@hana-<GUID> software ~]# mv SIGNATURE.SMF SAP_HANA_DATABASE/
+[root@hana-<GUID> software ~]# chmod 644 SAP_HANA_DATABASE/SIGNATURE.SMF
+```
+
+NOTE: If you use SAP HANA, express edition, expect to find the installation utilities in `/install/HANA_EXPRESS_20/DATA_UNITS/HDB_LCM_LINUX_X86_64`. If you use the service pack, the installation utilities are in `/install/SAP_HANA_DATABASE`. The above link is created to keep the installation instructions identical for both methods.
+
+
+## Install SAP HANA
+
+Before installing SAP HANA, make sure that you have the data listed below and check the installation guide for special requirements.
+
+The following table lists the SAP HANA installation parameters:
+
+
+|Parameter |Value|
+|----------|-----|
+|Database Usage Type |All components: `server`, `client`, etc.|
+|HANA System ID |`HXE`|
+|Instance Number |`90`|
+|Database Mode |`Single-Container`|
+|System Usage |`custom`|
+|Restrict Maximum Memory Allocation |`24GB`|
+|System Administrator Login Shell |`/bin/bash`|
+|System Administrator UID |`1001`|
+|ID of User Group (`sapsys`) |`79`|
+|Restart after Reboot |`N`|
+|SAP Host Agent User (`sapadm`) Password |`rhel4saphana`|
+|System Administrator (`anaadm`) Password |`rhel4saphana`|
+|Database User (`SYSTEM`) Password |`Rhel4saphana`|
+
+
+NOTE: The SID `HXE` and instnace number `90` are required for the free HANA Express License
+
+**Launch the SAP HANA installer:**
+
+NOTE: please select only to install server components, due to low memory of this server
+
+The example below shows the installation of the service pack.
+
+```bash
+[root@hana-<GUID> ~]# cd /software/SAP_HANA_DATABASE/
+[root@hana-<GUID> SAP_HANA_DATABASE]# ./hdblcm --action=install
+
+
+SAP HANA Lifecycle Management - SAP HANA Express Edition 2.00.040.00.1553674765
+*******************************************************************************
+
+
+SAP HANA Database version '2.00.040.00.1553674765' will be installed.
+
+Select additional components for installation:
+
+  Index | Components | Description
+  ---------------------------------------------------------------------------------------------
+  1     | all        | All components
+  2     | server     | No additional components
+  3     | afl        | Install SAP HANA AFL (incl.PAL,BFL,OFL) version 2.00.040.0000.1553698248
+  4     | epmmds     | Install SAP HANA EPM-MDS version 2.00.040.0000.1553698248
+
+Enter comma-separated list of the selected indices [1]: 2
+Enter Installation Path [/hana/shared]:
+Enter Local Host Name [hana1-GUID.rhpds.opentlc.com]:
+Enter SAP HANA System ID [HXE]:
+Enter Instance Number [90]:
+Enter Master Password:Rhel4saphana
+Confirm Master Password:Rhel4saphana
+Enter ID of User Group (sapsys) [79]:
+
+Summary before execution:
+=========================
+
+SAP HANA Express Edition System Installation
+   Installation Parameters
+      SAP HANA System ID: HXE
+      Instance Number: 90
+      Local Host Worker Group: default
+      System Usage: development
+      Location of Data Volumes: /hana/shared/data/HXE
+      Location of Log Volumes: /hana/shared/log/HXE
+      Directory containing custom configurations: /install/HANA_EXPRESS_20/DATA_UNITS/HDB_SERVER_LINUX_X86_64/configurations/custom
+      Certificate Host Names: hana1.example.com -> hana1.example.com
+      System Administrator Home Directory: /usr/sap/HXE/home
+      System Administrator Login Shell: /bin/bash
+      System Administrator User ID: 1001
+      ID of User Group (sapsys): 79
+      Restart system after machine reboot?: Yes
+      Inter Service Communication Mode: ssl
+      Remote Execution: ssh
+      Use single master password for all users, created during installation: Yes
+      Database Isolation: low
+      Install Execution Mode: standard
+      Installation Path: /hana/shared
+      Local Host Name: hana1.example.com
+   Software Components
+      SAP HANA Database
+         Install version 2.00.040.00.1553674765
+         Location: /install/HANA_EXPRESS_20/DATA_UNITS/HDB_SERVER_LINUX_X86_64/server
+      SAP HANA AFL (incl.PAL,BFL,OFL)
+         Do not install
+      SAP HANA EPM-MDS
+         Do not install
+   Log File Locations
+      Log directory: /var/tmp/hdb_HXE_hdblcm_install_2019-10-17_10.08.31
+      Trace location: /var/tmp/hdblcm_2019-10-17_10.08.31_2203.trc
+
+Do you want to continue? (y/n): y
+
+Installing components...
+Installing SAP HANA Database...
+  Preparing package 'Saphostagent Setup'...
+  Preparing package 'Python Support'...
+  Preparing package 'Python Runtime'...
+  Preparing package 'Product Manifest'...
+  Preparing package 'Binaries'...
+  Preparing package 'Krb5 Runtime'...
+  Preparing package 'Installer'...
+  Preparing package 'Ini Files'...
+  Preparing package 'Documentation'...
+  Preparing package 'Delivery Units'...
+  Preparing package 'Offline Cockpit'...
+  Preparing package 'DAT Languages (EN, DE)'...
+  Preparing package 'DAT Configfiles (EN, DE)'...
+  Creating System...
+  Extracting software...
+  Installing package 'Saphostagent Setup'...
+  Installing package 'Python Support'...
+  Installing package 'Python Runtime'...
+  Installing package 'Product Manifest'...
+  Installing package 'Binaries'...
+  Installing package 'Krb5 Runtime'...
+  Installing package 'Installer'...
+  Installing package 'Ini Files'...
+  Installing package 'Documentation'...
+  Installing package 'Delivery Units'...
+  Installing package 'Offline Cockpit'...
+  Installing package 'DAT Languages (EN, DE)'...
+  Installing package 'DAT Configfiles (EN, DE)'...
+  Creating instance...
+  Configuring instance...
+  Installing SAP Host Agent version 7.21.41...
+  Starting SAP HANA Database system...
+    Starting 1 process on host 'hana1.example.com' (worker):
+      Starting on 'hana1.example.com' (worker): hdbupdconf
+    Starting 4 processes on host 'hana1.example.com' (worker):
+      Starting on 'hana1.example.com' (worker): hdbdaemon, hdbcompileserver, hdbnameserver, hdbwebdispatcher
+    Starting 5 processes on host 'hana1.example.com' (worker):
+      Starting on 'hana1.example.com' (worker): hdbdaemon, hdbcompileserver, hdbnameserver, hdbwebdispatcher, hdbindexserver (HXE)
+      Starting on 'hana1.example.com' (worker): hdbdaemon, hdbcompileserver, hdbwebdispatcher, hdbindexserver (HXE)
+      Starting on 'hana1.example.com' (worker): hdbdaemon, hdbwebdispatcher, hdbindexserver (HXE)
+      Starting on 'hana1.example.com' (worker): hdbdaemon, hdbwebdispatcher
+    All server processes started on host 'hana1.example.com' (worker).
+Installing Resident hdblcm...
+Updating SAP HANA Express Edition Instance Integration on Local Host...
+  Regenerating SSL certificates...
+  Deploying SAP Host Agent configurations...
+Creating Component List...
+SAP HANA Express Edition System installed
+You can send feedback to SAP with this form: https://hana1.example.com:1129/lmsl/HDBLCM/HXE/feedback/feedback.html
+Log file written to '/var/tmp/hdb_HXE_hdblcm_install_2019-10-17_10.08.31/hdblcm.log' on host 'hana1.example.com'.
+```
+
+
+## Test SAP HANA Database
+
+**Check the status of the SAP HANA database:**
+
+```bash
+[root@hana-<GUID> SAP_HANA_DATABASE]# su - hxeadm
+hxeadm@hana-<GUID>:/usr/sap/HXE/HDB90> HDB info
+USER          PID     PPID  %CPU        VSZ        RSS COMMAND
+hxeadm       6673     6672   0.4     116220       2804 -bash
+hxeadm       6786     6673   0.0     113304       1680  \_ /bin/sh /usr/sap/HXE/HDB90/HDB info
+hxeadm       6817     6786   0.0     155356       1868      \_ ps fx -U hxeadm -o user:8,pid:8,ppid:8,pcpu:5,vsz:10,rss:10,args
+hxeadm       2854        1   0.0      28552       1880 sapstart pf=/hana/shared/HXE/profile/HXE_HDB90_hana1.example.com
+hxeadm       2867     2854   0.3     368260      47884  \_ /usr/sap/HXE/HDB90/hana1.example.com/trace/hdb.sapHXE_HDB90 -d -nw -f /usr/sap/HXE/HDB90/hana1.example.com/daemon.
+hxeadm       2885     2867  48.5    4564644    1921104      \_ hdbnameserver
+hxeadm       3474     2867   2.7    1363304     212628      \_ hdbcompileserver
+hxeadm       3511     2867  52.6    4284616    1859432      \_ hdbindexserver -port 39003
+hxeadm       4326     2867   3.2    1397416     277040      \_ hdbwebdispatcher
+hxeadm       2591        1   0.6     511028      24440 /usr/sap/HXE/HDB90/exe/sapstartsrv pf=/hana/shared/HXE/profile/HXE_HDB90_hana1.example.com -D -u hxeadm
+```
+
+**Stop the SAP HANA database:**
+
+```bash
+[root@hana-<GUID> ~]# su - hxeadm
+hxeadm@hana-<GUID>:/usr/sap/HXE/HDB90> HDB stop
+hdbdaemon will wait maximal 300 seconds for NewDB services finishing.
+Stopping instance using: /usr/sap/HXE/SYS/exe/hdb/sapcontrol -prot NI_HTTP -nr 90 -function Stop 400
+
+17.10.2019 10:36:07
+Stop
+OK
+Waiting for stopped instance using: /usr/sap/HXE/SYS/exe/hdb/sapcontrol -prot NI_HTTP -nr 90 -function WaitforStopped 600 2
+
+17.10.2019 10:36:41
+WaitforStopped
+OK
+hdbdaemon is stopped.
+```
+
+**Start the SAP HANA database:**
+
+```bash
+[root@hana-<GUID> ~]# su - hxeadm
+hxeadm@hana-<GUID>:/usr/sap/HXE/HDB90> HDB start
+
+
+StartService
+Impromptu CCC initialization by 'rscpCInit'.
+  See SAP note 1266393.
+OK
+OK
+Starting instance using: /usr/sap/HXE/SYS/exe/hdb/sapcontrol -prot NI_HTTP -nr 90 -function StartWait 2700 2
+
+
+17.10.2019 10:37:16
+Start
+OK
+
+17.10.2019 10:38:47
+StartWait
+OK
+```
