@@ -4,10 +4,10 @@
 Click on the following links in order to acces specific slides for each item:
 
 - [Introductions and Agenda Review](https://redhat-sap.github.io/sap-workshops/slides/1day-workshop/01/index.html)
-- [SAP | Red Hat strategy]()
-- [RHEL for SAP Solutions]()
-- [SAP HANA architectures on RHEL]()
-- [SAP Ansible System Roles and Community Roles]()
-- [SAP HANA and SAP S/4HANA E2E deployment]()
-- [SAP, OCP and Red Hat strategy for future SAP containerized portfolio]()
-- [Feedback and Buffer for Overflow]()
+- [SAP | Red Hat strategy](https://redhat-sap.github.io/sap-workshops/slides/1day-workshop/02/index.html)
+- [RHEL for SAP Solutions](https://redhat-sap.github.io/sap-workshops/slides/1day-workshop/03/index.html)
+- [SAP HANA architectures on RHEL](https://redhat-sap.github.io/sap-workshops/slides/1day-workshop/04/index.html)
+- [SAP Ansible System Roles and Community Roles](https://redhat-sap.github.io/sap-workshops/slides/1day-workshop/05/index.html)
+- [SAP HANA and SAP S/4HANA E2E deployment](https://redhat-sap.github.io/sap-workshops/slides/1day-workshop/06/index.html)
+- [SAP, OCP and Red Hat strategy for future SAP containerized portfolio](https://redhat-sap.github.io/sap-workshops/slides/1day-workshop/07/index.html)
+- [Feedback and Buffer for Overflow](https://redhat-sap.github.io/sap-workshops/slides/1day-workshop/08/index.html)
