@@ -230,7 +230,6 @@ hana-{GUID} | SUCCESS => {
 
 One we have checked the `bastion` host can manage the `hana` host via Ansible, let's create a simple Ansible playbook to prepare the `hana` host to deploy SAP HANA.
 
-
 ```bash
 [cloud-user@bastion-<GUID> ~]$ touch ~/hana-play.yml
 ```
@@ -247,34 +246,10 @@ Add the following information to this new file:
     - role: sap-hana-preconfigure
 ```
 
-We are going to use `ansible-galaxy` to pull thr upstream version of these roles, just to get familiar with those. This is not really required as these roles are already installed in the system via the `rhel-system-roles-sap` package coming with the `RHEL for SAP Solutions` subscription.
+Now we have the required roles in the system as part of the `rhel-system-roles-sap` package, so we can now execute the playbook to prepare the host:
 
 ```bash
-[cloud-user@bastion-<GUID> ~]$ touch ~/requirements.yml
-```
-
-And add the following information to this file:
-
-```yaml
-- src: https://github.com/linux-system-roles/sap-preconfigure.git
-- src: https://github.com/linux-system-roles/sap-hana-preconfigure.git
-```
-
-We can now manually pull these roles:
-
-```bash
-[cloud-user@bastion-<GUID> ~]$ cd ~
-[cloud-user@bastion-<GUID> ~]$ ansible-galaxy install -r requirements.yml -p roles
-- extracting sap-preconfigure to /home/cloud-user/roles/sap-preconfigure
-- sap-preconfigure was installed successfully
-- extracting sap-hana-preconfigure to /home/cloud-user/roles/sap-hana-preconfigure
-- sap-hana-preconfigure was installed successfully
-```
-
-Now we have the reuired roles in the system we can execute the playbook to prepare the host:
-
-```bash
-[cloud-user@bastion-<GUID> ~]$ ansible-playbook  ~/hana-play.yml
+[cloud-user@bastion-<GUID> ~]$ ansible-playbook  ~/hana-play.yml -e sap_preconfigure_modify_etc_hosts=True
 ...
 ...
 PLAY RECAP *********************************************************************************************************
