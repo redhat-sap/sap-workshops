@@ -313,8 +313,6 @@ NOTE: The SID `HXE` and instnace number `90` are required for the free HANA Expr
 
 **Launch the SAP HANA installer:**
 
-NOTE: please select only to install server components, due to low memory of this server
-
 The example below shows the installation of the service pack.
 
 ```bash
