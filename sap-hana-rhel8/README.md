@@ -17,7 +17,7 @@ If you plan to download SAP HANA, we recommend to start the process now so you c
 
 You need the following accounts to access important information and necessary software:
 
-- **SAP S user account:** This account allows you to download software and generate license keys from [SAP Service Marketplace](http://service.sap.com). You need this account to download SAP HANA, platform edition.
+- **SAP S user account:** This account allows you to download software and generate license keys. You need this account to download SAP HANA, platform edition. You can get more information on how to generate this account [here](https://support.sap.com/en/my-support/users.html).
 
 - **Red Hat Customer Portal account:** The Red Hat Customer Portal account is also known as a Red Hat Network Classic or RHN account. This account allows you to download Red Hat software and access support articles from [Red Hat Customer Portal](http://access.redhat.com).
 
@@ -54,22 +54,17 @@ You can access your `bastion host` via SSH following the instructions received i
 
     ```bash
     $ ssh -i /path-to-your-ssh-key cloud-user@bastion-<GUID>.<DOMAIN>
+    [cloud-user@bastion-<GUID> ~]$
     ```
 
-- Log in to the RHEL server using SSH:
+- Log in to the RHEL HANA server using SSH:
 
     ```bash
     [cloud-user@bastion-<GUID> ~]$ ssh hana-<GUID>
+    [cloud-user@hana-<GUID> ~]$
     ```
 
-- Become root in the RHEL server:
-
-    ```bash
-    [cloud-user@hana-<GUID> ~]$ sudo -i
-    [root@hana-<GUID> ~]#
-    ```
-
-**Unless noted otherwise, you execute all of the command line instructions in the lab as the `root` user.**
+Once you have checked you can acces to the servers in your lab, you are ready to continue with the training.
 
 ## Download SAP HANA Installation Media
 
@@ -90,13 +85,13 @@ SAP HANA, express edition is a streamlined version of SAP HANA, platform edition
 - System replication (HSR)
 - Dynamic tiering
 
-For a comprehensive list, see the [SAP HANA express edition FAQ page](http://news.sap.com/germany/files/2017/01/SAP-HANA-Express-Edition-FAQ-extern.pdf.
+For a comprehensive list, see the [SAP HANA express edition FAQ page](http://news.sap.com/germany/files/2017/01/SAP-HANA-Express-Edition-FAQ-extern.pdf).
 
 For this lab, you need to download the binary installer as described in detail on the [express edition installation page](https://www.sap.com/developer/tutorials/hxe-ua-installing-binary.html).
 
 As the SAP tutorial only describes the graphical interface, which is not feasible for this environment, you need to do the following:
 
-- Register for the express edition at ["https://www.sap.com/sap-hana-express](https://www.sap.com/sap-hana-express) selecting the `Register for your free version` button and completing the following form:
+- Register for the express edition [here](https://www.sap.com/sap-hana-express) selecting the `Register for your free version` button and completing the following form:
 
     ![hana-express](img/hana01.png)
 
@@ -125,7 +120,7 @@ As the SAP tutorial only describes the graphical interface, which is not feasibl
 
     ```bash
     [cloud-user@bastion-<GUID> ~]$ cd /nfs
-    [cloud-user@bastion-<GUID> nfs]$ java -jar HXEDownloadManager.jar -d . linuxx86_64 installer hxe.tgz
+    [cloud-user@bastion-<GUID> /nfs]$ java -jar HXEDownloadManager.jar -d . linuxx86_64 installer hxe.tgz
     Connecting to download server...
 
     SAP HANA, express edition version: 2.00.045.00.20200121.1
@@ -174,8 +169,8 @@ Here is an example of the download media. The media's object number may change w
 Upload the SAP HANA software from your client to the `/nfs` directory on `bastion`:
 
 ```bash
-$ scp IMDB_SERVER20_00_0-80002031.SAR cloud-user@bastion-<GUID>.<DOMAIN>:/nfs/
-$ scp SAPCAR_712-80000935.EXE cloud-user@bastion-<GUID>.<DOMAIN>:/nfs/
+$ scp -i /path-to-your-ssh-key IMDB_SERVER20_00_0-80002031.SAR cloud-user@bastion-<GUID>.<DOMAIN>:/nfs/
+$ scp -i /path-to-your-ssh-key SAPCAR_712-80000935.EXE cloud-user@bastion-<GUID>.<DOMAIN>:/nfs/
 ```
 
 **IMPORTANT**
@@ -202,17 +197,17 @@ NOTE: you do not need subscription-manager to subscribe or set the OS release fo
 
 - Check that the systems are subscribed to the correct channels
 
-```bash
-[root@hana-<GUID> ~]# yum repolist
-Updating Subscription Management repositories.
-Last metadata expiration check: 0:01:19 ago on Tue 14 Apr 2020 19:00:59 EDT.
-repo id                                            repo name                                                                   status
-ansible-2-for-rhel-8-x86_64-rpms                   Red Hat Ansible Engine 2 for RHEL 8 x86_64 (RPMs)                              20
-rhel-8-for-x86_64-appstream-rpms                   Red Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)                    8,820
-rhel-8-for-x86_64-baseos-rpms                      Red Hat Enterprise Linux 8 for x86_64 - BaseOS (RPMs)                       3,801
-rhel-8-for-x86_64-sap-netweaver-rpms               Red Hat Enterprise Linux 8 for x86_64 - SAP NetWeaver (RPMs)                   16
-rhel-8-for-x86_64-sap-solutions-rpms               Red Hat Enterprise Linux 8 for x86_64 - SAP Solutions (RPMs)                   10                                                                                                               10
-```
+  ```bash
+  [root@hana-<GUID> ~]# yum repolist
+  Updating Subscription Management repositories.
+  Last metadata expiration check: 0:01:19 ago on Tue 14 Apr 2020 19:00:59 EDT.
+  repo id                                            repo name                                                                   status
+  ansible-2-for-rhel-8-x86_64-rpms                   Red Hat Ansible Engine 2 for RHEL 8 x86_64 (RPMs)                              20
+  rhel-8-for-x86_64-appstream-rpms                   Red Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)                    8,820
+  rhel-8-for-x86_64-baseos-rpms                      Red Hat Enterprise Linux 8 for x86_64 - BaseOS (RPMs)                       3,801
+  rhel-8-for-x86_64-sap-netweaver-rpms               Red Hat Enterprise Linux 8 for x86_64 - SAP NetWeaver (RPMs)                   16
+  rhel-8-for-x86_64-sap-solutions-rpms               Red Hat Enterprise Linux 8 for x86_64 - SAP Solutions (RPMs)                   10                                                                                                               10
+  ```
 
 ## Prepare Red Hat Enterprise Linux OS
 
@@ -220,46 +215,75 @@ RedHat Enterprise Linux (RHEL) 7 introduced RHEL System Roles for SAP to assist 
 
 RHEL System Roles for SAP development is based on the ​[Linux System Roles ​upstream project](https://linux-system-roles.github.io/).
 
-In this exercise you are going to use those System Roles to prepare the RHEL system to deploy SAP HANA.
-
-
-
-REPLACE THIS TO BE DONE FROM THE BASTION HOST
-**Install Ansible Engine, RHEL System Roles and RHEL System Roles for SAP**
+In this exercise you are going to use those System Roles to prepare the RHEL system to deploy SAP HANA. We are going to do this from the `bastion` host, so login into the `bastion` and check that Ansible can speak with the `hana` server:
 
 ```bash
-[root@hana-<GUID> ~]# yum install -y ansible rhel-system-roles rhel-system-roles-sap
+[cloud-user@bastion-<GUID> ~]$ ansible hana -m ping
+hana-{GUID} | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    },
+    "changed": false,
+    "ping": "pong"
+}
 ```
 
-**Create an Ansible inventory**
+One we have checked the `bastion` host can manage the `hana` host via Ansible, let's create a simple Ansible playbook to prepare the `hana` host to deploy SAP HANA.
 
-For this use case we are creating a very simple inventory only with the local server. While using System Roles in Production environment, there is usually an external Ansible Host or Ansible Tower Host that manages all the SAP systems and others.
 
 ```bash
-[root@hana-<GUID> ~]# > /etc/ansible/hosts
+[cloud-user@bastion-<GUID> ~]$ touch ~/hana-play.yml
 ```
 
-**Create an Ansible playbook**
-
-Similar to the inventory, we are creating a very small playbook to use the System Roles for SAP. These roles will ensure the RHEL server has followed all the required pre-requisites to run SAP workloads and SAP HANA.
-
-```bash
-[root@hana-<GUID> ~]# touch /etc/ansible/hana-play.yml
-```
-
-Add the following info to this new file:
+Add the following information to this new file:
 
 ```yaml
+---
+- hosts: hana
 
+  roles:
+
+    - role: sap-preconfigure
+    - role: sap-hana-preconfigure
 ```
 
+We are going to use `ansible-galaxy` to pull thr upstream version of these roles, just to get familiar with those. This is not really required as these roles are already installed in the system via the `rhel-system-roles-sap` package coming with the `RHEL for SAP Solutions` subscription.
 
+```bash
+[cloud-user@bastion-<GUID> ~]$ touch ~/requirements.yml
+```
 
+And add the following information to this file:
 
+```yaml
+- src: https://github.com/linux-system-roles/sap-preconfigure.git
+- src: https://github.com/linux-system-roles/sap-hana-preconfigure.git
+```
+
+We can now manually pull these roles:
+
+```bash
+[cloud-user@bastion-<GUID> ~]$ cd ~
+[cloud-user@bastion-<GUID> ~]$ ansible-galaxy install -r requirements.yml -p roles
+- extracting sap-preconfigure to /home/cloud-user/roles/sap-preconfigure
+- sap-preconfigure was installed successfully
+- extracting sap-hana-preconfigure to /home/cloud-user/roles/sap-hana-preconfigure
+- sap-hana-preconfigure was installed successfully
+```
+
+Now we have the reuired roles in the system we can execute the playbook to prepare the host:
+
+```bash
+[cloud-user@bastion-<GUID> ~]$ ansible-playbook  ~/hana-play.yml
+...
+...
+PLAY RECAP *********************************************************************************************************
+hana-{GUID}      : ok=120  changed=20   unreachable=0    failed=0    skipped=43   rescued=0    ignored=2
+```
 
 ## Extract SAP HANA Installation Media
 
-If you downloaded SAP HANA, express edition, unpack `hxe.tgz`:
+If you downloaded SAP HANA express edition, unpack the `hxe.tgz` file in the `hana` server:
 
 ```bash
 [root@hana-<GUID> ~]# cd /software
@@ -283,7 +307,9 @@ If you downloaded the SAP HANA service pack, use the `SAPCAR` utility to unpack 
 [root@hana-<GUID> software ~]# chmod 644 SAP_HANA_DATABASE/SIGNATURE.SMF
 ```
 
-NOTE: If you use SAP HANA express edition, expect to find the installation utilities in `/software/HANA_EXPRESS_20/DATA_UNITS/HDB_LCM_LINUX_X86_64`. If you use the service pack, the installation utilities are in `/software/SAP_HANA_DATABASE`. The above link is created to keep the installation instructions identical for both methods.
+NOTE: If you use SAP HANA express edition, expect to find the installation utilities in `/software/HANA_EXPRESS_20/DATA_UNITS/HDB_LCM_LINUX_X86_64`.
+
+If you use the service pack, the installation utilities are in `/software/SAP_HANA_DATABASE`. The above link is created to keep the installation instructions identical for both methods.
 
 ## Install SAP HANA
 
@@ -303,8 +329,8 @@ The following table lists the SAP HANA installation parameters:
 |System Administrator UID |`1001`|
 |ID of User Group (`sapsys`) |`79`|
 |Restart after Reboot |`N`|
-|SAP Host Agent User (`sapadm`) Password |`rhel4saphana`|
-|System Administrator (`anaadm`) Password |`rhel4saphana`|
+|SAP Host Agent User (`sapadm`) Password |`Rhel4saphana`|
+|System Administrator (`anaadm`) Password |`Rhel4saphana`|
 |Database User (`SYSTEM`) Password |`Rhel4saphana`|
 
 
@@ -343,8 +369,8 @@ Enter Installation Path [/hana/shared]:
 Enter Local Host Name [hana-{GUID}]:
 Enter SAP HANA System ID [HXE]:
 Enter Instance Number [90]:
-Enter Master Password: R3dh4t1!
-Confirm Master Password: R3dh4t1!
+Enter Master Password: Rhel4saphana
+Confirm Master Password: Rhel4saphana
 Enter ID of User Group (sapsys) [79]:
 
 Summary before execution:
