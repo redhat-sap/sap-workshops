@@ -58,7 +58,7 @@ For the quick demo, you can navigate through all the required configurations to 
 
 #### Credentials
 
-In order Tower to run Ansible Playbooks in remote hosts, the credentials required to access these hosts via SSH must be configured. On the left pane click on `Credentials`. This will show you all the actual credentials configured in Ansible Tower. One credential called `ssh-key` is already configured. This is a `Machine Type` credential that will contain the user information and SSH private key in order to be able to connect to the remote hosts via SSH.
+In order Tower to run Ansible Playbooks in remote hosts, the credentials required to access these hosts via SSH must be configured. On the left pane click on `Credentials`. This will show you all the actual credentials configured in Ansible Tower. One credential called `ssh-key` is already configured. This is a `Machine Type` credential that will contain the user information and SSH private key to be able to connect to the remote hosts via SSH.
 
 ![e2e-tower-workflow-credentials-gif](img/tower-workflow-credentials.gif)
 
