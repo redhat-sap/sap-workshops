@@ -4,6 +4,5 @@
 
 Click on the following links in order to acces specific documentation and deployment instructions for each workshop, demo and technical enablement.
 
-- [SAP 1-Day Workshop - technical enablement](sap-oneday-workshop/README.md)
 - [SAP E2E Automation - workshop and demo](sap-e2e-ansible/README.md)
 
