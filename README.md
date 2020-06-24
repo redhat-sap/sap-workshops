@@ -6,3 +6,4 @@ Click on the following links in order to acces specific documentation and deploy
 
 - [SAP E2E Automation](sap-e2e-ansible/README.md)
 - [SAP Smart Management](sap-smart-management/README.md)
+- [SAP side by side Integration](sap-integration/README.md)
