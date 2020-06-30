@@ -15,7 +15,7 @@ The high-level architecture consists of 4 different RHEL 8.x servers with the fo
 - s4hana: this is meant to be used as the RHEL server where to deploy SAP S/4HANA
 - sat: this is meant to be used as the Red Hat Satellite host where to manage the SAP landscape
 
-![smart-infra-layout](img/infra_layout.png)
+[![smart-infra-layout](img/infra_layout.png)](img/infra_layout.png)
 
 ## Environment request
 
