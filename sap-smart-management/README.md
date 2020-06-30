@@ -15,7 +15,7 @@ The high-level architecture consists of 4 different RHEL 8.x servers with the fo
 - s4hana: this is meant to be used as the RHEL server where to deploy SAP S/4HANA
 - sat: this is meant to be used as the Red Hat Satellite host where to manage the SAP landscape
 
-[![smart-infra-layout](img/infra_layout.png)](img/infra_layout.png)
+[![smart-infra-layout](img/infra_layout.png)](img/infra_layout.png){:target="_blank"}
 
 ## Environment request
 
@@ -56,8 +56,8 @@ The goal for this demo is to showcase the management capabilities RHEL for SAP S
 1. Explore Red Hat Satellite Monitor Dashboard and customize it to show specific widgets
 2. Connect to the RHEL hosts for the given landscape and check what applications are running on those
 3. Explore these RHEL hosts from the Satellite interface
-4. Che
-5. 
+4. Check existing erratas that applies to existing Hosts
+5. Select and install applicable errata for existing Hosts
 6. 
 7. 
 8. 
