@@ -25,11 +25,11 @@ This environment is provisioned using the Red Hat internal demo system. We at Re
 
 Login into [Red Hat Product Demo System](https://rhpds.redhat.com) and navigate to `Services --> Catalogs --> All Services --> Workshops`. An item called `SAP Smart Management` will be available.
 
-![rhpds-catalog](img/rhpds01.png)
+[![rhpds-catalog](img/rhpds01.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/rhpds01.png)
 
 Click on the **order** button, check the confirmation box and click on **Submit**.
 
-![rhpds-submit](img/rhpds02.png)
+[![rhpds-submit](img/rhpds02.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/rhpds02.png)
 
 ### Environment info and credentials
 
@@ -54,11 +54,15 @@ The goal for this demo is to showcase the management capabilities RHEL for SAP S
 
 
 1. Explore Red Hat Satellite Monitor Dashboard and customize it to show specific widgets
-2. Connect to the RHEL hosts for the given landscape and check what applications are running on those
-3. Install required agents on the RHEL hosts to obtain information about errata from Satellite (POTENTIALLY REMOVE THIS PIECE AND PRE-INSTALL THE AGENT)
+2. Explore Tower and check existing inventory and any running jobs
+3. Connect to the RHEL hosts for the given landscape and check what applications are running on those
 4. Explore these RHEL hosts from the Satellite interface
 5. Check existing erratas that applies to existing Hosts and automatically install those
 6. Explore Red Hat Insights from Satellite
 7. Explore Red Hat Insights from cloud.redhat.com
-8. 
+8. Create a plan in Insights to auto remediate any existing potential issue
+
+
+### Customize Satellite Monitor Dashboard
+
 
