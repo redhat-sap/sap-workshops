@@ -9,13 +9,13 @@ This workshop can be used to demonstrate the Smart Management capabilities for S
 
 The high-level architecture consists of 4 different RHEL 8.x servers with the following purposes:
 
-- bastion: this is meant to be used as the jump host for SSH access to the environment
-- tower: this is meant to be used as the Ansible and Ansible Tower host where to run the automation from
-- hana: this is meant to be used as the RHEL server where to deploy SAP HANA
-- s4hana: this is meant to be used as the RHEL server where to deploy SAP S/4HANA
-- sat: this is meant to be used as the Red Hat Satellite host where to manage the SAP landscape
+- **bastion**: this is meant to be used as the jump host for SSH access to the environment
+- **tower**: this is meant to be used as the Ansible and Ansible Tower host where to run the automation from
+- **hana**: this is meant to be used as the RHEL server where to deploy SAP HANA
+- **s4hana**: this is meant to be used as the RHEL server where to deploy SAP S/4HANA
+- **sat**: this is meant to be used as the Red Hat Satellite host where to manage the SAP landscape
 
-[![smart-infra-layout](img/infra_layout.png)](img/infra_layout.png){:target="_blank"}
+[![smart-infra-layout](img/infra_layout.png)](sap-smart-management/img/infra_layout.png){:target="_blank"}
 
 ## Environment request
 
@@ -55,9 +55,10 @@ The goal for this demo is to showcase the management capabilities RHEL for SAP S
 
 1. Explore Red Hat Satellite Monitor Dashboard and customize it to show specific widgets
 2. Connect to the RHEL hosts for the given landscape and check what applications are running on those
-3. Explore these RHEL hosts from the Satellite interface
-4. Check existing erratas that applies to existing Hosts
-5. Select and install applicable errata for existing Hosts
-6. 
-7. 
+3. Install required agents on the RHEL hosts to obtain information about errata from Satellite (POTENTIALLY REMOVE THIS PIECE AND PRE-INSTALL THE AGENT)
+4. Explore these RHEL hosts from the Satellite interface
+5. Check existing erratas that applies to existing Hosts and automatically install those
+6. Explore Red Hat Insights from Satellite
+7. Explore Red Hat Insights from cloud.redhat.com
 8. 
+
