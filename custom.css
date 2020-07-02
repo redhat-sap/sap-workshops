@@ -107,5 +107,25 @@ img[alt="add-widget"] {
 
 img[alt="sat-dasboard"] {
   position: left;
-  height: 600px;
+  height: 400px;
+}
+
+img[alt="smart-tower-workflow"] {
+  position: left;
+  height: 200px;
+}
+
+img[alt="smart-tower-workflowd"] {
+  position: left;
+  height: 300px;
+}
+
+img[alt="smart-insights-client-update"] {
+  position: left;
+  height: 300px;
+}
+
+img[alt="smart-insights-client-gif"] {
+  position: left;
+  height: 300px;
 }

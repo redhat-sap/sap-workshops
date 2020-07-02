@@ -87,3 +87,32 @@ Once we have selected and arranged the widgets in the order we prefer, click on 
 
 [![sat-dashboard](img/dashboard.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/dashboard.png)
 
+### Explore Ansible Tower, inventories and running jobs
+
+Ansible Tower is not a mandatory piece for this workshop in particular, but is used in the background to set up the hosts that are registered into Satellite. As part of the lab provisioning task, a Tower workflow job is executed that will deploy and configure SAP HANA and SAP S/4HANA on these hosts. In order to be able to demonstrate Satellite and Insights capabilities specifically for SAP workloads, we need to ensure this workflow job has been completed succesfully.
+
+Login into Tower with the information and credentials received via email and select `Jobs` from the left pane. Once selected you will see all the jobs executed in Tower. Find one in particular called `SAP HANA and S/4HANA E2E deployment`.
+
+[![smart-tower-workflow](img/workflow.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/workflow.png)
+
+The green circle will indicate the job has been executed with no errors, but we can see more details if we click on the job name. That will show the whole workflow executed and will allow you to get additional information for every step of the workflow.
+
+[![smart-tower-workflowd](img/workflow_detail.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/workflow_detail.png)
+
+Once validated the job workflow has been completed, we are going to use the existing invetory in Tower to send updated information from the Inights client of each server. To do this, select `Inventory` form the left pane. An invenotry called `sap-hosts` will be available. Click on the inventory name, `sap-hosts`, which will show the details for this inventory. Then select `GROUPS` from the top side and a group called `sap` will be shown. Click on the select box right to the `sap` grouo name, and a new button will be available on the top right side, called `RUN COMMANDS`. 
+
+Once clicked on `RUN COMMANDS` a new view will be open (EXECUTE COMMAND) where we will select `command` from the dropdown menu, and we will add `insights-client` in the `ARGUMENTS` input field. Ensure the `ENABLE PRIVILEGE ESCALATION` checkbox is selected as well. Leave the rest of the options with the existing values and use the `LAUNCH` button to execute it.
+
+[![smart-insights-client-gif](img/insights_client.gif)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/insights_client.gif)
+
+This will trigger an Ansible task on all the hosts for that Ansible group and will return the output from that command.
+
+[![smart-insights-client-update](img/insights_client.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/insights_client.png)
+
+Now Insights will contain all the updated information from the instances and we will be able to see Insights Risk summary and remediation recommendation for these hosts.
+
+### Validate connection to RHEL hosts
+
+
+
+
