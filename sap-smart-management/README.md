@@ -52,16 +52,14 @@ Once the environment has been provisioned, you will receive an email with some k
 
 The goal for this demo is to showcase the management capabilities RHEL for SAP Solutions subscription can offer to SAP customers, helping them to manage SAP landscapes using Red Hat Satellite and Red Hat Insights. Red Hat Satellite can manage the whole lifecycle for you RHEL landscape, but the focus for this demo/workshop will be on the remediation and risk management capabilities from Inisights as well as bug fix and enhancement updates management from Satellite. With this in mind, these are the main points we are going to cover during this demo/workshop:
 
-
-1. Explore Red Hat Satellite Monitor Dashboard and customize it to show specific widgets
-2. Explore Tower and check existing inventory and any running jobs
-3. Connect to the RHEL hosts for the given landscape and check what applications are running on those
-4. Explore these RHEL hosts from the Satellite interface
-5. Check existing erratas that applies to existing Hosts and automatically install those
-6. Explore Red Hat Insights from Satellite
-7. Explore Red Hat Insights from cloud.redhat.com
-8. Create a plan in Insights to auto remediate any existing potential issue
-
+  1. Explore Red Hat Satellite Monitor Dashboard and customize it to show specific widgets
+  2. Explore Tower and check existing inventory and any running jobs
+  3. Connect to the RHEL hosts for the given landscape and check what applications are running on those
+  4. Explore these RHEL hosts from the Satellite interface
+  5. Check existing erratas that applies to existing Hosts and automatically install those
+  6. Explore Red Hat Insights from Satellite
+  7. Explore Red Hat Insights from cloud.redhat.com
+  8. Create a plan in Insights to auto remediate any existing potential issue
 
 ### Customize Satellite Monitor Dashboard
 
@@ -113,6 +111,25 @@ Now Insights will contain all the updated information from the instances and we 
 
 ### Validate connection to RHEL hosts
 
+Use the credentials received via email to conect to the bastion host. Create a new `key` file to store the received SSH key and use the ssh command information from the email to connect to the hosts:
+
+```bash
+$ vi /tmp/key (add SSH key information here)
+$ chmod 400 /tmp/key
+$ ssh -i /tmp/key cloud-user@<bastion-hostname>
+```
+Once connected to the bastion host, you will be able to jump to HANA and S/4HANA instances:
+
+```bash
+[bastion-{guid} 0 ~] ssh hana-{guid}
+[cloud-user@hana-{guid} ~]$
+...
+...
+[bastion-{guid} 0 ~] ssh s4hana-{guid}
+[cloud-user@s4hana-{guid} ~]$
+```
+
+You can move to `root` user at any time doing `sudo -i` on any instance.
 
 
 
