@@ -104,3 +104,8 @@ img[alt="add-widget"] {
   position: right;
   height: 200px;
 }
+
+img[alt="sat-dasboard"] {
+  position: left;
+  height: 600px;
+}

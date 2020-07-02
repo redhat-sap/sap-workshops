@@ -74,6 +74,16 @@ To add new widgets to the dashboard, we will use the `Manage` button on the top 
 [![remove-widget](img/remove_widget.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/remove_widget.png)
 [![add-widget](img/add_widget.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/add_widget.png)
 
-Using add and remove options, we'll configure the dashboard to show the following widgets:
+Using remove and add options, we'll configure the dashboard to show the following widgets:
 
-- 
+- Host Configuration Chart for All
+- New Hosts
+- Red Hat Insights Risk Summary
+- Red Hay Insights Actions
+- Task Status
+- Latest Errata
+
+Once we have selected and arranged the widgets in the order we prefer, click on the `Manage` button again and select `Save positions`. Your dashboard should now look like this:
+
+[![sat-dashboard](img/dashboard.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/dashboard.png)
+
