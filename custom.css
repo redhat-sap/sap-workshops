@@ -94,3 +94,13 @@ img[alt="rhpds-submit"] {
   position: left;
   height: 300px;
 }
+
+img[alt="remove-widget"] {
+  position: left;
+  height: 200px;
+}
+
+img[alt="add-widget"] {
+  position: right;
+  height: 200px;
+}

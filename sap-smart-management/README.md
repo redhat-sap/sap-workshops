@@ -65,4 +65,11 @@ The goal for this demo is to showcase the management capabilities RHEL for SAP S
 
 ### Customize Satellite Monitor Dashboard
 
+Satellite's Monitor Dashboard can be customized to get in a single view the information that is more important for us. This dashboard is preconfigured with some widgets after Satellite has been deployed. For this workshop we are going to customize that view to get specific information related to this workshop.
 
+To remove existing widgets from the dashboard, we will use the 'x' button on the top right side for each widget.
+
+To add new widgets to the dashboard, we will use the `Manage` button on the top right of the Dashboard screen.
+
+[![remove-widget](img/remove_widget.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/remove_widget.png)
+[![add-widget](img/add_widget.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/add_widget.png)
