@@ -73,3 +73,7 @@ To add new widgets to the dashboard, we will use the `Manage` button on the top 
 
 [![remove-widget](img/remove_widget.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/remove_widget.png)
 [![add-widget](img/add_widget.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/add_widget.png)
+
+Using add and remove options, we'll configure the dashboard to show the following widgets:
+
+- 
