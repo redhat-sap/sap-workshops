@@ -215,3 +215,24 @@ Click on each sub menu to get familiar with the content reported for each one. A
 
 [![smart-insights-actions](img/insights_actions.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/insights_actions.png)
 
+Let's review now how this information is presented in cloud.redhat.com. Once logged, you will see the Red Hat Insights pane, where you will be able to access to different parts of the service. 
+
+[![smart-insights-saas](img/insights_saas.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/insights_saas.png)
+
+Select the `Dashboard` link from the Red Hat Insights service and once in the dashboard, from the left menu select `Inventory` where you will see all the hosts linked to your account. There is a search dialog where you can filter the information shown. Enter the `GUID` information received by email, and this will filter only the hosts that are related to this particular demo/workshop.
+
+[![smart-insights-saas](img/insights_saas_inventory.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/insights_saas_inventory.png)
+
+Once the inventory has been filtered, click on any of the hosts to see what kind of information is reported. You will see from general information to proactive advisory information, including existing vulnerabilities applicable to that host or security compliance information when using security policies.
+
+Let's go back to Satellite where we will use the automated remediation Ansible playbooks to address some of the existing actions that apply to our systems. Browse to `Insights -- Actions` and select the `View More` link on the bottom for the SAP featured topic.
+
+[![smart-insights-actions](img/insights_actions_sap.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/insights_actions_sap.png)
+
+This will show you all the existing SAP rules that can be applied to your registered hosts. Now, we are going to select one of these rules and use the `Planner` to auto remediate this issue. Select any of the rules from the list, and ensure the Ansible logo on the right is highlighted in blue, which means the rule has Ansible support for auto remediation. As an example we are using `Decreased SAP application performance when using incorrect kernel parameters` rule here:
+
+[![smart-insights-actions](img/insights_actions_sap_item.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/insights_actions_sap_item.png)
+
+Let's check the information for this particular rule, and how to create a remediation planner to adress automatically possible future issues caused by this.
+
+[![smart-insights-remediate](img/insights_remediation.gif)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/insights_remediation.gif)

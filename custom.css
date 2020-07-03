@@ -149,3 +149,13 @@ img[alt="smart-insights-actions"] {
   position: left;
   height: 400px;
 }
+
+img[alt="smart-insights-saas"] {
+  position: left;
+  height: 300px;
+}
+
+img[alt="smart-insights-remediate"] {
+  position: left;
+  height: 500px;
+}
