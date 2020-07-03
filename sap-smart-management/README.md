@@ -194,3 +194,24 @@ In this example all the existing erratas have been applied, so the Errata inform
 And host information in Satellite will also show that there is no errata to be applied.
 
 [![smart-errata-list](img/errata_applied.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/errata_applied.png)
+
+### Proactive monitoring and automated remediation with Red Hat Insights
+
+Customers will get access to Red Hat Insights as part of the RHEL for SAP Solutions subscription. Red Hat Insights proactively identify and remediate security, compliance, and configuration risks in their Red Hat Enterprise Linux environments.
+
+As part of the workshop/demo, you will be able to show these capabilites. Insights information can be shown both in Satellite for the registered hosts and cloud.redhat.com as part of the SaaS product running in the Cloud.
+
+Let's review first how this information is shown in Satellite. In the very first part of the workshop/demo, you have customized the Dashboard view in the `Monitor` section. Two specific widgets for Insights information have been configured there. Browse to `Monitor -- Dashboard` and you can identify these as `Red Hat Insights Risk Summary` and `Red Hay Insights Actions`.
+
+[![smart-insights](img/insights_monitor.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/insights_monitor.png)
+
+This will give you a quick overview of the existing issues that can be addressed by Inisghts remediation and the category these issues are sitting on. You can click on the highlihted information from these widgets to get more detailed information.
+
+Out from this quick summary on the monitoring dashboard, there is an specific section in Satellite for this. On the left pane browse to `Insights` where you will see different sub menus for this topic.
+
+[![smart-insights](img/insights_menu.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/insights_menu.png)
+
+Click on each sub menu to get familiar with the content reported for each one. As an example the `Actions` sub menu will give you similar information to the widgets we configured in the monitoring dashboard with a different view and links to some featured topics like SAP.
+
+[![smart-insights-actions](img/insights_actions.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/insights_actions.png)
+
