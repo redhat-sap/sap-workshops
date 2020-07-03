@@ -3,7 +3,7 @@
 
 ## Intro
 
-This workshop can be used to demonstrate the Smart Management capabilities for SAP Lansdcapes included as part of the `RHEL for SAP Solutions` subscription. 
+This workshop can be used to demonstrate the Smart Management capabilities for SAP Landscapes included as part of the `RHEL for SAP Solutions` subscription. 
 
 ## High-level architecture and components
 
@@ -37,7 +37,7 @@ Once the environment has been provisioned, you will receive an email with some k
 
 - SSH information to access the bastion host including:
   - SSH user information
-  - Bastion public hostbane information
+  - Bastion public hostname information
   - SSH private key to be used
 - Ansible Tower information including:
   - Ansible Tower public URL
@@ -50,20 +50,20 @@ Once the environment has been provisioned, you will receive an email with some k
 
 ## How to run the demo/workshop
 
-The goal for this demo is to showcase the management capabilities RHEL for SAP Solutions subscription can offer to SAP customers, helping them to manage SAP landscapes using Red Hat Satellite and Red Hat Insights. Red Hat Satellite can manage the whole lifecycle for you RHEL landscape, but the focus for this demo/workshop will be on the remediation and risk management capabilities from Inisights as well as bug fix and enhancement updates management from Satellite. With this in mind, these are the main points we are going to cover during this demo/workshop:
+The goal for this demo is to showcase the management capabilities RHEL for SAP Solutions subscription can offer to SAP customers, helping them to manage SAP landscapes using Red Hat Satellite and Red Hat Insights. Red Hat Satellite can manage the whole lifecycle for you RHEL landscape, but the focus for this demo/workshop will be on the remediation and risk management capabilities from Insights as well as bug fixes and enhancement updates management from Satellite. With this in mind, these are the main points we are going to cover during this demo/workshop:
 
   1. Explore Red Hat Satellite Monitor Dashboard and customize it to show specific widgets
   2. Explore Tower and check existing inventory and any running jobs
   3. Connect to the RHEL hosts for the given landscape and check what applications are running on those
   4. Explore these RHEL hosts from the Satellite interface
-  5. Check existing erratas that applies to existing Hosts and automatically install those
+  5. Check existing errata that applies to registered Hosts and automatically install those
   6. Explore Red Hat Insights from Satellite
   7. Explore Red Hat Insights from cloud.redhat.com
   8. Create a plan in Insights to auto remediate any existing potential issue
 
 ### Customize Satellite Monitor Dashboard
 
-Satellite's Monitor Dashboard can be customized to get in a single view the information that is more important for us. This dashboard is preconfigured with some widgets after Satellite has been deployed. For this workshop we are going to customize that view to get specific information related to this workshop.
+Satellite's Monitor Dashboard can be customized to get in a single view of the information that is more important for us. This dashboard is preconfigured with some widgets after Satellite has been deployed. For this workshop, we are going to customize that view to get specific information related to this workshop.
 
 To remove existing widgets from the dashboard, we will use the 'x' button on the top right side for each widget.
 
@@ -87,7 +87,7 @@ Once we have selected and arranged the widgets in the order we prefer, click on 
 
 ### Explore Ansible Tower, inventories and running jobs
 
-Ansible Tower is not a mandatory piece for this workshop in particular, but is used in the background to set up the hosts that are registered into Satellite. As part of the lab provisioning task, a Tower workflow job is executed that will deploy and configure SAP HANA and SAP S/4HANA on these hosts. In order to be able to demonstrate Satellite and Insights capabilities specifically for SAP workloads, we need to ensure this workflow job has been completed succesfully.
+Ansible Tower is not a mandatory piece for this workshop in particular but is used in the background to set up the hosts that are registered into Satellite. As part of the lab provisioning task, a Tower workflow job is executed that will deploy and configure SAP HANA and SAP S/4HANA on these hosts. To be able to demonstrate Satellite and Insights capabilities specifically for SAP workloads, we need to ensure this workflow job has been completed successfully.
 
 Login into Tower with the information and credentials received via email and select `Jobs` from the left pane. Once selected you will see all the jobs executed in Tower. Find one in particular called `SAP HANA and S/4HANA E2E deployment`.
 
@@ -97,7 +97,7 @@ The green circle will indicate the job has been executed with no errors, but we 
 
 [![smart-tower-workflowd](img/workflow_detail.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/workflow_detail.png)
 
-Once validated the job workflow has been completed, we are going to use the existing invetory in Tower to send updated information from the Inights client of each server. To do this, select `Inventory` form the left pane. An invenotry called `sap-hosts` will be available. Click on the inventory name, `sap-hosts`, which will show the details for this inventory. Then select `GROUPS` from the top side and a group called `sap` will be shown. Click on the select box right to the `sap` grouo name, and a new button will be available on the top right side, called `RUN COMMANDS`. 
+Once validated the job workflow has been completed, we are going to use the existing inventory in Tower to send updated information from the Insights client of each server. To do this, select `Inventory` from the left pane. An inventory called `sap-hosts` will be available. Click on the inventory name, `sap-hosts`, which will show the details for this inventory. Then select `GROUPS` from the top side and a group called `sap` will be shown. Click on the select box right to the `sap` group name, and a new button will be available on the top right side, called `RUN COMMANDS`. 
 
 Once clicked on `RUN COMMANDS` a new view will be open (EXECUTE COMMAND) where we will select `command` from the dropdown menu, and we will add `insights-client` in the `ARGUMENTS` input field. Ensure the `ENABLE PRIVILEGE ESCALATION` checkbox is selected as well. Leave the rest of the options with the existing values and use the `LAUNCH` button to execute it.
 
@@ -111,7 +111,7 @@ Now Insights will contain all the updated information from the instances and we 
 
 ### Validate connection to RHEL hosts
 
-Use the credentials received via email to conect to the bastion host. Create a new `key` file to store the received SSH key and use the ssh command information from the email to connect to the hosts:
+Use the credentials received via email to connect to the bastion host. Create a new `key` file to store the received SSH key and use the ssh command information from the email to connect to the hosts:
 
 ```bash
 $ vi /tmp/key (add SSH key information here)
@@ -139,9 +139,9 @@ We are going to focus on the Errata information here and how to apply existing s
 
 [![smart-errata-list](img/errata_list.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/errata_list.png)
 
-You can get all the information realated for each errata selecting anyone from the list like relared CVEs, description, solution article in access.redhat.com, packages affected and more.
+You can get all the information related for each errata selecting any one from the list like related CVEs, description, solution article in access.redhat.com, packages affected and more.
 
-We can now apply any errata to any of the affected hosts directly from Satellite. Click on the errata items you want to apply, and select `Apply Errata` button on the top right. Next, we will select the hosts where we want the erra to be applied and click on `Next` button. After confirming, a new task will be created and that will apply the errata in the background.
+We can now apply any errata to any of the affected hosts directly from Satellite. Click on the errata items you want to apply, and select `Apply Errata` button on the top right. Next, we will select the hosts where we want the errata to be applied and click on `Next` button. After confirming, a new task will be created and that will apply the errata in the background.
 
 [![smart-errata-apply](img/errata_apply.gif)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/errata_apply.gif)
 
@@ -187,7 +187,7 @@ Packages Altered:
     Upgraded python3-unbound-1.7.3-8.el8.x86_64   @@System
 ```
 
-In this example all the existing erratas have been applied, so the Errata information should be empty now.
+In this example all the existing errata have been applied, so the Errata information should be empty now.
 
 [![smart-errata-list](img/errata_empty.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/errata_empty.png)
 
@@ -199,19 +199,19 @@ And host information in Satellite will also show that there is no errata to be a
 
 Customers will get access to Red Hat Insights as part of the RHEL for SAP Solutions subscription. Red Hat Insights proactively identify and remediate security, compliance, and configuration risks in their Red Hat Enterprise Linux environments.
 
-As part of the workshop/demo, you will be able to show these capabilites. Insights information can be shown both in Satellite for the registered hosts and cloud.redhat.com as part of the SaaS product running in the Cloud.
+As part of the workshop/demo, you will be able to show these capabilities. Insights information can be shown both in Satellite for the registered hosts and cloud.redhat.com as part of the SaaS product running in the Cloud.
 
-Let's review first how this information is shown in Satellite. In the very first part of the workshop/demo, you have customized the Dashboard view in the `Monitor` section. Two specific widgets for Insights information have been configured there. Browse to `Monitor -- Dashboard` and you can identify these as `Red Hat Insights Risk Summary` and `Red Hay Insights Actions`.
+Let's review first how this information is shown on Satellite. In the very first part of the workshop/demo, you have customized the Dashboard view in the `Monitor` section. Two specific widgets for Insights information have been configured there. Browse to `Monitor -- Dashboard` and you can identify these as `Red Hat Insights Risk Summary` and `Red Hay Insights Actions`.
 
 [![smart-insights](img/insights_monitor.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/insights_monitor.png)
 
-This will give you a quick overview of the existing issues that can be addressed by Inisghts remediation and the category these issues are sitting on. You can click on the highlihted information from these widgets to get more detailed information.
+This will give you a quick overview of the existing issues that can be addressed by Insights remediation and the category these issues are sitting on. You can click on the highlighted information from these widgets to get more detailed information.
 
-Out from this quick summary on the monitoring dashboard, there is an specific section in Satellite for this. On the left pane browse to `Insights` where you will see different sub menus for this topic.
+Out from this quick summary on the monitoring dashboard, there is a specific section in Satellite for this. On the left pane browse to `Insights` where you will see different sub-menus for this topic.
 
 [![smart-insights](img/insights_menu.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/insights_menu.png)
 
-Click on each sub menu to get familiar with the content reported for each one. As an example the `Actions` sub menu will give you similar information to the widgets we configured in the monitoring dashboard with a different view and links to some featured topics like SAP.
+Click on each sub-menu to get familiar with the content reported for each one. As an example, the `Actions` sub-menu will give you similar information to the widgets we configured in the monitoring dashboard with a different view and links to some featured topics like SAP.
 
 [![smart-insights-actions](img/insights_actions.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/insights_actions.png)
 
@@ -219,7 +219,7 @@ Let's review now how this information is presented in cloud.redhat.com. Once log
 
 [![smart-insights-saas](img/insights_saas.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/insights_saas.png)
 
-Select the `Dashboard` link from the Red Hat Insights service and once in the dashboard, from the left menu select `Inventory` where you will see all the hosts linked to your account. There is a search dialog where you can filter the information shown. Enter the `GUID` information received by email, and this will filter only the hosts that are related to this particular demo/workshop.
+Select the `Dashboard` link from the Red Hat Insights service and once in the dashboard, from the left menu select `Inventory` where you will see all the hosts linked to your account. There is a search dialogue where you can filter the information shown. Enter the `GUID` information received by email, and this will filter only the hosts that are related to this particular demo/workshop.
 
 [![smart-insights-saas](img/insights_saas_inventory.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/insights_saas_inventory.png)
 
@@ -229,10 +229,10 @@ Let's go back to Satellite where we will use the automated remediation Ansible p
 
 [![smart-insights-actions](img/insights_actions_sap.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/insights_actions_sap.png)
 
-This will show you all the existing SAP rules that can be applied to your registered hosts. Now, we are going to select one of these rules and use the `Planner` to auto remediate this issue. Select any of the rules from the list, and ensure the Ansible logo on the right is highlighted in blue, which means the rule has Ansible support for auto remediation. As an example we are using `Decreased SAP application performance when using incorrect kernel parameters` rule here:
+This will show you all the existing SAP rules that can be applied to your registered hosts. Now, we are going to select one of these rules and use the `Planner` to auto remediate this issue. Select any of the rules from the list, and ensure the Ansible logo on the right is highlighted in blue, which means the rule has Ansible support for auto-remediation. As an example we are using `Decreased SAP application performance when using incorrect kernel parameters` rule here:
 
 [![smart-insights-actions](img/insights_actions_sap_item.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/insights_actions_sap_item.png)
 
-Let's check the information for this particular rule, and how to create a remediation planner to adress automatically possible future issues caused by this.
+Let's check the information for this particular rule, and how to create a remediation plan to address automatically possible future issues caused by this.
 
 [![smart-insights-remediate](img/insights_remediation.gif)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/insights_remediation.gif)
