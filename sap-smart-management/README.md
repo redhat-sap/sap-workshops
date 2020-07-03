@@ -131,5 +131,66 @@ Once connected to the bastion host, you will be able to jump to HANA and S/4HANA
 
 You can move to `root` user at any time doing `sudo -i` on any instance.
 
+### Explore RHEL hosts from Satellite and Errata information
 
+Satellite will give you a lot of information from the registered hosts. Browse `Hosts -- All Hosts` or `Hosts -- Content Hosts` to check this information.
 
+We are going to focus on the Errata information here and how to apply existing security errata that is applicable for each host. To do that, go to `Content -- Errata` where you can see all the existing errata that applies to registered hosts.
+
+[![smart-errata-list](img/errata_list.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/errata_list.png)
+
+You can get all the information realated for each errata selecting anyone from the list like relared CVEs, description, solution article in access.redhat.com, packages affected and more.
+
+We can now apply any errata to any of the affected hosts directly from Satellite. Click on the errata items you want to apply, and select `Apply Errata` button on the top right. Next, we will select the hosts where we want the erra to be applied and click on `Next` button. After confirming, a new task will be created and that will apply the errata in the background.
+
+[![smart-errata-apply](img/errata_apply.gif)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/errata_apply.gif)
+
+Once the task has finished, we will no longer see the errata available on the list if this has been applied to all the affected hosts.
+
+We can manually check on the RHEL host the upgraded packages by the errata. Login via SSH to any of the hosts where the errata has been applied, and check `yum history` to validate these changes.
+
+```
+[root@hana-{guid} ~]# yum history
+Updating Subscription Management repositories.
+ID     | Command line             | Date and time    | Action(s)      | Altered
+-------------------------------------------------------------------------------
+    12 |                          | 2020-07-02 19:54 | Upgrade        |    3
+    11 |                          | 2020-07-02 19:51 | Upgrade        |    1
+    10 |                          | 2020-07-01 19:18 | Install        |  126
+     9 |                          | 2020-07-01 19:17 | Install        |    3
+     8 |                          | 2020-07-01 19:14 | I, U           |  178
+     7 |                          | 2020-07-01 19:13 | Install        |    1 EE
+     6 |                          | 2020-07-01 19:13 | Install        |   41
+     5 |                          | 2020-07-01 19:07 | Install        |   10 EE
+     4 |                          | 2020-07-01 19:04 | I, U           |   69 E<
+     3 | -C -y remove firewalld - | 2019-10-29 12:33 | Removed        |   11 >E
+     2 | -C -y remove linux-firmw | 2019-10-29 12:33 | Removed        |    1
+     1 |                          | 2019-10-29 12:26 | Install        |  451 EE
+[root@hana-{guid} ~]#
+[root@hana-{guid} ~]# yum history info 12
+Updating Subscription Management repositories.
+Transaction ID : 12
+Begin time     : Thu 02 Jul 2020 07:54:18 PM EDT
+Begin rpmdb    : 793:75684af6d86d3dc7c26d37707e7ebc97829e69c6
+End time       : Thu 02 Jul 2020 07:54:22 PM EDT (4 seconds)
+End rpmdb      : 793:51dbec6e0e1b46ce56f6d5259eb313f3524853ac
+User           : System <unset>
+Return-Code    : Success
+Releasever     : 8
+Command Line   :
+Packages Altered:
+    Upgrade  unbound-libs-1.7.3-9.el8_1.x86_64    @rhel-8-for-x86_64-appstream-e4s-rpms
+    Upgraded unbound-libs-1.7.3-8.el8.x86_64      @@System
+    Upgrade  cloud-init-18.5-7.el8_1.2.noarch     @rhel-8-for-x86_64-appstream-e4s-rpms
+    Upgraded cloud-init-18.5-7.el8.noarch         @@System
+    Upgrade  python3-unbound-1.7.3-9.el8_1.x86_64 @rhel-8-for-x86_64-appstream-e4s-rpms
+    Upgraded python3-unbound-1.7.3-8.el8.x86_64   @@System
+```
+
+In this example all the existing erratas have been applied, so the Errata information should be empty now.
+
+[![smart-errata-list](img/errata_empty.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/errata_empty.png)
+
+And host information in Satellite will also show that there is no errata to be applied.
+
+[![smart-errata-list](img/errata_applied.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/errata_applied.png)
