@@ -1,5 +1,5 @@
 #!//usr/bin/ansible-playbook -vv
-- hosts: hana
+- hosts: all
   become: yes 
   gather_facts: no
 
