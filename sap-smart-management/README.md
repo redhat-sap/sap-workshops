@@ -1,4 +1,4 @@
-# SAP Smart Management (**WORK IN PROGRESS**)
+# SAP Smart Management
 > Using Red Hat Satellite and Red Hat Insights for SAP landscapes proactive monitoring, remediation and lifecycle management
 
 ## Intro
