@@ -216,7 +216,7 @@ repolist: 10.534
 - Check that the system release is locked to 8.1
 
 ```bash
-[root@hana-ec88 ~]# subscription-manager release
+[root@hana-<GUID> ~]# subscription-manager release
 Release: 8.1
 ```
 #### Challenge Lab
@@ -235,15 +235,15 @@ Once we have updloaded all the required installation files to deploy SAP HANA, w
 
 check if ansible is installed:
 ```bash
-[cloud-user@hana-ec88 ~]# rpm -q  ansible
+[cloud-user@hana-<GUID> ~]# rpm -q  ansible
 ansible-2.9.7-1.el8ae.noarch
 ```
 
 In case it is not installed, please install ansible:
 ```bash
-[root@hana-ec88 ~]# rpm -q  ansible
+[root@hana-<GUID> ~]# rpm -q  ansible
 package ansible is not installed
-[root@hana-ec88 ~]# yum -y install ansible
+[root@hana-<GUID> ~]# yum -y install ansible
 [...]
 ```
 
@@ -253,9 +253,9 @@ Make sure you have the host `hana-<GUID>` in your inventory and it to the group 
 You can run the following command to check if your setup is correct:
 
 ```bash
-[cloud-ansible_user@bastion-ec88 0 ~]# ansible hana --list-hosts
+[cloud-ansible_user@bastion-<GUID> 0 ~]# ansible hana --list-hosts
   hosts (1):
-    hana-ec88
+    hana-<GUID>
 ```
 
 
@@ -265,10 +265,10 @@ The `bastion` host is configured already with a simple Ansible inventory where t
 
 [cloud-user@bastion-<GUID> ~]$  cat /etc/ansible/hosts
 [hanas]
-hana-ec88
+hana-<GUID>
 
 [s4hanas]
-s4hana-ec88
+s4hana-<GUID>
 
 [hana:children]
 hanas
@@ -288,8 +288,8 @@ ansible_ssh_common_args="-o StrictHostKeyChecking=no"
 sap_preconfigure_modify_etc_hosts=true
 sap_domain=automation.local
 
-[cloud-user@bastion-ec88 2 ~]$ ansible hana -m ping
-hana-ec88 | SUCCESS => {
+[cloud-user@bastion-<GUID> 2 ~]$ ansible hana -m ping
+hana-<GUID> | SUCCESS => {
     "ansible_facts": {
         "discovered_interpreter_python": "/usr/bin/python"
     },
@@ -426,7 +426,7 @@ cloud-user
 Now create the playbook `hana-deploy.yml` with the following content:
 
 ```yaml
-#!/usr/bin/ansible-galaxy
+#!/usr/bin/ansible-playbook -vv
 - hosts: hana
   roles:
     - { role: storage }
@@ -475,24 +475,24 @@ hxeadm       2591        1   0.6     511028      24440 /usr/sap/HXE/HDB90/exe/sa
 -->
 
 ```bash
-[root@hana-ec88 ~]# su - rh1adm
+[root@hana-<GUID> ~]# su - rh1adm
 Last login: So Jul  5 07:17:36 EDT 2020
-rh1adm@hana-ec88:/usr/sap/RH1/HDB00> HDB info
+rh1adm@hana-<GUID>:/usr/sap/RH1/HDB00> HDB info
 USER          PID     PPID  %CPU        VSZ        RSS COMMAND
 rh1adm      41265    41264   0.3     234212       5248 -sh
 rh1adm      41366    41265   0.0     222752       3344  \_ /bin/sh /usr/sap/RH1/HDB00/HDB info
 rh1adm      41397    41366   0.0     266976       4052      \_ ps fx -U rh1adm -o user:8,pid:8,ppid:8,pcpu:5,vsz:10,rss:10,args
 rh1adm      18017        1   0.0     673848      47280 hdbrsutil  --start --port 30003 --volume 3 --volumesuffix mnt00001/hdb00003.00003 --identifier 1593947929
 rh1adm      17553        1   0.0     673852      48120 hdbrsutil  --start --port 30001 --volume 1 --volumesuffix mnt00001/hdb00001 --identifier 1593947876
-rh1adm      17410        1   0.0      24960       3284 sapstart pf=/hana/shared/RH1/profile/RH1_HDB00_hana-ec88
-rh1adm      17418    17410   0.0     426400      64164  \_ /usr/sap/RH1/HDB00/hana-ec88/trace/hdb.sapRH1_HDB00 -d -nw -f /usr/sap/RH1/HDB00/hana-ec88/daemon.ini pf=/usr/sap/RH1/SYS/profile/RH1_HDB00_hana-ec88
+rh1adm      17410        1   0.0      24960       3284 sapstart pf=/hana/shared/RH1/profile/RH1_HDB00_hana-<GUID>
+rh1adm      17418    17410   0.0     426400      64164  \_ /usr/sap/RH1/HDB00/hana-<GUID>/trace/hdb.sapRH1_HDB00 -d -nw -f /usr/sap/RH1/HDB00/hana-<GUID>/daemon.ini pf=/usr/sap/RH1/SYS/profile/RH1_HDB00_hana-<GUID>
 rh1adm      17437    17418  24.9    9750216    6743256      \_ hdbnameserver
 rh1adm      17722    17418   0.6    1439360     130832      \_ hdbcompileserver
 rh1adm      17725    17418  56.6    3827236    3278228      \_ hdbpreprocessor
 rh1adm      17791    17418  27.7    9796748    6903416      \_ hdbindexserver -port 30003
 rh1adm      17794    17418   1.5    3784184    1180320      \_ hdbxsengine -port 30007
 rh1adm      18246    17418   0.7    2708228     389572      \_ hdbwebdispatcher
-rh1adm      17335        1   0.0     520472      30752 /usr/sap/RH1/HDB00/exe/sapstartsrv pf=/hana/shared/RH1/profile/RH1_HDB00_hana-ec88 -D -u rh1adm
+rh1adm      17335        1   0.0     520472      30752 /usr/sap/RH1/HDB00/exe/sapstartsrv pf=/hana/shared/RH1/profile/RH1_HDB00_hana-<GUID> -D -u rh1adm
 ```
 
 **Stop the SAP HANA database:**
@@ -517,7 +517,7 @@ hdbdaemon is stopped.
 -->
 
 ```bash
-rh1adm@hana-ec88:/usr/sap/RH1/HDB00> HDB stop
+rh1adm@hana-<GUID>:/usr/sap/RH1/HDB00> HDB stop
 hdbdaemon will wait maximal 300 seconds for NewDB services finishing.
 Stopping instance using: /usr/sap/RH1/SYS/exe/hdb/sapcontrol -prot NI_HTTP -nr 00 -function Stop 400
 
@@ -560,7 +560,7 @@ OK
 ```
 -->
 ```bash
-rh1adm@hana-ec88:/usr/sap/RH1/HDB00> HDB start
+rh1adm@hana-<GUID>:/usr/sap/RH1/HDB00> HDB start
 
 
 StartService
