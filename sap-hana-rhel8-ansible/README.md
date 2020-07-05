@@ -446,7 +446,7 @@ Now you are ready to deploy HANA with the recently created playbook:
 > :heavy_exclamation_mark: The -vvv enables debugging, so that you can better research, in case something unexpected will happen during execution
 
 > :warning: Please note the first line in the ansible playbook. With that line you can run the playbook like any other command in Linux:
-> ```bash
+```bash
 [cloud-user@bastion-<GUID> ~]$ chmod 755 hana-deploy.yml
 [cloud-user@bastion-<GUID> ~]$ ./hana-deploy.yml
 ```
