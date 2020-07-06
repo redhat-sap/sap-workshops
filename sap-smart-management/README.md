@@ -1,9 +1,9 @@
 # SAP Smart Management
-> Using Red Hat Satellite and Red Hat Insights for SAP landscapes proactive monitoring, remediation and lifecycle management
+> Using Red Hat Satellite and Red Hat Insights for proactive monitoring, remediation and lifecycle management of SAP landscapes
 
 ## Intro
 
-This workshop can be used to demonstrate the Smart Management capabilities for SAP Landscapes included as part of the `RHEL for SAP Solutions` subscription. 
+This workshop can be used to demonstrate the Smart Management capabilities for SAP Landscapes included as part of the `RHEL for SAP Solutions` subscription.
 
 ## High-level architecture and components
 
@@ -48,9 +48,9 @@ Once the environment has been provisioned, you will receive an email with some k
   - Red Hat Satellite user
   - Red Hat Satellite Password
 
-## How to run the demo/workshop
+## How to run the workshop
 
-The goal for this demo is to showcase the management capabilities RHEL for SAP Solutions subscription can offer to SAP customers, helping them to manage SAP landscapes using Red Hat Satellite and Red Hat Insights. Red Hat Satellite can manage the whole lifecycle for you RHEL landscape, but the focus for this demo/workshop will be on the remediation and risk management capabilities from Insights as well as bug fixes and enhancement updates management from Satellite. With this in mind, these are the main points we are going to cover during this demo/workshop:
+The goal for this demo is to showcase the management capabilities RHEL for SAP Solutions subscription can offer to SAP customers, helping them to manage SAP landscapes using Red Hat Satellite and Red Hat Insights. Red Hat Satellite can manage the whole lifecycle for you RHEL landscape, but the focus for this workshop will be on the remediation and risk management capabilities from Insights as well as bug fixes and enhancement updates management from Satellite. With this in mind, these are the main points we are going to cover during this workshop:
 
   1. Explore Red Hat Satellite Monitor Dashboard and customize it to show specific widgets
   2. Explore Tower and check existing inventory and any running jobs
@@ -199,9 +199,9 @@ And host information in Satellite will also show that there is no errata to be a
 
 Customers will get access to Red Hat Insights as part of the RHEL for SAP Solutions subscription. Red Hat Insights proactively identify and remediate security, compliance, and configuration risks in their Red Hat Enterprise Linux environments.
 
-As part of the workshop/demo, you will be able to show these capabilities. Insights information can be shown both in Satellite for the registered hosts and cloud.redhat.com as part of the SaaS product running in the Cloud.
+As part of the workshop, you will be able to show these capabilities. Insights information can be shown both in Satellite for the registered hosts and cloud.redhat.com as part of the SaaS product running in the Cloud.
 
-Let's review first how this information is shown on Satellite. In the very first part of the workshop/demo, you have customized the Dashboard view in the `Monitor` section. Two specific widgets for Insights information have been configured there. Browse to `Monitor -- Dashboard` and you can identify these as `Red Hat Insights Risk Summary` and `Red Hay Insights Actions`.
+Let's review first how this information is shown on Satellite. In the very first part of the workshop, you have customized the Dashboard view in the `Monitor` section. Two specific widgets for Insights information have been configured there. Browse to `Monitor -- Dashboard` and you can identify these as `Red Hat Insights Risk Summary` and `Red Hay Insights Actions`.
 
 [![smart-insights](img/insights_monitor.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/insights_monitor.png)
 
@@ -219,7 +219,7 @@ Let's review now how this information is presented in cloud.redhat.com. Once log
 
 [![smart-insights-saas](img/insights_saas.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/insights_saas.png)
 
-Select the `Dashboard` link from the Red Hat Insights service and once in the dashboard, from the left menu select `Inventory` where you will see all the hosts linked to your account. There is a search dialogue where you can filter the information shown. Enter the `GUID` information received by email, and this will filter only the hosts that are related to this particular demo/workshop.
+Select the `Dashboard` link from the Red Hat Insights service and once in the dashboard, from the left menu select `Inventory` where you will see all the hosts linked to your account. There is a search dialogue where you can filter the information shown. Enter the `GUID` information received by email, and this will filter only the hosts that are related to this particular workshop.
 
 [![smart-insights-saas](img/insights_saas_inventory.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/insights_saas_inventory.png)
 
@@ -236,3 +236,7 @@ This will show you all the existing SAP rules that can be applied to your regist
 Let's check the information for this particular rule, and how to create a remediation plan to address automatically possible future issues caused by this.
 
 [![smart-insights-remediate](img/insights_remediation.gif)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/insights_remediation.gif)
+
+### Conclusion
+
+We have explored some of the capabilities Red Hat Satellite and Red Hat Insights can provide to SAP Customers. These products along Red Hat Automation Platform are powerful solutions to automatically manage and automate the SAP Digital Core platform from customers, no matter where they decide to run it, on-prem or any cloud.
