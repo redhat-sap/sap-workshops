@@ -64,15 +64,15 @@ Once the environment has been provisioned, you will receive an email with some k
 
 ## How to run the workshop
 
-## Use Case 2: Using 3Scale to manage APIs from SAP's Bussines Hub
+## Use Case 2: Using 3Scale to manage APIs from SAP's Business Hub
 
-This scenario will show how to configure 3Scale to centralize API management from SAP Bussines Hub and enrich those APIs with all the capabilities 3Scale can offer. To demonstrate this, we are going to use the [Analytical reporting APIs from SAP Ariba](https://api.sap.com/api/analytics_reporting_view/overview), but this same procedure can apply to any other API from SAP Business Hub.
+This scenario will show how to configure 3Scale to centralize API management from SAP Business Hub and enrich those APIs with all the capabilities 3Scale can offer. To demonstrate this, you are going to use the [Analytical reporting APIs from SAP Ariba](https://api.sap.com/api/analytics_reporting_view/overview), but this same procedure can apply to any other API from SAP Business Hub.
 
 A user in https://api.sap.com is required to complete this configuration. A free account can be created, using the `Log On` button on the top right and using the `Register` option when prompted for your login details.
 
 [![300-left](img/sap_api_register.png)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/sap_api_register.png)
 
-Once you have created a user for SAP Bussines Hub, you can now login into **Red Hat 3Scale API Management** which has been deployed already in your environment using the `Red Hat Integration - 3scale` Operator in the `3scale` Namespace.
+Once you have created a user for SAP Business Hub, you can now login into **Red Hat 3Scale API Management** which has been deployed already in your environment using the `Red Hat Integration - 3scale` Operator in the `3scale` Namespace.
 
 [![400-left](img/3scale_operator.png)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/3scale_operator.png)
 
@@ -95,6 +95,23 @@ After skiping the assistant, you will be presented to the 3Scale API Management 
 - Description: SAP Businness Hub
 
 [![500-left](img/3scale_new_product.gif)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/3scale_new_product.gif)
+
+Once the new Product has been created, you need to create a **BACKEND** that will be used for this Product. This Backend will be used to define our API configuration, including the Private Base URL, Methods and Mapping Rules. At this point, you will go back to `Analytical Reporting - View Management API` definition in [SAP Business Hub](https://api.sap.com/api/analytics_reporting_view/overview) to understand the existing API References and Specificiations for that particular API. As you can see there are 4 different methods available for this API.
+
+[![400-left](img/api_methods.png)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/api_methods.png)
+
+If you click on the `Code Snippet` link for any of these methods, you can see the URL used to call this method (you will get the information from the Sandbox System url, for production purposes another one from the avilable list will be used, but not for this demo) as well as values that can be parametrized or a custom header that needs to be add to this request which requires authentication.
+
+[![300-left](img/api_call.png)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/api_call.png)
+
+Once you have captured all this information, you can go back to the 3Scale API Management's dashboard, where you will create a new **BACKEND** adding the following values when promped:
+
+- Name: Analytical Reporting
+- System Name: analytical_reporting
+- Description: SAP Bussines Hub Analytical Reporting
+- Private Base URL: https://sandbox.api.sap.com:443/ariba/api/analytics-reporting-view/v1/sandbox
+
+[![500-left](img/3scale_new_backend.gif)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/3scale_new_backend.gif)
 
 
 
