@@ -159,3 +159,8 @@ img[alt="smart-insights-remediate"] {
   position: left;
   height: 500px;
 }
+
+img[alt="300-left"] {
+  position: left;
+  height: 300px;
+}
