@@ -17,7 +17,7 @@ And an OpenShift 4.x cluster with the following components deployed:
 
 - **OpenShift Container Storage**: used for multi purpose container storage backend
 - **Fuse Online**: used for
-- **3Scale**: used for
+- **3scale**: used for
 
 [![smart-infra-layout](img/infra_layout.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/infra_layout.png)
 
@@ -26,7 +26,7 @@ And an OpenShift 4.x cluster with the following components deployed:
 This workshop will cover the following use cases:
 
 - RestAPI app exposing flight data bapis, import into FuseOnline later. Mobile app using those APIs, or simple HTML page. Create and integration data flow.
-- OpenAPI documents imported from SAP Business Hub into 3Scale, so we can demo 3Scale functionallity.
+- OpenAPI documents imported from SAP Business Hub into 3scale, so we can demo 3scale functionallity.
 - OData endpoints from SAP HANA or SAP Gateway (OData Server on top of bapis) and import into Fuse Online. Create and integration data flow.
 
 ## Environment request
@@ -55,40 +55,40 @@ Once the environment has been provisioned, you will receive an email with some k
   - OpenShift web-console public URL
   - OpenShift web-console user
   - OpenShift web-console password
-- 3Scale information including:
-  - 3Scale namespace in OpenShift
-  - 3Scale API Management Portal user
-  - 3Scale API Management Portal password
+- 3scale information including:
+  - 3scale namespace in OpenShift
+  - 3scale API Management Portal user
+  - 3scale API Management Portal password
 - Fuse Online information including:
   - Fuse Online namespace in OpenShift
 
 ## How to run the workshop
 
-## Use Case 2: Using 3Scale to manage APIs from SAP's Business Hub
+## Use Case 2: Using 3scale to manage APIs from SAP's Business Hub
 
-This scenario will show how to configure 3Scale to centralize API management from SAP Business Hub and enrich those APIs with all the capabilities 3Scale can offer. To demonstrate this, you are going to use the [Analytical reporting APIs from SAP Ariba](https://api.sap.com/api/analytics_reporting_view/overview), but this same procedure can apply to any other API from SAP Business Hub.
+This scenario will show how to configure 3scale to centralize API management from SAP Business Hub and enrich those APIs with all the capabilities 3scale can offer. To demonstrate this, you are going to use the [Analytical reporting APIs from SAP Ariba](https://api.sap.com/api/analytics_reporting_view/overview), but this same procedure can apply to any other API from SAP Business Hub.
 
 A user in https://api.sap.com is required to complete this configuration. A free account can be created, using the `Log On` button on the top right and using the `Register` option when prompted for your login details.
 
 [![300-left](img/sap_api_register.png)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/sap_api_register.png)
 
-Once you have created a user for SAP Business Hub, you can now login into **Red Hat 3Scale API Management** which has been deployed already in your environment using the `Red Hat Integration - 3scale` Operator in the `3scale` Namespace.
+Once you have created a user for SAP Business Hub, you can now login into **Red Hat 3scale API Management** which has been deployed already in your environment using the `Red Hat Integration - 3scale` Operator in the `3scale` Namespace.
 
 [![400-left](img/3scale_operator.png)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/3scale_operator.png)
 
-You can find all the exposed Routes for 3Scale under `Networking - Routes` in the `3scale` Project. If you filter by `zync-3scale-provider` both the 3Scale API Management and Developer Portal urls info will be showed. You will receive this information as well in the email you will get with all the environment information.
+You can find all the exposed Routes for 3scale under `Networking - Routes` in the `3scale` Project. If you filter by `zync-3scale-provider` both the 3scale API Management and Developer Portal urls info will be showed. You will receive this information as well in the email you will get with all the environment information.
 
 [![500-left](img/3scale_routes.png)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/3scale_routes.png)
 
-Credentials for 3Scale API Management are provided in the email you will get with all the environment information, but you can check those anytime in the `system-seed` secret in your `3scale` Namespace under `Workloads - Secrets`.
+Credentials for 3scale API Management are provided in the email you will get with all the environment information, but you can check those anytime in the `system-seed` secret in your `3scale` Namespace under `Workloads - Secrets`.
 
 [![500-left](img/3scale_secrets.png)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/3scale_secrets.png)
 
-First time you open the 3Scale API Management portal you will be asked for these credentials. Enter the information required and you will be presented with the assistant to configure your APIs. We are going to skip this part using the **`X`** symbol on the top right, and configure all the required information manually afterwards.
+First time you open the 3scale API Management portal you will be asked for these credentials. Enter the information required and you will be presented with the assistant to configure your APIs. We are going to skip this part using the **`X`** symbol on the top right, and configure all the required information manually afterwards.
 
 [![300-left](img/3scale_assistant.png)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/3scale_assistant.png)
 
-After skiping the assistant, you will be presented to the 3Scale API Management **Dashboard**. You will create a new **PRODUCT** using the `NEW PRODUCT` link on the bottom section, adding the following values when prompted:
+After skiping the assistant, you will be presented to the 3scale API Management **Dashboard**. You will create a new **PRODUCT** using the `NEW PRODUCT` link on the bottom section, adding the following values when prompted:
 
 - Name: SAP Businness Hub
 - System name: sap_business_hub
@@ -104,7 +104,7 @@ If you click on the `Code Snippet` link for any of these methods, you can see th
 
 [![300-left](img/api_call.png)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/api_call.png)
 
-Once you have captured all this information, you can go back to the 3Scale API Management's dashboard, where you will create a new **BACKEND** adding the following values when promped:
+Once you have captured all this information, you can go back to the 3scale API Management's dashboard, where you will create a new **BACKEND** adding the following values when promped:
 
 - Name: Analytical Reporting
 - System Name: analytical_reporting
