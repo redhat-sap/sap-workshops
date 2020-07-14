@@ -158,7 +158,11 @@ Once the Account is created, you will see different links to objects linked to t
 
 - Application Plan: SAP Business Hub - Free Unlimited
 - Service Plan: Default
-- Name: SAP APIs unlimited
-- Description: SAP APIs free unlimited
+- Name: SAP APIs Unlimited
+- Description: SAP APIs Free Unlimited
+
+Once the Application has been created, you will be able to see the API Key required to authenticate request for this Application for this Account.
+
+[![500-left](img/3scale_new_account.gif)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/3scale_new_account.gif)
 
 
