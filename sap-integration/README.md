@@ -207,6 +207,7 @@ You can try to do the same with the other methods exposed by the `Analytical Rep
 - API JSON Spec: (copy the content from the JSON file you just downloaded)
 - Skip swagger validations: Ensure is **checked**
 
+[![500-left](img/swagger.gif)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/swagger.gif)
 
 
 
