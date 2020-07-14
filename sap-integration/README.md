@@ -136,14 +136,29 @@ You need to use that APIKey information now and add it to the new Policy you are
 
 [![500-left](img/3scale_policy.gif)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/3scale_policy.gif)
 
-The Product has now the required Policy configured to authenticate request to SAP Business HUB's APIs. The next thing to do is to create an `Application Plan` in order to enable developers and users to consume your API. An Applicatin Plan will be used to establish the rules (limits, pricing, features) for using your API. By default your API will require every request to be authenticated using an API Key. The Application Plan you are going to create will contain that API Key that will be used later by the API consumers. This way the metrics for who is consuming you API can be measured and apply things like billing or limits per use.
+The Product has now the required Policy configured to authenticate request to SAP Business HUB's APIs. The next thing to do is to create an `Application Plan` in order to enable developers and users to consume your API. An Applicatin Plan will be used to establish the rules (limits, pricing, features) for using your API. By default your API will require every request to be authenticated using an API Key. You are going to create later an Account containing one Application linked to this Application Plan that will contain the required API Key for authentication. This way the metrics for who is consuming you API can be measured and apply things like billing or limits per use.
 
 In order to create an Application Plan for your Product, browse to the top Menu and select the `SAP Business Hub` Product you have created. From the dashboard, on the `Published Application Plans` section, use the `Create Application Plan` link to create one. Add the following information to this Application Plan, leaving the rest of the fields with the defaults values:
 
 - Name: Free Unlimited
 - System name: free_unlimited
 
-Once created, the Application Plan will be in `hidden`state. In order to publish it click on the `Publish` link for that Application Plan.
+Once created, the Application Plan will be in `hidden` state. In order to publish it, click on the `Publish` link for that Application Plan.
 
 [![500-left](img/3scale_application_plan.gif)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/3scale_application_plan.gif)
+
+The next thing you need to do is to create a new Account. This Account will be the top level information for the API consumers, and can contain multiple objects like Applications, Users or Subscriptions. To create an Account, select `Dashboard` from the top Menu and click on the `ACCOUNT` link on the top. An Account called 'Developer' already exists in the system, but you are going to create a new one using the `Create` link from the right providing the following information:
+
+- Username: account_admin
+- Email: admin@myorg.com
+- Password: (use any random password)
+- Organization/Group Name: MyOrg
+
+Once the Account is created, you will see different links to objects linked to the Account like Application, Users or Service Subscriptions on the top. You need to create an Application for this Account now, which will generate the API Key required for authetication. Click on the `Application` link from the menu on the top, and then use the `Create Application` link on the right. Add the following information to create the Application:
+
+- Application Plan: SAP Business Hub - Free Unlimited
+- Service Plan: Default
+- Name: SAP APIs unlimited
+- Description: SAP APIs free unlimited
+
 
