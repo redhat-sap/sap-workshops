@@ -127,7 +127,7 @@ curl --request GET \
   --header 'Content-Type: application/json'
 ```
 
-You need to use that APIKey information now, and add it to the new Policy you are going to create for your `SAP Business Hub` Product in 3scale. To do this, browse to the top Menu and select the `SAP Business Hub` Product you have created. From the left Menu, click on `Integration - Policies`. Select `Add Policy` link, and from the list of policies you will be presented, select `Header Modification`. This will be added automatically to the Product policies but is not configured yet. To do this, click on the `Header Modification` Policy from the Policy Chain list, and use the **`+`** button from the **REQUEST** section. Add the following information for this Policy:
+You need to use that APIKey information now and add it to the new Policy you are going to create for your `SAP Business Hub` Product in 3scale. To do this, browse to the top Menu and select the `SAP Business Hub` Product you have created. From the left Menu, click on `Integration - Policies`. Select `Add Policy` link, and from the list of policies you will be presented, select `Header Modification`. This will be added automatically to the Product policies but is not configured yet. To do this, click on the `Header Modification` Policy from the Policy Chain list, and use the **`+`** button from the **REQUEST** section. Add the following information for this Policy:
 
 - op: Create the header when not set, add the value when set
 - header: APIKey
@@ -136,4 +136,14 @@ You need to use that APIKey information now, and add it to the new Policy you ar
 
 [![500-left](img/3scale_policy.gif)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/3scale_policy.gif)
 
+The Product has now the required Policy configured to authenticate request to SAP Business HUB's APIs. The next thing to do is to create an `Application Plan` in order to enable developers and users to consume your API. An Applicatin Plan will be used to establish the rules (limits, pricing, features) for using your API. By default your API will require every request to be authenticated using an API Key. The Application Plan you are going to create will contain that API Key that will be used later by the API consumers. This way the metrics for who is consuming you API can be measured and apply things like billing or limits per use.
+
+In order to create an Application Plan for your Product, browse to the top Menu and select the `SAP Business Hub` Product you have created. From the dashboard, on the `Published Application Plans` section, use the `Create Application Plan` link to create one. Add the following information to this Application Plan, leaving the rest of the fields with the defaults values:
+
+- Name: Free Unlimited
+- System name: free_unlimited
+
+Once created, the Application Plan will be in `hidden`state. In order to publish it click on the `Publish` link for that Application Plan.
+
+[![500-left](img/3scale_application_plan.gif)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/3scale_application_plan.gif)
 
