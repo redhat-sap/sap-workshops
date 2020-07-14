@@ -195,7 +195,7 @@ You should see that a list of Templates will be retrieved from that call. Let's 
 
 As you can notice, you don't need to provide the `APIKey` Header to authenticate with SAP Business Hub anymore, as this is automatically added through the Policy you have configured for your product in 3scale. Try to reproduce this request a few times in Postman and you should see initial statistics coming up in 3scale.
 
-[![500-left](img/stats01.gif)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/stats01.gif)
+[![500-left](img/stats01.png)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/stats01.png)
 
 
 
