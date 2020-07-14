@@ -15,7 +15,7 @@ The high-level architecture consists of 3 different RHEL 8.x servers:
   
 And an OpenShift 4.x cluster with the following components deployed:
 
-- **OpenShift Container Storage**: used for multi purpose container storage backend
+- **OpenShift Container Storage**: used for multi-purpose container storage backend
 - **Fuse Online**: used for
 - **3scale**: used for
 
@@ -25,9 +25,9 @@ And an OpenShift 4.x cluster with the following components deployed:
 
 This workshop will cover the following use cases:
 
-- RestAPI app exposing flight data bapis, import into FuseOnline later. Mobile app using those APIs, or simple HTML page. Create and integration data flow.
-- OpenAPI documents imported from SAP Business Hub into 3scale, so we can demo 3scale functionallity.
-- OData endpoints from SAP HANA or SAP Gateway (OData Server on top of bapis) and import into Fuse Online. Create and integration data flow.
+- RestAPI app exposing flight data bapis, import into FuseOnline later. A mobile app using those APIs, or simple HTML page. Create an integration of data flow.
+- OpenAPI documents imported from SAP Business Hub into 3scale, so we can demo 3scale functionality.
+- OData endpoints from SAP HANA or SAP Gateway (OData Server on top of bapis) and import into Fuse Online. Create an integration of data flow.
 
 ## Environment request
 
@@ -76,7 +76,7 @@ Once you have created a user for SAP Business Hub, you can now login into **Red 
 
 [![400-left](img/3scale_operator.png)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/3scale_operator.png)
 
-You can find all the exposed Routes for 3scale under `Networking - Routes` in the `3scale` Project. If you filter by `zync-3scale-provider` both the 3scale API Management and Developer Portal urls info will be showed. You will receive this information as well in the email you will get with all the environment information.
+You can find all the exposed Routes for 3scale under `Networking - Routes` in the `3scale` Project. If you filter by `zync-3scale-provider` both the 3scale API Management and Developer Portal URLs info will be shown. You will receive this information as well in the email you will get with all the environment information.
 
 [![500-left](img/3scale_routes.png)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/3scale_routes.png)
 
@@ -84,27 +84,27 @@ Credentials for 3scale API Management are provided in the email you will get wit
 
 [![500-left](img/3scale_secrets.png)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/3scale_secrets.png)
 
-First time you open the 3scale API Management portal you will be asked for these credentials. Enter the information required and you will be presented with the assistant to configure your APIs. We are going to skip this part using the **`X`** symbol on the top right, and configure all the required information manually afterwards.
+The first time you open the 3scale API Management portal you will be asked for these credentials. Enter the information required and you will be presented with the assistant to configure your APIs. We are going to skip this part using the **`X`** symbol on the top right and configure all the required information manually afterwards.
 
 [![300-left](img/3scale_assistant.png)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/3scale_assistant.png)
 
-After skiping the assistant, you will be presented to the 3scale API Management **Dashboard**. You will create a new **PRODUCT** using the `NEW PRODUCT` link on the bottom section, adding the following values when prompted:
+After skipping the assistant, you will be presented to the 3scale API Management **Dashboard**. You will create a new **PRODUCT** using the `NEW PRODUCT` link on the bottom section, adding the following values when prompted:
 
-- Name: SAP Businness Hub
+- Name: SAP Business Hub
 - System name: sap_business_hub
-- Description: SAP Businness Hub
+- Description: SAP Business Hub
 
 [![500-left](img/3scale_new_product.gif)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/3scale_new_product.gif)
 
-Once the new Product has been created, you need to create a **BACKEND** that will be used for this Product. This Backend will be used to define our API configuration, including the Private Base URL, Methods and Mapping Rules. At this point, you will go back to `Analytical Reporting - View Management API` definition in [SAP Business Hub](https://api.sap.com/api/analytics_reporting_view/overview) to understand the existing API References and Specificiations for that particular API. As you can see there are 4 different methods available for this API.
+Once the new Product has been created, you need to create a **BACKEND** that will be used for this Product. This Backend will be used to define our API configuration, including the Private Base URL, Methods and Mapping Rules. At this point, you will go back to `Analytical Reporting - View Management API` definition in [SAP Business Hub](https://api.sap.com/api/analytics_reporting_view/overview) to understand the existing API References and Specifications for that particular API. As you can see there are 4 different methods available for this API.
 
 [![400-left](img/api_methods.png)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/api_methods.png)
 
-If you click on the `Code Snippet` link for any of these methods, you can see the URL used to call this method (you will get the information from the Sandbox System url, for production purposes another one from the avilable list will be used, but not for this demo) as well as values that can be parametrized or a custom header that needs to be add to this request which requires authentication.
+If you click on the `Code Snippet` link for any of these methods, you can see the URL used to call this method (you will get the information from the Sandbox System URL, for production purposes another one from the available list will be used, but not for this demo) as well as values that can be parametrized or a custom header that needs to be added to this request which requires authentication.
 
 [![300-left](img/api_call.png)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/api_call.png)
 
-Once you have captured all this information, you can go back to the 3scale API Management's dashboard, where you will create a new **BACKEND** adding the following values when promped:
+Once you have captured all this information, you can go back to the 3scale API Management's dashboard, where you will create a new **BACKEND** adding the following values when prompted:
 
 - Name: Analytical Reporting
 - System Name: analytical_reporting
@@ -113,7 +113,7 @@ Once you have captured all this information, you can go back to the 3scale API M
 
 [![500-left](img/3scale_new_backend.gif)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/3scale_new_backend.gif)
 
-You have successfully created a Product and a Backend. You need to link those now, adding the Backend you created to the Product, and specify a `Public Path` for this one. In order to do this, browse to the top Menu and select the `SAP Business Hub` Product you have created. From the left Menu, click on `Integration - Backends`. The list of Backends associated to this Product will be empty. Click on `Add Backend` link on the right and select the `Analytical Reporting` Backend from the dropdown menu. In the `Path` field you will add **/reporting** as the path to match the Backend for this Product.
+You have successfully created a Product and a Backend. You need to link those now, adding the Backend you created to the Product, and specify a `Public Path` for this one. To do this, browse to the top menu and select the `SAP Business Hub` Product you have created. From the left menu, click on `Integration - Backends`. The list of Backends associated to this Product will be empty. Click on `Add Backend` link on the right and select the `Analytical Reporting` Backend from the dropdown menu. In the `Path` field you will add **/reporting** as the path to match the Backend for this Product.
 
 [![500-left](img/3scale_link_backend.gif)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/3scale_link_backend.gif)
 
@@ -127,51 +127,51 @@ curl --request GET \
   --header 'Content-Type: application/json'
 ```
 
-You need to use that APIKey information now and add it to the new Policy you are going to create for your `SAP Business Hub` Product in 3scale. To do this, browse to the top Menu and select the `SAP Business Hub` Product you have created. From the left Menu, click on `Integration - Policies`. Select `Add Policy` link, and from the list of policies you will be presented, select `Header Modification`. This will be added automatically to the Product policies but is not configured yet. To do this, click on the `Header Modification` Policy from the Policy Chain list, and use the **`+`** button from the **REQUEST** section. Add the following information for this Policy:
+You need to use that APIKey information now and add it to the new Policy you are going to create for your `SAP Business Hub` Product in 3scale. To do this, browse to the top menu and select the `SAP Business Hub` Product you have created. From the left menu, click on `Integration - Policies`. Select `Add Policy` link, and from the list of policies you will be presented, select `Header Modification`. This will be added automatically to the Product policies but is not configured yet. To do this, click on the `Header Modification` Policy from the Policy Chain list, and use the **`+`** button from the **REQUEST** section. Add the following information for this Policy:
 
-- op: Create the header when not set, add the value when set
+- op: Create the header when not set, add the value when setting
 - header: APIKey
 - value_type: Evaluate 'value' as plain text
 - value: XXXXXXXXXXXXXXXXXXXXXXXXXXX (this value must contain the real value for your API Key in SAP Business Hub)
 
 [![500-left](img/3scale_policy.gif)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/3scale_policy.gif)
 
-The Product has now the required Policy configured to authenticate request to SAP Business HUB's APIs. The next thing to do is to create an `Application Plan` in order to enable developers and users to consume your API. An Applicatin Plan will be used to establish the rules (limits, pricing, features) for using your API. By default your API will require every request to be authenticated using an API Key. You are going to create later an Account containing one Application linked to this Application Plan that will contain the required API Key for authentication. This way the metrics for who is consuming you API can be measured and apply things like billing or limits per use.
+The Product has now the required Policy configured to authenticate a request to SAP Business HUB's APIs. The next thing to do is to create an `Application Plan` to enable developers and users to consume your API. An Application Plan will be used to establish the rules (limits, pricing, features) for using your API. By default, your API will require every request to be authenticated using an API Key. You are going to create later an Account containing one Application linked to this Application Plan that will contain the required API Key for authentication. This way the metrics for who is consuming you API can be measured and apply things as billing or limits peruse.
 
-In order to create an Application Plan for your Product, browse to the top Menu and select the `SAP Business Hub` Product you have created. From the dashboard, on the `Published Application Plans` section, use the `Create Application Plan` link to create one. Add the following information to this Application Plan, leaving the rest of the fields with the defaults values:
+To create an Application Plan for your Product, browse to the top menu and select the `SAP Business Hub` Product you have created. From the dashboard, on the `Published Application Plans` section, use the `Create Application Plan` link to create one. Add the following information to this Application Plan, leaving the rest of the fields with the defaults values:
 
 - Name: Free Unlimited
 - System name: free_unlimited
 
-Once created, the Application Plan will be in `hidden` state. In order to publish it, click on the `Publish` link for that Application Plan.
+Once created, the Application Plan will be in `hidden` state. To publish it, click on the `Publish` link for that Application Plan.
 
 [![500-left](img/3scale_application_plan.gif)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/3scale_application_plan.gif)
 
-The next thing you need to do is to create a new Account. This Account will be the top level information for the API consumers, and can contain multiple objects like Applications, Users or Subscriptions. To create an Account, select `Dashboard` from the top Menu and click on the `ACCOUNT` link on the top. An Account called 'Developer' already exists in the system, but you are going to create a new one using the `Create` link from the right providing the following information:
+The next thing you need to do is to create a new Account. This Account will be the top-level information for the API consumers and can contain multiple objects like Applications, Users or Subscriptions. To create an Account, select `Dashboard` from the top menu and click on the `ACCOUNT` link on the top. An Account called 'Developer' already exists in the system, but you are going to create a new one using the `Create` link from the right providing the following information:
 
 - Username: account_admin
 - Email: admin@myorg.com
 - Password: (use any random password)
 - Organization/Group Name: MyOrg
 
-Once the Account is created, you will see different links to objects linked to the Account like Application, Users or Service Subscriptions on the top. You need to create an Application for this Account now, which will generate the API Key required for authetication. Click on the `Application` link from the menu on the top, and then use the `Create Application` link on the right. Add the following information to create the Application:
+Once the Account is created, you will see different links to objects linked to the Account like Application, Users or Service Subscriptions on the top. You need to create an Application for this Account now, which will generate the API Key required for authentication. Click on the `Application` link from the menu on the top, and then use the `Create Application` link on the right. Add the following information to create the Application:
 
 - Application Plan: SAP Business Hub - Free Unlimited
 - Service Plan: Default
 - Name: SAP APIs Unlimited
 - Description: SAP APIs Free Unlimited
 
-Once the Application has been created, you will be able to see the API Key required to authenticate request for this Application for this Account.
+Once the Application has been created, you will be able to see the API Key required to authenticate a request for this Application for this Account.
 
 [![500-left](img/3scale_new_account.gif)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/3scale_new_account.gif)
 
-At this point, you should be able to use your **SAP Business Hub** Product you have created in 3scale. There is only one step missing, as the APIcast has not been promoted yet to Staging or Production. This capability will give you the opportunity to make changes in your Product, promote those changes to your Stage environment and once validated promote it to Production.
+At this point, you should be able to use your **SAP Business Hub** Product you have created in 3scale. There is only one step missing, as the APIcast has not been promoted yet to Staging or Production. This capability will allow you to make changes in your Product, promote those changes to your Stage environment and once validated promote it to Production.
 
-Let's promote your APIcast configuration to Stage, validate you can use any of the methods exposed by the `Analytical Reporting - View Management API` and promote this to Production if everything is working as expected. To do this, browse to the top Menu and select the `SAP Business Hub` Product. From the left Menu go to `Integration - Configuration` and click on the `Promote to Staging APIcast` link.
+Let's promote your APIcast configuration to Stage, validate you can use any of the methods exposed by the `Analytical Reporting - View Management API` and promote this to Production if everything is working as expected. To do this, browse to the top menu and select the `SAP Business Hub` Product. From the left menu go to `Integration - Configuration` and click on the `Promote to Staging APIcast` link.
 
 [![500-left](img/3scale_stage_promotion.gif)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/3scale_stage_promotion.gif)
 
-Once the APIcast has been promoted to Stage you can test it. From the same window where you have promoted to Stage, check the `Staging APIcast` section and get the URL from `Example curl for testing`. There are different ways to check this. You can use your browser, or you can use `curl` or a tool like `Postman`, which is the option selected for this demo. Check the `Analytical Reporting` backend configuration on the `APIcast Configuration` section form the same window you did the promotion. You will see the initial configuration done for the `Analytical Reporting` Backend you did when configuring the Backend. The `Public Path` configured for this one in particular is `/reporting`, and this is the path we need to add to the Stagging URL in order to test our API.
+Once the APIcast has been promoted to Stage you can test it. From the same window where you have promoted to Stage, check the `Staging APIcast` section and get the URL from `Example curl for testing`. There are different ways to check this. You can use your browser, or you can use `curl` or a tool like `Postman`, which is the option selected for this demo. Check the `Analytical Reporting` backend configuration on the `APIcast Configuration` section form the same window you did the promotion. You will see the initial configuration done for the `Analytical Reporting` Backend you did when configuring the Backend. The `Public Path` configured for this one, in particular, is `/reporting`, and this is the path we need to add to the Stagging URL to test our API.
 
 [![300-left](img/apicast_path.png)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/apicast_path.png)
 
