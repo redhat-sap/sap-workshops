@@ -193,10 +193,19 @@ You should see that a list of Templates will be retrieved from that call. Let's 
 
 [![400-left](img/postman02.png)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/postman02.png)
 
-As you can notice, you don't need to provide the `APIKey` Header to authenticate with SAP Business Hub anymore, as this is automatically added through the Policy you have configured for your product in 3scale. Try to reproduce this request a few times in Postman and you should see initial statistics coming up in 3scale.
+As you can notice, you don't need to provide the `APIKey` Header to authenticate with SAP Business Hub anymore, as this is automatically added through the Policy you have configured for your Product in 3scale. Try to reproduce this request a few times in Postman and you should see initial statistics coming up in 3scale.
 
 [![500-left](img/stats01.png)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/stats01.png)
 
+You can try to do the same with the other methods exposed by the `Analytical Reporting - View Management API` and check the results are the same when doing the request to 3scale APIcast or doing it directly in SAP Business Hub. If we want users and developers to consume these APIs, they will need to get access to the Swagger Specification. To facilitate this we can import these specifications into 3scale. Go back to `Analytical Reporting - View Management API` definition in [SAP Business Hub](https://api.sap.com/api/analytics_reporting_view/overview) and click on `Download API Specification` button and download it as a **JSON** file. Go back to `3scale API Management` portal and select `Audience` from the top menu. Then select `Developer Portal - ActiveDocs` and use the `Create a new spec` link from the right. Add the following information when prompted:
+
+- Name: Analytical Reporting - View Management API
+- System Name: AnalyticalReportingView
+- Publish?: Ensure is **checked**
+- Description: Analytical Reporting - View Management API
+- Service: SAP Business Hub
+- API JSON Spec: (copy the content from the JSON file you just downloaded)
+- Skip swagger validations: Ensure is **checked**
 
 
 
