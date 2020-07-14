@@ -113,5 +113,27 @@ Once you have captured all this information, you can go back to the 3scale API M
 
 [![500-left](img/3scale_new_backend.gif)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/3scale_new_backend.gif)
 
+You have successfully created a Product and a Backend. You need to link those now, adding the Backend you created to the Product, and specify a `Public Path` for this one. In order to do this, browse to the top Menu and select the `SAP Business Hub` Product you have created. From the left Menu, click on `Integration - Backends`. The list of Backends associated to this Product will be empty. Click on `Add Backend` link on the right and select the `Analytical Reporting` Backend from the dropdown menu. In the `Path` field you will add **/reporting** as the path to match the Backend for this Product.
+
+[![500-left](img/3scale_link_backend.gif)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/3scale_link_backend.gif)
+
+Now the Backend has been added to the Product, you need to configure a new Policy for the Product. You are going to use this Policy to add a custom header to every request is made to SAP Business Hub. While examining the API References and Specifications for the `Analytical Reporting - View Management API`, on the `Code Snippet` for each method you could see an authentication header required to authenticate every request. This information is the API Key for the user who is making the request. Taking as an example who a `curl` command should look like for one of the methods exposed, this looked like this:
+
+```bash
+curl --request GET \
+  --url 'https://sandbox.api.sap.com/ariba/api/analytics-reporting-view/v1/sandbox/viewTemplates?realm=string' \
+  --header 'APIKey: XXXXXXXXXXXXXXXXXXXXXXXXXXX' \
+  --header 'Accept: application/json' \
+  --header 'Content-Type: application/json'
+```
+
+You need to use that APIKey information now, and add it to the new Policy you are going to create for your `SAP Business Hub` Product in 3scale. To do this, browse to the top Menu and select the `SAP Business Hub` Product you have created. From the left Menu, click on `Integration - Policies`. Select `Add Policy` link, and from the list of policies you will be presented, select `Header Modification`. This will be added automatically to the Product policies but is not configured yet. To do this, click on the `Header Modification` Policy from the Policy Chain list, and use the **`+`** button from the **REQUEST** section. Add the following information for this Policy:
+
+- op: Create the header when not set, add the value when set
+- header: APIKey
+- value_type: Evaluate 'value' as plain text
+- value: XXXXXXXXXXXXXXXXXXXXXXXXXXX (this value must contain the real value for your API Key in SAP Business Hub)
+
+[![500-left](img/3scale_policy.gif)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/3scale_policy.gif)
 
 
