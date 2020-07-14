@@ -165,4 +165,47 @@ Once the Application has been created, you will be able to see the API Key requi
 
 [![500-left](img/3scale_new_account.gif)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/3scale_new_account.gif)
 
+At this point, you should be able to use your **SAP Business Hub** Product you have created in 3scale. There is only one step missing, as the APIcast has not been promoted yet to Staging or Production. This capability will give you the opportunity to make changes in your Product, promote those changes to your Stage environment and once validated promote it to Production.
+
+Let's promote your APIcast configuration to Stage, validate you can use any of the methods exposed by the `Analytical Reporting - View Management API` and promote this to Production if everything is working as expected. To do this, browse to the top Menu and select the `SAP Business Hub` Product. From the left Menu go to `Integration - Configuration` and click on the `Promote to Staging APIcast` link.
+
+[![500-left](img/3scale_stage_promotion.gif)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/3scale_stage_promotion.gif)
+
+Once the APIcast has been promoted to Stage you can test it. From the same window where you have promoted to Stage, check the `Staging APIcast` section and get the URL from `Example curl for testing`. There are different ways to check this. You can use your browser, or you can use `curl` or a tool like `Postman`, which is the option selected for this demo. Check the `Analytical Reporting` backend configuration on the `APIcast Configuration` section form the same window you did the promotion. You will see the initial configuration done for the `Analytical Reporting` Backend you did when configuring the Backend. The `Public Path` configured for this one in particular is `/reporting`, and this is the path we need to add to the Stagging URL in order to test our API.
+
+[![300-left](img/apicast_path.png)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/apicast_path.png)
+
+Let's test one of the methods supported for this API in `SAP Business Hub`. You can check the Swagger Specification [here](https://api.sap.com/api/analytics_reporting_view/resource). You can use the GET /viewTemplates method as an example or any other of the available methods for this API. When checking this method, we can see the request should look like the following when using the SAP Bussiness Hub Sandbox directly:
+
+```bash
+curl --request GET \
+  --url 'https://sandbox.api.sap.com/ariba/api/analytics-reporting-view/v1/sandbox/viewTemplates?realm=string' \
+  --header 'APIKey: XXXXXXXXXXXXXXXXXXX' \
+  --header 'Accept: application/json' \
+  --header 'Content-Type: application/json' 
+```
+
+Your test in Postman should look like this:
+
+[![400-left](img/postman01.png)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/postman01.png)
+
+You should see that a list of Templates will be retrieved from that call. Let's try to reproduce this now, but using the Backend you have configured in 3scale. Your test in Postman should look like this:
+
+[![400-left](img/postman02.png)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/postman02.png)
+
+As you can notice, you don't need to provide the `APIKey` Header to authenticate with SAP Business Hub anymore, as this is automatically added through the Policy you have configured for your product in 3scale. Try to reproduce this request a few times in Postman and you should see initial statistics coming up in 3scale.
+
+[![500-left](img/stats01.gif)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/stats01.gif)
+
+
+
+
+
+
+
+
+
+
+
+
 
