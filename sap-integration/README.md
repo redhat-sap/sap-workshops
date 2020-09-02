@@ -19,7 +19,7 @@ And an OpenShift 4.x cluster with the following components deployed:
 - **Fuse Online**: used to demonstrate out of the box easy to implement integration capabilities with SAP S/4HANA and multi purpose integrations.
 - **3scale**: used to demonstrate API managament capabilities for both SAP API Business Hub APIs and custom APIs deployed as microservices in OpenShift.
 
-[![smart-infra-layout](img/infra_layout.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/infra_layout.png)
+[![agile-integration-infra-layout](img/infra_layout.png)](https://redhat-sap.github.io/sap-workshops//sap-integration/img/infra_layout.png)
 
 ## Use cases
 
@@ -37,11 +37,11 @@ This environment is provisioned using the Red Hat internal demo system. We at Re
 
 Login into [Red Hat Product Demo System](https://rhpds.redhat.com) and navigate to `Services --> Catalogs --> All Services --> Workshops`. An item called `SAP side-by-side Integration` will be available.
 
-[![rhpds-catalog](img/rhpds01.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/rhpds01.png)
+[![rhpds-catalog](img/rhpds01.png)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/rhpds01.png)
 
 Click on the **order** button, check the confirmation box and click on **Submit**.
 
-[![rhpds-submit](img/rhpds02.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/rhpds02.png)
+[![rhpds-submit](img/rhpds02.png)](https://redhat-sap.github.io/sap-workshops/sap-integration/img/rhpds02.png)
 
 ## Environment info and credentials
 
