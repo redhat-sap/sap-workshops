@@ -47,10 +47,6 @@ Click on the **order** button, check the confirmation box and click on **Submit*
 
 Once the environment has been provisioned, you will receive an email with some key information:
 
-- SSH information to access the bastion host including:
-  - SSH user information
-  - Bastion public hostname information
-  - SSH private key to be used
 - OpenShift information including:
   - OpenShift web-console public URL
   - OpenShift web-console user
@@ -64,7 +60,7 @@ Once the environment has been provisioned, you will receive an email with some k
 
 ## How to run the workshop
 
-## Use Case 2: Using 3scale to manage APIs from SAP's Business Hub
+## Use Case 1: Using 3scale to manage APIs from SAP's Business Hub
 
 This scenario will show how to configure 3scale to centralize API management from SAP Business Hub and enrich those APIs with all the capabilities 3scale can offer. To demonstrate this, you are going to use the [Analytical reporting APIs from SAP Ariba](https://api.sap.com/api/analytics_reporting_view/overview), but this same procedure can apply to any other API from SAP Business Hub.
 
