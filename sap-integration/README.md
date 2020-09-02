@@ -9,15 +9,15 @@ This workshop can be used to demonstrate the integration capabilities for Red Ha
 
 The high-level architecture consists of 3 different RHEL 8.x servers:
 
-- **bastion**: this is meant to be used as the jump host for SSH access to the environment and where to run SAP GUI from if required
-- **hana**: this is meant to be used as the RHEL server where to deploy SAP HANA
-- **s4hana**: this is meant to be used as the RHEL server where to deploy SAP S/4HANA
+- **bastion**: this is meant to be used as the jump host for SSH access to the environment and where to run SAP GUI from if required.
+- **hana**: this is meant to be used as the RHEL server where to deploy SAP HANA.
+- **s4hana**: this is meant to be used as the RHEL server where to deploy SAP S/4HANA.
   
 And an OpenShift 4.x cluster with the following components deployed:
 
-- **OpenShift Container Storage**: used for multi-purpose container storage backend
-- **Fuse Online**: used for
-- **3scale**: used for
+- **OpenShift Container Storage**: used for multi-purpose container storage backend.
+- **Fuse Online**: used to demonstrate out of the box easy to implement integration capabilities with SAP S/4HANA and multi purpose integrations.
+- **3scale**: used to demonstrate API managament capabilities for both SAP API Business Hub APIs and custom APIs deployed as microservices in OpenShift.
 
 [![smart-infra-layout](img/infra_layout.png)](https://redhat-sap.github.io/sap-workshops/sap-smart-management/img/infra_layout.png)
 
@@ -25,9 +25,9 @@ And an OpenShift 4.x cluster with the following components deployed:
 
 This workshop will cover the following use cases:
 
-- RestAPI app exposing flight data bapis, import into FuseOnline later. A mobile app using those APIs, or simple HTML page. Create an integration of data flow.
-- OpenAPI documents imported from SAP Business Hub into 3scale, so we can demo 3scale functionality.
-- OData endpoints from SAP HANA or SAP Gateway (OData Server on top of bapis) and import into Fuse Online. Create an integration of data flow.
+- API management using 3scale, centralizing APIs from both SAP API Business Hub APIs and custom APIs deployed as microservices in OpenShift.
+- Consuming S/4HANA RFCs via SAP JCo and ODATA, using a Red Hat Fuse microservice configuring Camel Routes.
+- Deploy a small Angular Front end microservice that will consume the APIs exposed in Fuse to present and manage data from SAP HANA.
 
 ## Environment request
 
