@@ -26,8 +26,8 @@ And an OpenShift 4.x cluster with the following components deployed:
 This workshop will cover the following use cases:
 
 - API management using 3scale, centralizing APIs from both SAP API Business Hub APIs and custom APIs deployed as microservices in OpenShift.
-- Consuming S/4HANA RFCs via SAP JCo and ODATA, using a Red Hat Fuse microservice configuring Camel Routes.
-- Deploy a small Angular Front end microservice that will consume the APIs exposed in Fuse to present and manage data from SAP HANA.
+- Consuming S/4HANA RFCs via SAP JCo and ODATA, using a Red Hat Fuse microservice configuring Camel Routes. Exposing those as REST APIs.
+- Consume previuos exposed APIs via custom Angular frontend microservice to make those consumable via web to the end user.
 
 ## Environment request
 
@@ -57,10 +57,13 @@ Once the environment has been provisioned, you will receive an email with some k
   - 3scale API Management Portal password
 - Fuse Online information including:
   - Fuse Online namespace in OpenShift
+- Backend and Frontend information including:
+  - Backend microservice Swagger public URL
+  - Frontend microservice public URL
 
 ## How to run the workshop
 
-## Use Case 1: Using 3scale to manage APIs from SAP's Business Hub
+### Use Case 1: Using 3scale to manage APIs from SAP's Business Hub
 
 This scenario will show how to configure 3scale to centralize API management from SAP Business Hub and enrich those APIs with all the capabilities 3scale can offer. To demonstrate this, you are going to use the [Analytical reporting APIs from SAP Ariba](https://api.sap.com/api/analytics_reporting_view/overview), but this same procedure can apply to any other API from SAP Business Hub.
 
@@ -206,12 +209,7 @@ You can try to do the same with the other methods exposed by the `Analytical Rep
 [![500-left](img/swagger.gif)](https://redhat-sap.github.io/sap-workshops//sap-integration/img/swagger.gif)
 
 
+### Use Case 2: Using Fuse to create Camel routes with S/4HANA via JCo and ODATA, exposing these as REST APIs endpoints
 
 
-
-
-
-
-
-
-
+### Use Case 3: Consume previuos exposed APIs via custom Angular frontend microservice
