@@ -1,4 +1,4 @@
-# SAP side by side Integration (**WORK IN PROGRESS**)
+# SAP side by side Integration
 > Using Red Hat Integration Portfolio and Red Hat Openshift to integrate with SAP side by side
 
 ## Intro
