@@ -24,6 +24,8 @@ This environment is provisioned using the Red Hat internal demo system. We at Re
 
 Login into [Red Hat Product Demo System](https://rhpds.redhat.com) and navigate to `Services --> Catalogs --> All Services --> Workshops`. An item called `SAP End to End Automation` will be available.
 
+You will find 2 different Catalog Items for this workshops, prefixed with the target infrastructure where this will be deployed, this is 'OSP' or 'AWS'. Please **use always the OSP version** and only use AWS if the OSP version fails to deploy.
+
 ![rhpds-catalog](img/rhpds01.png)
 
 Click on the **order** button, check the confirmation box and click on **Submit**.
