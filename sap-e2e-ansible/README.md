@@ -146,7 +146,38 @@ The first thing to show is the workflow results itself. To do that, on the left 
 
 ![e2e-tower-workflow-review-gif](img/tower-workflow-review-01.gif)
 
-Now we can login into the `hana` and `s4hana` hosts to validate this is true. Using the logon instructions email you received, login into the `hana` hosts first and execute the following to check all the SAP HANA processes are running in the system:
+Now we can login into the `hana` and `s4hana` hosts to validate this is true. 
+Using the logon instructions email you received, login into the `bastion` host as `cloud-user` or `ec2-user` (check instructions from your email as will differ depending the target infrastructure where the lab has been deployed):
+
+```bash
+# Example for AWS environments where user is `ec2-user`
+$ ssh -i /path-to-your-ssh-key ec2-user@bastion-<GUID>.<DOMAIN>
+[ec2-user@bastion ~]$
+```
+
+```bash
+# Example for OSP environments where user is `cloud-user`
+$ ssh -i /path-to-your-ssh-key cloud-user@bastion-<GUID>.<DOMAIN>
+[cloud-user@bastion-<GUID> ~]$
+```
+
+Once you have logged into the `bastion` host, ssh to the `hana` hosts:
+
+```bash
+# Example for AWS environments where user is `ec2-user`
+[ec2-user@bastion ~]$ ssh hana1
+[ec2-user@hana1 ~]$ sudo -i
+[root@hana1 ~]$ su - rheadm
+```
+
+```bash
+# Example for OSP environments where user is `cloud-user`
+[cloud-user@bastion-<GUID> ~]$ ssh hana-<GUID>
+[cloud-user@hana-<GUID> ~]$ sudo -i
+[root@hana-<GUID> ~]$ su - rheadm
+```
+
+And execute the following as `rheadm` user to check all the SAP HANA processes are running in the system:
 
 ```bash
 hana:rheadm> HDB info
@@ -170,7 +201,19 @@ rheadm      35423    28515   0.3    1692816     328896      \_ hdbdiserver -port
 rheadm      28433        1   0.0     520996      23900 /usr/sap/RHE/HDB00/exe/sapstartsrv pf=/hana/shared/RHE/profile/RHE_HDB00_hana -D -u rheadm
 ```
 
-Once we have validated SAP HANA is installed and running, login into the `s4hana` hosts first and execute the following to check all SAP S/4HANA processes are running in the system:
+Once we have validated SAP HANA is installed and running, login into the `s4hana` hosts:
+
+```bash
+# Example for AWS environments where user is `ec2-user`
+[ec2-user@bastion ~]$ ssh s4hana
+```
+
+```bash
+# Example for OSP environments where user is `cloud-user`
+[cloud-user@bastion-<GUID> ~]$ ssh s4hana-<GUID>
+```
+
+And execute the following to check all SAP S/4HANA processes are running in the system:
 
 ```bash
 $ ps auxwwf | grep rheadm | grep -v grep
