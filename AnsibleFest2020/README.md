@@ -17,7 +17,7 @@ The high-level architecture consists of 4 different RHEL 8.x servers with the fo
 - hana2: this is meant to be used as the RHEL server where to deploy SAP HANA
 - s4hana: this is meant to be used as the RHEL server where to deploy SAP S/4HANA
 
-![e2e-infra-layout](img/infra_layout.png)(https://redhat-sap.github.io/sap-workshops//AnsibleFest2020/img/infra_layout.png)
+[![e2e-infra-layout](img/infra_layout.png)](https://redhat-sap.github.io/sap-workshops//AnsibleFest2020/img/infra_layout.png)
 
 ## Environment request
 
