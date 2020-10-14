@@ -170,12 +170,27 @@ img[alt="300-left"] {
   height: 300px;
 }
 
+img[alt="300-center"] {
+  position: center;
+  height: 300px;
+}
+
 img[alt="400-left"] {
   position: left;
   height: 400px;
 }
 
+img[alt="400-center"] {
+  position: center;
+  height: 400px;
+}
+
 img[alt="500-left"] {
   position: left;
+  height: 500px;
+}
+
+img[alt="500-center"] {
+  position: center;
   height: 500px;
 }
