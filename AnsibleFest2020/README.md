@@ -322,29 +322,29 @@ In order to complete the final task, you should have done the following steps:
 
 2. Create a new `Project` in Tower with the following information:
 
-    [![400-left](img/extra_project.png)](https://redhat-sap.github.io/sap-workshops//AnsibleFest2020/img/extra_project.png)
+[![400-left](img/extra_project.png)](https://redhat-sap.github.io/sap-workshops//AnsibleFest2020/img/extra_project.png)
 
 3. Create a new `Job Template` in Tower with the following information:
 
-    [![400-left](img/extra_template.png)](https://redhat-sap.github.io/sap-workshops//AnsibleFest2020/img/extra_template.png)
+[![400-left](img/extra_template.png)](https://redhat-sap.github.io/sap-workshops//AnsibleFest2020/img/extra_template.png)
 
 4. Modify existing `Inventory` adding the following entries:
 
     - To `hanas` HostGroup
 
-      [![400-left](img/new_inv_group.png)](https://redhat-sap.github.io/sap-workshops//AnsibleFest2020/img/new_inv_group.png)
+[![400-left](img/new_inv_group.png)](https://redhat-sap.github.io/sap-workshops//AnsibleFest2020/img/new_inv_group.png)
 
     - To `hana1` Host
 
-      [![400-left](img/new_inv_hana1.png)](https://redhat-sap.github.io/sap-workshops//AnsibleFest2020/img/new_inv_hana1.png)
+[![400-left](img/new_inv_hana1.png)](https://redhat-sap.github.io/sap-workshops//AnsibleFest2020/img/new_inv_hana1.png)
 
       - To `hana2` Host
 
-      [![400-left](img/new_inv_hana2.png)](https://redhat-sap.github.io/sap-workshops//AnsibleFest2020/img/new_inv_hana2.png)
+[![400-left](img/new_inv_hana2.png)](https://redhat-sap.github.io/sap-workshops//AnsibleFest2020/img/new_inv_hana2.png)
 
 5. Execute the `Template` you have just created:
 
-    [![400-left](img/new_template_exec.png)](https://redhat-sap.github.io/sap-workshops//AnsibleFest2020/img/new_template_exec.png)
+[![400-left](img/new_template_exec.png)](https://redhat-sap.github.io/sap-workshops//AnsibleFest2020/img/new_template_exec.png)
 
 Once completed all the steps, if you login into the `hana1` server, you can check the HANA replication status doing the following:
 
