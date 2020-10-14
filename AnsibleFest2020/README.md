@@ -372,3 +372,11 @@ site id: 1
 site name: DC1
 ```
 
+And "voila", you have now configured the automation to automatically deploy an HA HANA environment from scratch!
+
+Hope you liked the lab. If are interesting in contributing to this Community driven automation for SAP workloads, you can reach us on `sap-cop@redhat.com` and we will more than happy to onboard you into this community! ;-)
+
+Many thanks!!
+
+Your AnsibleFest 2020 team
+
