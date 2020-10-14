@@ -13,7 +13,8 @@ The high-level architecture consists of 4 different RHEL 8.x servers with the fo
 
 - bastion: this is meant to be used as the jump host for SSH access to the environment
 - tower: this is meant to be used as the Ansible and Ansible Tower host where to run the automation from
-- hana: this is meant to be used as the RHEL server where to deploy SAP HANA
+- hana1: this is meant to be used as the RHEL server where to deploy SAP HANA
+- hana2: this is meant to be used as the RHEL server where to deploy SAP HANA
 - s4hana: this is meant to be used as the RHEL server where to deploy SAP S/4HANA
 
 ![e2e-infra-layout](img/infra_layout.png)
@@ -22,17 +23,9 @@ The high-level architecture consists of 4 different RHEL 8.x servers with the fo
 
 This environment is provisioned using the Red Hat internal demo system. We at Red Hat embrace the use of [IaC](https://openpracticelibrary.com/practice/everything-as-code/) (Infrastructure as Code) for any lab/demo set up, that's why we have open-sourced the Framework (based in Ansible) we use for this. If you want to get more information on this topic, check the [AgnosticD](https://github.com/redhat-cop/agnosticd) repository we use to deploy these labs and demos.
 
-### Order catalog item
+To get access to your environment, please click on [this link](https://www.opentlc.com/gg/gg.cgi?profile=generic_mentenza)
 
-Login into [Red Hat Product Demo System](https://rhpds.redhat.com) and navigate to `Services --> Catalogs --> All Services --> Workshops`. An item called `SAP End to End Automation` will be available.
 
-You will find 2 different Catalog Items for this workshops, prefixed with the target infrastructure where this will be deployed, this is 'OSP' or 'AWS'. Please **use always the OSP version** and only use AWS if the OSP version fails to deploy.
-
-![rhpds-catalog](img/rhpds01.png)
-
-Click on the **order** button, check the confirmation box and click on **Submit**.
-
-![rhpds-submit](img/rhpds02.png)
 
 ### Environment info and credentials
 
@@ -48,9 +41,9 @@ Once the environment has been provisioned, you will receive an email with some k
   - Ansible Tower Password
 
 
-## How to run the demo/workshop
+## Running the lab
 
-The goal for this demo is to showcase how we can make SAP Solutions deployments easy and reliable using Ansible automation. To be able to demonstrate this, a Tower Workflow has been configured that will do the following:
+The goal for this lab is to showcase how we can make SAP Solutions deployments easy and reliable using Ansible automation. To be able to demonstrate this, a Tower Workflow has been configured that will do the following:
 
 1. Enable all the required repositories to be able to deploy SAP software in RHEL
 2. Configure all the File Systems and mount points required while installing SAP HANA and SAP S/4HANA
@@ -65,20 +58,23 @@ Just by 'clicking a button' all these steps will be done automatically by Ansibl
 
 ![e2e-tower-full-workflow](img/tower-full-workflow.png)
 
-The whole lab can be run as a quick demo, to show the end to end automation or as a workshop depending on the audience, the time and the level of detail you want to show from the lab.
+### Modify existing workflow and run it
 
-### Running as a quick demo
+The whole E2E process (running all the stages configured in the Tower Workflow) could take around an hour, depending how busy is the underlaying infrastructure today :-) During that time, you are not going to learn only how to use Tower to put all this automation together but also the existing Ansible roles maintained by Red Hat Engineering teams and our SAP community. 
 
-When running as a quick demo, the first thing you need to do is login into the Ansible Tower web interface and launch the Workflow Template `SAP HANA and S/4HANA E2E deployment` that is already available. SAP HANA and SAP S/4HANA installation process will take a long time (the whole end to end process will take 40 minutes), so you need to ensure the Tower Workflow is running in the background while you explain the key components of the setup.
+As an extra (optional) task for this lab, we are going to ask you to extend the existing configuration in Ansible Tower with an additional "task" to enable HANA System Replication automatically in your landscape.
 
-![e2e-tower-workflow-gif](img/tower-workflow.gif)
-<!-- ![e2e-tower-workflow-gif](video/tower-workflow.mp4) -->
+The first thing you need to do now is login into the Ansible Tower web interface and modify the Workflow Template `SAP HANA and S/4HANA E2E deployment` that is already available. The reason to modify this Workflow Template is simple; to reduce the time required to complete it and to reduce the time required to execute the extra (optional) task we are asking you at the end of this lab.
 
-<!-- <video width="700" height="400" controls preload> 
-    <source src="video/tower-workflow.mp4"></source> 
-</video> -->
-<!-- 
-![e2e-tower-workflow-gif](https://youtu.be/OTZbi4heRuM) -->
+To do this, on Tower's left pane click on `Templates` to see existing Job Templates and Workflow Teplates. Now click on the one called `SAP HANA and S/4HANA E2E deployment` that will show you the details for this Workflow Template. We want to remove the last stage of the Workflow, so click on the `WORKFLOW VISUALIZER` button that will take you to the configuration of the existing stages or nodes of the Workflow. Click on the last node called `sap-s4hana-depployment` and use the icon with the X symbol to remove it. Ensure you click on the `SAVE` button once removed.
+
+[![500-left](img/workflow_modify.gif)](https://redhat-sap.github.io/sap-workshops//AnsibleFest2020/img/workflow_modify.gif)
+
+Go back to `Templates` and now use the "rocket" icon (first icon starting from the left) from the `SAP HANA and S/4HANA E2E deployment` Workflow Template. This will run the Workflow Template, executing every single stage of the pipeline as configured in the Workflow. Once launched you can see the actual state of the task and inspect every stage to check the progress.
+
+[![500-left](img/tower-workflow.gif)](https://redhat-sap.github.io/sap-workshops//AnsibleFest2020/img/tower-workflow.gif)
+
+
 
 Once you show how the process is run with just 'one-click' you can briefly explain all the required set up to be done in Ansible Tower. As explained before, Ansible Tower will run a collection of different playbooks in the HANA and S/4HANA RHEL hosts to prepare, deploy and configure the software. These are covered by point 1 to 8 as previously mentioned. Ansible Tower needs to be configured the same way we configure a typical Ansible Host that is going to manage remote hosts. Ansible Tower allows the user to add this information from a Web Interface, which is very useful for people with no previous experience with Ansible or people who don't feel comfortable using a terminal. Ansible Tower also provides a very powerful REST API that can be used to configure and performs multiple actions in Ansible Tower remotely from external systems or applications.
 
