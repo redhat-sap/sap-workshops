@@ -23,23 +23,24 @@ The high-level architecture consists of 4 different RHEL 8.x servers with the fo
 
 This environment is provisioned using the Red Hat internal demo system. We at Red Hat embrace the use of [IaC](https://openpracticelibrary.com/practice/everything-as-code/) (Infrastructure as Code) for any lab/demo set up, that's why we have open-sourced the Framework (based in Ansible) we use for this. If you want to get more information on this topic, check the [AgnosticD](https://github.com/redhat-cop/agnosticd) repository we use to deploy these labs and demos.
 
-To get access to your environment, please click on [this link](https://www.opentlc.com/gg/gg.cgi?profile=generic_mentenza)
+To get access to your environment, please click on [this link](https://www.opentlc.com/gg/gg.cgi?profile=generic_mentenza) and add the following information to the form:
 
+[![300-left](img/guidgrabber.png)](https://redhat-sap.github.io/sap-workshops//AnsibleFest2020/img/guidgrabber.png)
 
+- **Lab Code:** Use the already selected one
+- **Activation Key:** This will be provided by the lab instructor(s) during the session
+- **E-Mail Address:** Use the email address you used to register to the event
 
-### Environment info and credentials
-
-Once the environment has been provisioned, you will receive an email with some key information:
+Use the `Submit` button to send the information and you will be redirected to a page with all the required information for your lab, including:
 
 - SSH information to access the bastion host including:
   - SSH user information
-  - Bastion public hostbane information
+  - Bastion public hostnane information
   - SSH private key to be used
 - Ansible Tower information including:
   - Ansible Tower public URL
   - Ansible Tower user
   - Ansible Tower Password
-
 
 ## Running the lab
 
