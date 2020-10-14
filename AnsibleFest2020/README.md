@@ -293,6 +293,12 @@ As you can see **with just one click** we have deployed SAP HANA on 2 RHEL hosts
 
 ### Final task - Automate the HA configuration
 
+As an optional task, we are asking you now to add the required configuration to Ansible Tower to configure SAP HANA System Replication autiomatically for the `hana1` and `hana2` hosts, and test it. To do that, you will use the same patterns you have reviewed for the existing automation, and this is some useful information we are providing you so you don't need to create everything from scratch:
+
+- Existing repository --> https://github.com/redhat-sap/sap-tower-projects
+- Branch from that repository that has the required dependencies and playbooks for this --> https://github.com/redhat-sap/sap-tower-projects/tree/sap-hana-hsr-raw
+
+And a **very important step required** in order for this to work is both hosts `hana1` and `hana2` being able to resolve each other address, othersie the replication process will fail. To do this, you can basically copy the `/etc/hosts` entry in `hana1` host containing the IP and name resolution for itself to `/etc/hosts` in `hana2` and viceversa.
 
 
 
