@@ -300,8 +300,75 @@ As an optional task, we are asking you now to add the required configuration to 
 
 And a **very important step required** in order for this to work is both hosts `hana1` and `hana2` being able to resolve each other address, othersie the replication process will fail. To do this, you can basically copy the `/etc/hosts` entry in `hana1` host containing the IP and name resolution for itself to `/etc/hosts` in `hana2` and viceversa.
 
+#### Final task - Solution
 
+In order to complete the final task, you should have done the following steps:
 
+1. Configure /etc/host on each `hana` node to properly resolve each other. Check the following example:
 
+    ```bash
+    [root@hana1 ~]# cat /etc/hosts
+    192.168.0.198 hana1.ec2.internal hana1
+    192.168.0.21 hana2.ec2.internal hana2
+    127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+    ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
 
+    [root@hana2 ~]# cat /etc/hosts
+    192.168.0.21 hana2.ec2.internal hana2
+    192.168.0.198 hana1.ec2.internal hana1
+    127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+    ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+    ```
+
+2. Create a new `Project` in Tower with the following information:
+
+    ![400-left](img/extra_project.png)(https://redhat-sap.github.io/sap-workshops//AnsibleFest2020/img/extra_project.png)
+
+3. Create a new `Job Template` in Tower with the following information:
+
+    ![400-left](img/extra_template.png)(https://redhat-sap.github.io/sap-workshops//AnsibleFest2020/img/extra_template.png)
+
+4. Modify existing `Inventory` adding the following entries:
+
+    - To `hanas` HostGroup
+
+      ![400-left](img/new_inv_group.png)(https://redhat-sap.github.io/sap-workshops//AnsibleFest2020/img/new_inv_group.png)
+
+    - To `hana1` Host
+
+      ![400-left](img/new_inv_hana1.png)(https://redhat-sap.github.io/sap-workshops//AnsibleFest2020/img/new_inv_hana1.png)
+
+      - To `hana2` Host
+
+      ![400-left](img/new_inv_hana2.png)(https://redhat-sap.github.io/sap-workshops//AnsibleFest2020/img/new_inv_hana2.png)
+
+5. Execute the `Template` you have just created:
+
+    ![400-left](img/new_template_exec.png)(https://redhat-sap.github.io/sap-workshops//AnsibleFest2020/img/new_template_exec.png)
+
+Once completed all the steps, if you login into the `hana1` server, you can check the HANA replication status doing the following:
+
+```bash
+# Example for AWS environments where user is `ec2-user`
+[ec2-user@bastion ~]$ ssh hana1
+[ec2-user@hana1 ~]$ sudo -i
+[root@hana1 ~]$ su - rheadm
+hana1:rheadm> python /usr/sap/RHE/HDB00/exe/python_support/systemReplicationStatus.py
+| Database | Host  | Port  | Service Name | Volume ID | Site ID | Site Name | Secondary | Secondary | Secondary | Secondary | Secondary     | Replication | Replication | Replication    |
+|          |       |       |              |           |         |           | Host      | Port      | Site ID   | Site Name | Active Status | Mode        | Status      | Status Details |
+| -------- | ----- | ----- | ------------ | --------- | ------- | --------- | --------- | --------- | --------- | --------- | ------------- | ----------- | ----------- | -------------- |
+| SYSTEMDB | hana1 | 30001 | nameserver   |         1 |       1 | DC1       | hana2     |     30001 |         2 | DC2       | YES           | SYNC        | ACTIVE      |                |
+| RHE      | hana1 | 30007 | xsengine     |         2 |       1 | DC1       | hana2     |     30007 |         2 | DC2       | YES           | SYNC        | ACTIVE      |                |
+| RHE      | hana1 | 30003 | indexserver  |         3 |       1 | DC1       | hana2     |     30003 |         2 | DC2       | YES           | SYNC        | ACTIVE      |                |
+
+status system replication site "2": ACTIVE
+overall system replication status: ACTIVE
+
+Local System Replication State
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+mode: PRIMARY
+site id: 1
+site name: DC1
+```
 
