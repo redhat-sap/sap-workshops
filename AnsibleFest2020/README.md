@@ -379,4 +379,3 @@ Hope you liked the lab. If are interesting in contributing to this Community dri
 Many thanks!!
 
 Your AnsibleFest 2020 team
-
