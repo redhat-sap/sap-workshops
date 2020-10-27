@@ -18,6 +18,8 @@ And an OpenShift 4.x cluster with the following components deployed:
 - **OpenShift Container Storage**: used for multi-purpose container storage backend.
 - **Fuse Online**: used to demonstrate out of the box easy to implement integration capabilities with SAP S/4HANA and multi purpose integrations.
 - **3scale**: used to demonstrate API managament capabilities for both SAP API Business Hub APIs and custom APIs deployed as microservices in OpenShift.
+- **Backend Microservice**: used to demonstrate the integration with SAP S/4HANA using Red Hat Fuse.
+- **Frontend Microservice**: used to present the data coming from SAP S/4HANA and SAP HANA to the user.
 
 [![agile-integration-infra-layout](img/infra_layout.png)](https://redhat-sap.github.io/sap-workshops//sap-integration/img/infra_layout.png)
 
