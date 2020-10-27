@@ -37,6 +37,8 @@ This environment is provisioned using the Red Hat internal demo system. We at Re
 
 Login into [Red Hat Product Demo System](https://rhpds.redhat.com) and navigate to `Services --> Catalogs --> All Services --> Workshops`. An item called `SAP side-by-side Integration` will be available.
 
+You will find 2 different Catalog Items for this workshops, prefixed with the target infrastructure where this will be deployed, this is 'OSP' or 'AWS'. Please **use always the OSP version** and only use AWS if the OSP version fails to deploy.
+
 [![rhpds-catalog](img/rhpds01.png)](https://redhat-sap.github.io/sap-workshops//sap-integration/img/rhpds01.png)
 
 Click on the **order** button, check the confirmation box and click on **Submit**.
@@ -210,6 +212,16 @@ You can try to do the same with the other methods exposed by the `Analytical Rep
 
 
 ### Use Case 2: Using Fuse to create Camel routes with S/4HANA via JCo and ODATA, exposing these as REST APIs endpoints
+
+This scenario will show how to integrate with SAP S/4HANA from a microservice running in OpenShift using a **certified integration** by SAP. To do that this workshop provides a running backend microservice based on [this repository](https://github.com/redhat-sap/sap-side-by-side-be). This will use a Spring Boot Camel environment to invoke remote function modules and BAPI methods within SAP.
+
+[![400-left](img/sap_certified_integration.png)](https://redhat-sap.github.io/sap-workshops//sap-integration/img/sap_certified_integration.png)
+
+In addition, these routes are exposed as REST API endpoints in our backend microservice and presented via Swagger UI for testing and validation. Click on `Home -- Projects -- side-by-side` to get an overview of the Project already present in your OpenShift Cluster for this workshop.
+
+[![500-left](img/project_side.png)](https://redhat-sap.github.io/sap-workshops//sap-integration/img/project_side.png)
+
+
 
 
 ### Use Case 3: Consume previuos exposed APIs via custom Angular frontend microservice
