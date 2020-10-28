@@ -241,7 +241,10 @@ As an example, check how we can retrieve users from SAP HANA for the SFLIGHT dem
 
 [![500-left](img/swagger_02.gif)](https://redhat-sap.github.io/sap-workshops//sap-integration/img/swagger_02.gif)
 
+Try to test a couple of more methods from Swagger UI and check the logs from the backend Pod at the same time, so you can see the correspondency:
 
+[![500-left](img/swagger_03.gif)](https://redhat-sap.github.io/sap-workshops//sap-integration/img/swagger_03.gif)
 
+With all this together we have reviewed the integration capabilities Red Hat Integration can bring to SAP customers, to allow them to inetegrate their custom SAP extensions and code into S/4HANA. If you want to deeply review how all this work together check the [backend microservice repository](https://github.com/redhat-sap/sap-side-by-side-be) where you can find all the code that make this work.
 
 ### Use Case 3: Consume previuos exposed APIs via custom Angular frontend microservice
