@@ -12,7 +12,7 @@ The high-level architecture consists of 3 different RHEL 8.x servers:
 - **bastion**: this is meant to be used as the jump host for SSH access to the environment and where to run SAP GUI from if required.
 - **hana**: this is meant to be used as the RHEL server where to deploy SAP HANA.
 - **s4hana**: this is meant to be used as the RHEL server where to deploy SAP S/4HANA.
-  
+
 And an OpenShift 4.x cluster with the following components deployed:
 
 - **OpenShift Container Storage**: used for multi-purpose container storage backend.
@@ -213,7 +213,7 @@ You can try to do the same with the other methods exposed by the `Analytical Rep
 [![500-left](img/swagger.gif)](https://redhat-sap.github.io/sap-workshops//sap-integration/img/swagger.gif)
 
 
-### Use Case 2: Using Fuse to create Camel routes with S/4HANA via JCo and ODATA, exposing these as REST APIs endpoints
+### Use Case 2: Using Fuse to create Camel routes with S/4HANA via JCo and ODATA, exposing these as REST API endpoints
 
 This scenario will show how to integrate with SAP S/4HANA from a microservice running in OpenShift using a **certified integration** by SAP. To do that this workshop provides a running backend microservice based on [this repository](https://github.com/redhat-sap/sap-side-by-side-be). This will use a Spring Boot Camel environment to invoke remote function modules and BAPI methods within SAP.
 
@@ -247,7 +247,7 @@ Try to test a couple of more methods from Swagger UI and check the logs from the
 
 With all this together we have reviewed the integration capabilities Red Hat Integration can bring to SAP customers, to allow them to inetegrate their custom SAP extensions and code into S/4HANA. If you want to deeply review how all this work together check the [backend microservice repository](https://github.com/redhat-sap/sap-side-by-side-be) where you can find all the code that make this work.
 
-### Use Case 3: Consume previuos exposed APIs via custom Angular frontend microservice
+### Use Case 3: Consume previuos exposed API via custom Angular frontend microservice
 
 This scenario will show how we can build custom cloud native applications that can be integrated with our SAP systems using the integration we have configured in the previous use case. To do that this workshop provides a running frontend microservice based on [this repository](https://github.com/redhat-sap/sap-side-by-side-fe). This will use Angular, a TypeScript-based open-source web application framework, to develop a simple microservice that will consume the exposed APIs from our backend microservice from the previuos use case and present the data coming from S/4HANA and HANA to the user.
 
