@@ -237,6 +237,10 @@ Once you click in the URL link this will be opened in your default browser and y
 
 [![400-left](img/swagger_01.png)](https://redhat-sap.github.io/sap-workshops//sap-integration/img/swagger_01.png)
 
+As an example, check how we can retrieve users from SAP HANA for the SFLIGHT demo schema:
+
+[![500-left](img/swagger_02.gif)](https://redhat-sap.github.io/sap-workshops//sap-integration/img/swagger_02.gif)
+
 
 
 
