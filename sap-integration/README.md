@@ -16,8 +16,8 @@ The high-level architecture consists of 3 different RHEL 8.x servers:
 And an OpenShift 4.x cluster with the following components deployed:
 
 - **OpenShift Container Storage**: used for multi-purpose container storage backend.
-- **Fuse Online**: used to demonstrate out of the box easy to implement integration capabilities with SAP S/4HANA and multi purpose integrations.
-- **3scale**: used to demonstrate API managament capabilities for both SAP API Business Hub APIs and custom APIs deployed as microservices in OpenShift.
+- **Fuse Online**: used to demonstrate out of the box easy to implement integration capabilities with SAP S/4HANA and multi-purpose integrations.
+- **3scale**: used to demonstrate API management capabilities for both SAP API Business Hub APIs and custom APIs deployed as microservices in OpenShift.
 - **Backend Microservice**: used to demonstrate the integration with SAP S/4HANA using Red Hat Fuse.
 - **Frontend Microservice**: used to present the data coming from SAP S/4HANA and SAP HANA to the user.
 
@@ -29,7 +29,7 @@ This workshop will cover the following use cases:
 
 - API management using 3scale, centralizing APIs from both SAP API Business Hub APIs and custom APIs deployed as microservices in OpenShift.
 - Consuming S/4HANA RFCs via SAP JCo and ODATA, using a Red Hat Fuse microservice configuring Camel Routes. Exposing those as REST APIs.
-- Consume previuos exposed APIs via custom Angular frontend microservice to make those consumable via web to the end user.
+- Consume previous exposed APIs via custom Angular frontend microservice to make those consumable via web to the end-user.
 
 ## Environment request
 
@@ -223,13 +223,13 @@ In addition, these routes are exposed as REST API endpoints in our backend micro
 
 [![500-left](img/project_side.png)](https://redhat-sap.github.io/sap-workshops//sap-integration/img/project_side.png)
 
-Let's identify the backend microservice and get the external exposed URL for it. In the Project Overview, you can see the `Inventory` section on the bottom left. From that section click on `Deployment Configs`. You can get to the same place using the `Workloads -- Deployment Configs` menu. Once you get there, you will see 2 different Deployment Configs. The one associated with the backend microservice is `sap-side-by-side-be`. If you click on it, you will be able to see more details like the number of Pods running for this Deployment Config or the container image used which is `quay.io/redhat-sap-cop/sap-side-by-side-be:v1.1.0` by the time this instructions where written.
+Let's identify the backend microservice and get the external exposed URL for it. In the Project Overview, you can see the `Inventory` section on the bottom left. From that section click on `Deployment Configs`. You can get to the same place using the `Workloads -- Deployment Configs` menu. Once you get there, you will see 2 different Deployment Configs. The one associated with the backend microservice is `sap-side-by-side-be`. If you click on it, you will be able to see more details like the number of Pods running for this Deployment Config or the container image used which is `quay.io/redhat-sap-cop/sap-side-by-side-be:v1.1.0` by the time these instructions where written.
 
 [![300-left](img/dc_be_01.png)](https://redhat-sap.github.io/sap-workshops//sap-integration/img/dc_be_01.png)
 
-You can review more details from this Pod, check the actual used resources or check the logs comming from the Pod to see if everything looks fine, so you get familiar with it, as you can come back later to the Pod and see these values again once you start hitting the exposed API endpoints in the microservice.
+You can review more details from this Pod, check the actually used resources or check the logs coming from the Pod to see if everything looks fine, so you get familiar with it, as you can come back later to the Pod and see these values again once you start hitting the exposed API endpoints in the microservice.
 
-Let's review now how to access the exposed URL for this microservice. As explained before, Swagger UI has been configured so the documentation and testing for each API method is available for quick tests and to be used as a reference for developers to consume this API. Click on `Networking -- Routes` menu and yoy will see 2 different routes available. The one specific for the backend microservice is called `sap-side-by-side-be`. You can click on the exposed URL referred in the `Location` column.
+Let's review now how to access the exposed URL for this microservice. As explained before, Swagger UI has been configured so the documentation and testing for each API method are available for quick tests and to be used as a reference for developers to consume this API. Click on `Networking -- Routes` menu and you will see 2 different routes available. The one specific for the backend microservice is called `sap-side-by-side-be`. You can click on the exposed URL referred in the `Location` column.
 
 [![300-left](img/route_be.png)](https://redhat-sap.github.io/sap-workshops//sap-integration/img/route_be.png)
 
@@ -241,27 +241,27 @@ As an example, check how we can retrieve users from SAP HANA for the SFLIGHT dem
 
 [![500-left](img/swagger_02.gif)](https://redhat-sap.github.io/sap-workshops//sap-integration/img/swagger_02.gif)
 
-Try to test a couple of more methods from Swagger UI and check the logs from the backend Pod at the same time, so you can see the correspondency:
+Try to test a couple of more methods from Swagger UI and check the logs from the backend Pod at the same time, so you can see the correspondence:
 
 [![500-left](img/swagger_03.gif)](https://redhat-sap.github.io/sap-workshops//sap-integration/img/swagger_03.gif)
 
-With all this together we have reviewed the integration capabilities Red Hat Integration can bring to SAP customers, to allow them to inetegrate their custom SAP extensions and code into S/4HANA. If you want to deeply review how all this work together check the [backend microservice repository](https://github.com/redhat-sap/sap-side-by-side-be) where you can find all the code that make this work.
+With all this together we have reviewed the integration capabilities Red Hat Integration can bring to SAP customers, to allow them to integrate their custom SAP extensions and code into S/4HANA. If you want to deeply review how all this work together check the [backend microservice repository](https://github.com/redhat-sap/sap-side-by-side-be) where you can find all the code that makes this work.
 
-### Use Case 3: Consume previuos exposed API via custom Angular frontend microservice
+### Use Case 3: Consume previous exposed API via custom Angular frontend microservice
 
-This scenario will show how we can build custom cloud native applications that can be integrated with our SAP systems using the integration we have configured in the previous use case. To do that this workshop provides a running frontend microservice based on [this repository](https://github.com/redhat-sap/sap-side-by-side-fe). This will use Angular, a TypeScript-based open-source web application framework, to develop a simple microservice that will consume the exposed APIs from our backend microservice from the previuos use case and present the data coming from S/4HANA and HANA to the user.
+This scenario will show how we can build custom cloud-native applications that can be integrated with our SAP systems using the integration we have configured in the previous use case. To do that this workshop provides a running frontend microservice based on [this repository](https://github.com/redhat-sap/sap-side-by-side-fe). This will use Angular, a TypeScript-based open-source web application framework, to develop a simple microservice that will consume the exposed APIs from our backend microservice from the previous use case and present the data coming from S/4HANA and HANA to the user.
 
-Let's identify the frontend microservice and get the external exposed URL for it. In the Project Overview, you can see the `Inventory` section on the bottom left. From that section click on `Deployment Configs`. You can get to the same place using the `Workloads -- Deployment Configs` menu. Once you get there, you will see 2 different Deployment Configs. The one associated with the frontend microservice is `sap-side-by-side-fe`. If you click on it, you will be able to see more details like the number of Pods running for this Deployment Config or the container image used which is `quay.io/redhat-sap-cop/sap-side-by-side-fe:v1.0.0` by the time this instructions where written.
+Let's identify the frontend microservice and get the external exposed URL for it. In the Project Overview, you can see the `Inventory` section on the bottom left. From that section click on `Deployment Configs`. You can get to the same place using the `Workloads -- Deployment Configs` menu. Once you get there, you will see 2 different Deployment Configs. The one associated with the frontend microservice is `sap-side-by-side-fe`. If you click on it, you will be able to see more details like the number of Pods running for this Deployment Config or the container image used which is `quay.io/redhat-sap-cop/sap-side-by-side-fe:v1.0.0` by the time these instructions where written.
 
 [![300-left](img/dc_fe_01.png)](https://redhat-sap.github.io/sap-workshops//sap-integration/img/dc_fe_01.png)
 
-You can review more details from this Pod, check the actual used resources or check the logs comming from the Pod to see if everything looks fine, so you get familiar with it, as you can come back later to the Pod and see these values again once you start hitting the exposed API endpoints in the microservice.
+You can review more details from this Pod, check the actually used resources or check the logs coming from the Pod to see if everything looks fine, so you get familiar with it, as you can come back later to the Pod and see these values again once you start hitting the exposed API endpoints in the microservice.
 
-Let's review now how to access the exposed URL for this microservice which will present the web interface for the user. Click on `Networking -- Routes` menu and yoy will see 2 different routes available. The one specific for the backend microservice is called `sap-side-by-side-fe`. You can click on the exposed URL referred in the `Location` column.
+Let's review now how to access the exposed URL for this microservice which will present the web interface for the user. Click on `Networking -- Routes` menu and you will see 2 different routes available. The one specific for the backend microservice is called `sap-side-by-side-fe`. You can click on the exposed URL referred in the `Location` column.
 
 [![300-left](img/route_fe.png)](https://redhat-sap.github.io/sap-workshops//sap-integration/img/route_fe.png)
 
-Once you click in the URL link this will be opened in your default browser. There are 2 different pieces configured in this frontend. Both can be accessed using the links from the top right corner. The `Home` link will present the form to query customers from the SAP FLIGHT schemea in HANA, using the customers GET method from the backend API in Fuse. The `Create` link will present the form to create customers in the SAP FLIGHT schemea in HANA, using the customers POST method from the backend API in Fuse.
+Once you click in the URL link this will be opened in your default browser. There are 2 different pieces configured in this frontend. Both can be accessed using the links from the top right corner. The `Home` link will present the form to query customers from the SAP FLIGHT schema in HANA, using the customers GET method from the backend API in Fuse. The `Create` link will present the form to create customers in the SAP FLIGHT schema in HANA, using the customers' POST method from the backend API in Fuse.
 
 [![500-left](img/fe_01.png)](https://redhat-sap.github.io/sap-workshops//sap-integration/img/fe_01.png)
 
