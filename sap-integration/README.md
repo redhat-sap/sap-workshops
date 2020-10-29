@@ -28,7 +28,7 @@ And an OpenShift 4.x cluster with the following components deployed:
 This workshop will cover the following use cases:
 
 - API management using 3scale, centralizing APIs from both SAP API Business Hub APIs and custom APIs deployed as microservices in OpenShift.
-- Consuming S/4HANA RFCs via SAP JCo and ODATA, using a Red Hat Fuse microservice configuring Camel Routes. Exposing those as REST APIs.
+- Consuming S/4HANA RFCs via SAP JCo and OData, using a Red Hat Fuse microservice configuring Camel Routes. Exposing those as REST APIs.
 - Consume previous exposed APIs via custom Angular frontend microservice to make those consumable via web to the end-user.
 
 ## Environment request
@@ -213,7 +213,7 @@ You can try to do the same with the other methods exposed by the `Analytical Rep
 [![500-left](img/swagger.gif)](https://redhat-sap.github.io/sap-workshops//sap-integration/img/swagger.gif)
 
 
-### Use Case 2: Using Fuse to create Camel routes with S/4HANA via JCo and ODATA, exposing these as REST API endpoints
+### Use Case 2: Using Fuse to create Camel routes with S/4HANA via JCo and OData, exposing these as REST API endpoints
 
 This scenario will show how to integrate with SAP S/4HANA from a microservice running in OpenShift using a **certified integration** by SAP. To do that this workshop provides a running backend microservice based on [this repository](https://github.com/redhat-sap/sap-side-by-side-be). This will use a Spring Boot Camel environment to invoke remote function modules and BAPI methods within SAP.
 
