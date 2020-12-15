@@ -277,3 +277,8 @@ Once we have created the new customer, click on the `Home` link to use the form 
 
 You should get the information from the customer, demonstrating again the whole flow, getting information from the SAP HANA schema from a custom frontend microservice deployed in OpenShift.
 
+## Demo presentation and recording
+
+The following video shows a presentation and a demo on how Red Hat Portfolio helps SAP customer on this 'side-by-side extensibility' topic.
+
+[![400-left](https://img.youtube.com/vi/sPh4y8-XXdo/0.jpg)](https://youtu.be/sPh4y8-XXdo "How to achieve agile integration with SAP and side-by-side extensibility with Red Hat Integration")
