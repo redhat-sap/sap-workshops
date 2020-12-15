@@ -358,3 +358,7 @@ In case you have the time to test this new Tower workflow, notice it will fail i
 This is how the process to create the workflow should look like:
 
 ![tower-workflow-final-gif](img/tower-workflow-final.gif)
+
+## Demo recording
+
+[![SAP E2E deployment with Ansible](img/vide_demo.png)](https://youtu.be/hfqVozIUH4w "E2E SAP HANA HA Pacemaker cluster creation with Ansible")
