@@ -361,4 +361,6 @@ This is how the process to create the workflow should look like:
 
 ## Demo recording
 
-[![SAP E2E deployment with Ansible](img/vide_demo.png)](https://youtu.be/hfqVozIUH4w "E2E SAP HANA HA Pacemaker cluster creation with Ansible")
+The following video shows how to use Ansible Tower and the roles described during the workshop and more to create a HANA HA cluster with Pacemaker to automate the cluster failover.
+
+[![SAP E2E deployment with Ansible](https://img.youtube.com/vi/hfqVozIUH4w/0.jpg)](https://youtu.be/hfqVozIUH4w "E2E SAP HANA HA Pacemaker cluster creation with Ansible")
