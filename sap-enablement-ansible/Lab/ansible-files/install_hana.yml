@@ -1,0 +1,10 @@
+---
+
+- name: Install Hana
+  hosts: hana
+  become: yes
+
+  roles:
+              - sap-hana-preconfigure
+              - redhat_sap.sap_hana_deployment
+

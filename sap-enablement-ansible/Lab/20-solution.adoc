@@ -1,0 +1,51 @@
+
+include::config_vars.adoc[]
+
+### Solution
+
+You need to create the following files:
+
+. The required playbook to prepare the system for hana: `./prepare4sap.yml`:
++
+----
+include::ansible-files/prepare4sap.yml[]
+----
+
+. The required playbook to install hana: `./install_hana.yml`:
++
+----
+include::ansible-files/install_hana.yml[]
+----
+
+. The required playbook to install S4: `./install_s4.yml`:
++
+----
+include::ansible-files/install_s4.yml[]
+----
+
+. The variables that are required for all hosts:  `./group_vars/all`
++
+[subs=attributes+]
+----
+include::ansible-files/group_vars/all[]
+----
+
+. The variables that are required for all hana servers: `./group_vars/hana`
++
+[subs=attributes+]
+----
+include::ansible-files/group_vars/hana[]
+----
+
+.
+
+Now kick off the installation as user {admin} on {tower}:
+
+[subs=attributes+]
+-----
+[{admin}@{tower} ansible-files]$ ansible-playbook install-hana.yml
+-----
+
+TIP: run with -vvv to increase debuglevel to get more information whats happening
+
+You finished your Lab deploying SAP HANA fully automated. You now know the basics and should be able to integrate this with Satellite, Ansible Tower and even CloudForms. To learn more about these tools join us for another ILT training or login to the {partnerportal} and look for OPEN trainings

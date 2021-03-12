@@ -1,0 +1,126 @@
+
+include::config_vars.adoc[]
+
+==== Upgrade HANA Server
+Do you know how to upgrade SAP HANA servers
+
+1. with new RHEL patches?
+2. to a new RHEL minor reg_osrelease?
+
+WARNING: *Solution Below*
+
+1. Login as root to {servera}
+
+2. Update the system to the latest patches in the current RHEL minor release:
+* Make sure you have your release set to the current minor release:
++
+[subs=attributes+]
+----
+[root@{servera} ~]# subscription-manager release
+Release: {os_release}
+----
+
+* If you want to update to a newer minor release you need to do this command additionally (see `subscription-manager release --list` for available releases):
++
+[subs=attributes+]
+----
+[root@{servera} ~]# subscription-manager release --set {os_upgrade_release}
+Release set to: {os_upgrade_release}
+----
+
+* Now you can update the system
++
+[subs=attributes+]
+----
+[root@{servera} ~]# yum -y update
+----
+
+3. Now stop the HANA database
++
+[subs=attributes+]
+----
+[root@{servera} ~]# su - hxeadm
+hxeadm@{servera}:/usr/sap/HXE/HDB90> HDB stop
+----
+
+4. And reboot
++
+[subs=attributes+]
+----
+[root@{servera} ~]# reboot
+----
+
+5. After reboot is finished, login and start HANA again (in case it is not started automatically)
++
+[subs=attributes+]
+----
+[root@{jumphost} ~]# ssh {servera}
+[root@{servera} ~]# su - hxeadm
+  hxeadm@{servera}:/usr/sap/HXE/HDB90> HDB start
+----
+
+Do you really want to do this manually? If not, here is a playbook that covers both upgrade scenarios. If you change `reg_osrelease`, an upgrade to another RHEL release will be performed.
++
+[subs=attributes+]
+-----
+- name: Update Hana Server
+  hosts: {servera}
+  become: yes
+
+  vars:
+              # Repositories setup
+              reg_osrelease: {os_upgrade_release}
+              repo_reset: false
+              repositories:
+                 - rhel-7-{repoarch}-e4s-rpms
+                 - rhel-sap-hana-for-rhel-7-{repoarch}-e4s-rpms
+                 - rhel-7-{repoarch}-e4s-optional-rpms  # New requirement for RHEL 7.6
+
+              sid: hxe
+
+  roles:
+              ## We can use this role to change  repsoitories, if we need to and to switch the minor relase
+              - { role: mk-ansible-roles.subscribe-rhn }
+
+  tasks:
+              ## update the system
+              - name: ensure the the system is updated
+                yum: name=* state=latest
+
+              ## stop database
+              - name: ensure HANA is stopped
+                command: su - "{{ sid|lower + 'adm' }}" -c "HDB stop"
+
+              # Reboot the server now and wait until it is back
+              # inspired by https://support.ansible.com/hc/en-us/articles/201958037-Reboot-a-server-and-wait-for-it-to-come-back
+              # Reboot timeout needs to be adapted for large machines
+              - name: restart machine if required
+                shell: sleep 2 && shutdown -r now "Ansible updates triggered"
+                async: 1
+                poll: 0
+                become: true
+                ignore_errors: true
+
+              - name: waiting for server to come back
+                local_action: wait_for host={{ inventory_hostname }} port=22 state=started delay=90 sleep=2 timeout=900
+                become: false
+
+              ## start database again
+              - name: ensure HANA is started
+                command: su - "{{ sid|lower + 'adm' }}" -c "HDB start"
+
+
+-----
+
+TIP: Read the man page for `needs-restarting` and enhance the playbook by using `needs-restarting -r`
+
+[TIP]
+====
+You could also think about converting this playbook into separate roles, that can be reused in different playbooks, such as:
+
+* Stop HANA instances
+* Start HANA instances
+* Update Server.
+
+here you should implement reboot as a handler, so that a system is only rebooted if a new kernel or other patch which requires a reboot is installed
+====

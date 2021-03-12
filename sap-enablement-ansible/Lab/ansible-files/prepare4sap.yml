@@ -1,0 +1,15 @@
+---
+# This playbook configures all systems 
+# for consumption of SAP software
+
+- name: Prepare for SAP Install
+  hosts: hana, s4hana
+  become: yes
+
+  roles:
+              - redhat_sap.sap_rhsm
+              - linux-system-roles.timesync 
+              - linux-system-roles.storage
+              - sap-preconfigure
+              - redhat_sap.sap_hostagent
+

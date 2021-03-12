@@ -1,0 +1,58 @@
+include::config_vars.adoc[]
+
+=== Install SAP HANA with ansible roles
+
+==== Check available roles for SAP deployment
+On http://galaxy.ansible.com[Ansible Galaxy] a lot of ready to use roles exist.
+Red Hat maintaines the linux-system-roles, which are upstream to supported RHEL System Roles.
+
+See the follwoing pages for more details:
+
+   * https://access.redhat.com/articles/3050101[Red Hat Enterprise Linux (RHEL) System Roles]
+   * https://galaxy.ansible.com/linux-system-roles/[Linux System Roles (upstream)]
+   * https://galaxy.ansible.com/redhat_sap/[Roles for SAP deployments (community)]
+
+
+Install the required roles:
+
+[subs=attributes+]
+----
+[{admin}@{adminhost}]$ sudo yum install -y rhel-system-roles rhel-system-roles-sap
+----
+
+In this Lab these Roles are preinstalled on your server. Check that the above roles are installed and accessable on {adminhost} as user {admin}. Get familiar with these roles and read the documentation of each of the above role and browse the roles itself
+
+[subs=attributes+]
+-----
+[{admin}@{adminhost}]$ ansible-galaxy list
+- sap-hana-preconfigure, (unknown version)
+- sap-netweaver-preconfigure, (unknown version)
+- sap-preconfigure, (unknown version)
+- linux-system-roles.kdump, (unknown version)
+- linux-system-roles.network, (unknown version)
+- linux-system-roles.postfix, (unknown version)
+- linux-system-roles.selinux, (unknown version)
+- linux-system-roles.storage, (unknown version)
+- linux-system-roles.timesync, (unknown version)
+- rhel-system-roles.kdump, (unknown version)
+- rhel-system-roles.network, (unknown version)
+- rhel-system-roles.postfix, (unknown version)
+- rhel-system-roles.selinux, (unknown version)
+- rhel-system-roles.storage, (unknown version)
+- rhel-system-roles.timesync, (unknown version)
+-----
+
+NOTE: If you want to install additional roles from upstream use:
+`sudo ansible-galaxy install rolename -p /usr/share/ansible/roles`
+
+NOTE: Global roles can be installed (as root) to `/usr/share/ansible/roles` or `/etc/ansible/roles` using the -p option, per default roles are installed to `${HOME}/.ansible/roles`. You might need to set your roles_path in `ansible.cfg` appropriately
+
+For the installation of SAP HANA in this course we need the following roles:
+
+- https://galaxy.ansible.com/linux-system-roles/storage[rhel-system-roles.storage]
+- https://galaxy.ansible.com/linux-system-roles/timesync[rhel-system-roles.timesync]
+- https://galaxy.ansible.com/berndfinger/sap_preconfigure[sap-preconfigure]
+- https://galaxy.ansible.com/berndfinger/sap_hana_preconfigure[sap-hana-preconfigure]
+
+
+Click on each role above and read the README on how to use the roles and study some example playbooks.

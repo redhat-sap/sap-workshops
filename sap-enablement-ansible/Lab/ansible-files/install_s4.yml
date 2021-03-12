@@ -1,0 +1,10 @@
+---
+
+- name: Install S4
+  hosts: hana
+  become: yes
+
+  roles:
+              - sap-netweaver-preconfigure
+              - redhat_sap.sap_hana_deployment
+

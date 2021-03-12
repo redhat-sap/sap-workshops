@@ -1,0 +1,26 @@
+
+include::config_vars.adoc[]
+
+==== Install and configure Insights
+
+In this Lab the satellite is configured to proxy your insights client.
+////
+If you have access to your own subscription run `subscription-manager unregister` and register the server against your subscription.
+Then follow the instructions of https://access.redhat.com/products/red-hat-insights#getstarted[ the getting started guide^]
+////
+
+The role to install insights is already installed in the lab. To use insights do the following:
+
+1. Create a playbook `install-insights.yml` to install to configure Insights
++
+----
+include::ansible-files/install-insights.yml[]
+----
+
+2. Run the playbook
++
+----
+# ansible-playbook install-insights.yml
+----
+
+3. Goto https://{satellite-ext}, click the insights tab to see the results

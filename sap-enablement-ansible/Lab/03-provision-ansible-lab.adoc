@@ -1,0 +1,10 @@
+
+### Provision the Ansible Lab Environment
+
+ 1. Access the https://labs.opentlc.com/[OPENTLC lab portal], which is built on top of Red Hat CloudForms.
+ 2. Use your credentials to log in.
+ 3. After you log in, navigate to *Services → Catalogs → All Services → OPENTLC Cloud Infrastructure Labs*.
+ 4. On the left side of the screen, locate *Ansible Foundations Lab* and click *Order*, which appears on the right.
+ 5. On the next screen, on the lower right side, click Submit to order your Ansible Foundations environment.
+ 6. Check your email for a message from Red Hat describing how to connect to the environment.
+ 7. Wait about 20 minutes to allow the environment to build.

@@ -1,0 +1,145 @@
+
+include::config_vars.adoc[]
+
+===  Check that Ansible is installed
+
+In the first part we will setup the bastion host as a simple
+admin server.
+
+. Update the bastion host
++
+[subs=attributes+]
+----
+# ssh {jumpuser}@{jumphost-ext} -i ~/.ssh/mylab
+# sudo -i
+# dnf -y update
+# reboot
+----
+. Connect to the control node ({jumphost}):
++
+[subs=attributes+]
+----
+# ssh {jumpuser}@{jumphost-ext}
+----
+. Check that Ansible is installed and usable:
+
++
+[subs=attributes+]
+-----
+$ ansible --version
+ansible 2.9.11
+  config file = /etc/ansible/ansible.cfg
+  configured module search path = ['/home/ec2-user/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python3.6/site-packages/ansible
+  executable location = /usr/bin/ansible
+  python version = 3.6.8 (default, Oct 11 2019, 15:04:54) [GCC 8.3.1 20190507 (Red Hat 8.3.1-4)]
+-----
+
+. Check that the environment variable GUID is set
++
+[subs=attributes+]
+-----
+$ env| grep GUID
+GUID=a1fe
+-----
+
+=== Check the Prerequisites
+
+NOTE: Ansible is keeping configuration management simple. Ansible requires no database or running daemons and can run easily on a laptop. On the managed hosts it needs no running agent.
+
+Verify that the managed hosts accept password-less connections with key authentication from {adminhost} as user {admin}, e.g.:
+
+[subs=attributes+]
+----
+[{admin}@{adminhost} ~]$ ssh {servera}
+[{admin}@{servera} ~]$ exit
+----
+
+[subs=attributes+]
+----
+[{admin}@{adminhost} ~]$ ssh {serverb}
+[{admin}@{serverb} ~]$ exit
+----
+
+To allow user {admin} to execute commands on {servera} and {serverb} as root `sudo` needs to be configured on the managed hosts.
+
+Test that the configuration allows {admin} to run commands using `sudo` on {servera} and {serverb} without a password, e.g.:
+
+[subs=attributes+]
+----
+[{admin}@{adminhost} ~]$ ssh {servera}
+[{admin}@{servera} ~]$ sudo cat /etc/shadow
+[{admin}@{servera} ~]$ exit
+----
+
+NOTE: *In all subsequent exercises you should work as the user {admin} on the bastion host (jumphost) if not explicitly told differently.*
+
+=== Configure the inventory
+
+To use the ansible command for host management, you need to provide an inventory file which defines a list of hosts to be managed from the control node. One way to do this is to specify the path to the inventory file with the `-i` option to the ansible command.
+
+Make sure you are user {admin} on {adminhost}. Create a directory for your ansible files:
+
+[subs=attributes+]
+----
+[{admin}@{adminhost} ~]$ mkdir ansible-files
+----
+
+Now create a simple inventory file as `~/ansible-files/inventory` with the following content:
+
+[subs=attributes+]
+----
+[hana]
+{servera}
+{serverb}
+----
+
+=== The Ansible Configuration File
+
+The behavior of Ansible can be customized by modifying settings in Ansible's ini-style configuration file. Ansible will select its configuration file from one of several possible locations on the control node, please refer to the documentation.
+
+TIP: The recommended practice is to create an `ansible.cfg` file in a directory from which you run Ansible commands. This directory would also contain any files used by your Ansible project, such as the inventory and Playbooks.
+Nonetheless we have setup a gloabl inventory at /etc/ansible/hosts which can be used, so you can skip these steps
+
+Follow these steps if you want to configure your own Ansible inventory:
+Make sure your inventory file is used by default when executing commands from the `~/ansible-files/` directory:
+
+* On {adminhost} as user {admin} create the file `~/ansible-files/ansible.cfg` with the following content:
++
+[subs=attributes+]
+----
+[defaults]
+inventory=/home/{admin}/ansible-files/inventory
+----
+
+* Make sure that the environment variable *ANSIBLE_INVENTORY* is unset
++
+[subs=attributes+]
+----
+[{admin}@{adminhost} ansible-files]$ unset ANSIBLE_INVENTORY
+----
+
+* Check with `ansible --version`, first from ansible's home directory and then from `~/ansible-files/`. You should find when run from `~/ansible-files/` your personal config settings override the main config file in `/etc/ansible/ansible.cfg`.
+
+* From `~/ansible-files/` run `ansible all --list-hosts`.
++
+[subs=attributes+]
+----
+[{admin}@{adminhost} ansible-files]$ ansible all --list-hosts
+  hosts (2):
+    {servera-fqdn}
+    {serverb-fqdn}
+----
+
+[subs=attributes+]
+----
+[{admin}@{adminhost} ansible-files]$ ansible -m ping all
+{servera-fqdn} | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+{serverb-fqdn} | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+----
