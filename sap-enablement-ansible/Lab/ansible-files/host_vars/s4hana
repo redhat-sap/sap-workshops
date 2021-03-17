@@ -17,7 +17,7 @@ storage_pools:
         mount_point: "/usr/sapmnt"
         state: present
       - name: swap
-        size: "20 GiB"
+        size: "21 GiB"
         state: present
 
 # S4 HANA Installation
@@ -33,7 +33,7 @@ sap_s4hana_deployment_db_schema_abap_password: "R3dh4t123!"
 sap_s4hana_deployment_master_password: "R3dh4t123!"
 sap_s4hana_deployment_hana_systemdb_password: "R3dh4t123!"
 sap_s4hana_deployment_sid: "RHE"
-sap_s4hana_deployment_db_host: "hana1.a1fe.internal"
+sap_s4hana_deployment_db_host: "hana1.{{ sap_domain }}"
 sap_s4hana_deployment_db_sid: "RHE"
 sap_s4hana_deployment_hana_instance_nr: "00"
 sap_s4hana_deployment_hana_system_password: "R3dh4t123!"

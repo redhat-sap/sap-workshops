@@ -17,7 +17,15 @@ Install the required roles:
 
 [subs=attributes+]
 ----
-[{admin}@{adminhost}]$ sudo yum install -y rhel-system-roles rhel-system-roles-sap
+[{admin}@{adminhost}]$ sudo yum install -y rhel-system-roles
+----
+
+Make sure you always have the latest SAP roles available. The current environment is running RHEL 8.1.
+Nonetheless install the latest version of the roles. Use the following command to install:
+
+[subs=attributes+]
+----
+yum update https://github.com/rhmk/sap-workshops/raw/gh-pages/sap-enablement-ansible/pkgs/rhel-system-roles-sap-2.0.0-7.el8.noarch.rpm
 ----
 
 In this Lab these Roles are preinstalled on your server. Check that the above roles are installed and accessable on {adminhost} as user {admin}. Get familiar with these roles and read the documentation of each of the above role and browse the roles itself

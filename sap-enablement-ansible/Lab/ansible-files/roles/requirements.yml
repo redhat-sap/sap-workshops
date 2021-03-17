@@ -1,0 +1,15 @@
+# from Ansible Galaxy
+- src: redhat_sap.sap_rhsm 
+  version: v1.1.2
+- src: redhat_sap.sap_hostagent
+  version: v1.2.0
+- src: redhat_sap.sap_hana_deployment
+  version:  v1.2.0
+- src: redhat_sap.sap_s4hana_deployment
+  version:  v1.1.0
+- src: redhat_sap.sap_hana_hsr
+  version: v1.2.0
+# src: linux-system-roles.storage
+# version:  1.2.2
+
+

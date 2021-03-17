@@ -104,10 +104,40 @@ In addition, if the public interface is different to the admin interface the fol
 * `sap_domain`: The DNS Domain of the SAP server. It defaults to _ansible_fqdn_.
 * `sap_ip` : The IP address of the SAP server. It defaults to _ansible_default_ipv4.address_
 
-In our demo environment no DNS domain is set and _ansible_fqdn_ is empty, we need to set the following:
+In our demo environment no DNS domain is set and _ansible_fqdn_ is empty, we need to set it to `$GUID.internal`. In Ansible we have the option to access shell environment variables with the lookup function:
 
 ----
-sap_domain: "labs.local"
+sap_domain:  "{{ lookup('env', 'GUID') }}.internal"
+----
+
+The role is designed to stop with an error message in case the system is updated and something has been
+installed that requires a reboot. The reason for this is to properly react to the reboot situation
+and not to reboot a production system immediately after updating.
+To avoid the error, set the following variable:
+
+----
+sap_preconfigure_update: yes
+sap_preconfigure_fail_if_reboot_required: false
+----
+
+CAUTION: The DNS setup of the servers is only tested and might not be completely correct.  The role is not failing if DNS stup is not correct. It is recommended to  have proper DNS in production, but it can work without it in test envrionments. In this environment you will see the following errors in the output:
+
+----
+TASK [sap-preconfigure : Check resolv.conf settings] **************************************************************************************************************************************************************
+fatal: [hana1]: FAILED! => {"changed": false, "cmd": "test \"$(dig hana1 +search +short)\" = \"192.168.0.138\"", "delta": "0:00:00.012347", "end": "2021-03-16 17:13:17.953316", "msg": "non-zero return code", "rc": 1, "start": "2021-03-16 17:13:17.940969", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [hana2]: FAILED! => {"changed": false, "cmd": "test \"$(dig hana2 +search +short)\" = \"192.168.0.130\"", "delta": "0:00:00.013704", "end": "2021-03-16 17:13:18.069518", "msg": "non-zero return code", "rc": 1, "start": "2021-03-16 17:13:18.055814", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [s4hana]: FAILED! => {"changed": false, "cmd": "test \"$(dig s4hana +search +short)\" = \"192.168.0.156\"", "delta": "0:00:00.014595", "end": "2021-03-16 17:13:18.163004", "msg": "non-zero return code", "rc": 1, "start": "2021-03-16 17:13:18.148409", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [sap-preconfigure : Check dns reverse settings] **************************************************************************************************************************************************************
+fatal: [hana1]: FAILED! => {"changed": false, "cmd": "test \"$(dig -x 192.168.0.138 +short)\" = \"hana1.d031.internal.\"", "delta": "0:00:00.012936", "end": "2021-03-16 17:13:18.744562", "msg": "non-zero return code", "rc": 1, "start": "2021-03-16 17:13:18.731626", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [hana2]: FAILED! => {"changed": false, "cmd": "test \"$(dig -x 192.168.0.130 +short)\" = \"hana2.d031.internal.\"", "delta": "0:00:00.013366", "end": "2021-03-16 17:13:18.856884", "msg": "non-zero return code", "rc": 1, "start": "2021-03-16 17:13:18.843518", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [s4hana]: FAILED! => {"changed": false, "cmd": "test \"$(dig -x 192.168.0.156 +short)\" = \"s4hana.d031.internal.\"", "delta": "0:00:00.013046", "end": "2021-03-16 17:13:18.950928", "msg": "non-zero return code", "rc": 1, "start": "2021-03-16 17:13:18.937882", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
 ----
 
 

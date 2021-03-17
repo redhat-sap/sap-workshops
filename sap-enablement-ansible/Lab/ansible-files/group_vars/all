@@ -8,7 +8,9 @@ timesync_ntp_provider: chrony
 # sap-preconfigure
 #-------------------
 sap_preconfigure_modify_etc_hosts: true
-sap_domain: "labs.local"
+sap_domain: "{{ lookup('env', 'GUID') }}.internal"
+sap_preconfigure_update: yes
+sap_preconfigure_fail_if_reboot_required: false
 
 
 # redhat_sap.sap_hostagent
