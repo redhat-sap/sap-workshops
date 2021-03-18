@@ -5,9 +5,13 @@ include::config_vars.adoc[]
 Do you know how to upgrade SAP HANA servers
 
 1. with new RHEL patches?
-2. to a new RHEL minor reg_osrelease?
+2. to a new RHEL minor release?
 
 WARNING: *Solution Below*
+
+==== Manual steps to update the OS of a HANA server
+
+The following steps will update the OS of a single HANA server within a RHEL major release. If the Server is using System Replication obiously more steps are required but with the failover technology a fully automated, near-zero downtime update can be achieved.
 
 1. Login as root to {servera}
 
@@ -20,7 +24,7 @@ WARNING: *Solution Below*
 Release: {os_release}
 ----
 
-* If you want to update to a newer minor release you need to do this command additionally (see `subscription-manager release --list` for available releases):
+* OPTIONAL: If you want to update to a newer minor release you need to do this command additionally (see `subscription-manager release --list` for available releases):
 +
 [subs=attributes+]
 ----
@@ -43,7 +47,7 @@ Release set to: {os_upgrade_release}
 hxeadm@{servera}:/usr/sap/HXE/HDB90> HDB stop
 ----
 
-4. And reboot
+4. And reboot, if necessaey (e.g. new kernel)
 +
 [subs=attributes+]
 ----
@@ -59,7 +63,18 @@ hxeadm@{servera}:/usr/sap/HXE/HDB90> HDB stop
   hxeadm@{servera}:/usr/sap/HXE/HDB90> HDB start
 ----
 
-Do you really want to do this manually? If not, here is a playbook that covers both upgrade scenarios. If you change `reg_osrelease`, an upgrade to another RHEL release will be performed.
+==== Automate these steps with Ansible
+
+Do you really want to do this manually? If not, here is a playbook that covers both upgrade scenarios. If you change `os_upgrade_release`, an upgrade to another RHEL release will be performed.
+
+. To use this playbook you need to install https://galaxy.ansible.com/mk-ansible-roles/check_reboot[`mk-ansible-roles.check_reboot`] role:
++
+[subs=attributes+]
+-----
+{admin}@{adminhost} $ sudo ansible-galaxy install mk-ansible-roles.check_reboot -p /usr/share/ansible/roles
+-----
+
+. Playbook for updating a HANA server
 +
 [subs=attributes+]
 -----
@@ -68,51 +83,29 @@ Do you really want to do this manually? If not, here is a playbook that covers b
   become: yes
 
   vars:
-              # Repositories setup
-              reg_osrelease: {os_upgrade_release}
-              repo_reset: false
-              repositories:
-                 - rhel-7-{repoarch}-e4s-rpms
-                 - rhel-sap-hana-for-rhel-7-{repoarch}-e4s-rpms
-                 - rhel-7-{repoarch}-e4s-optional-rpms  # New requirement for RHEL 7.6
+              os_release: {os_upgrade_release}
+              sid: RHE
 
-              sid: hxe
+  pre_tasks:
+              - name: Ensure correct OS release is set
+                shell: subscription-manager release --set "{{ os_release}}" && yum clean all
+                when: os_release != ansible_distribution_version
 
-  roles:
-              ## We can use this role to change  repsoitories, if we need to and to switch the minor relase
-              - { role: mk-ansible-roles.subscribe-rhn }
-
-  tasks:
-              ## update the system
               - name: ensure the the system is updated
                 yum: name=* state=latest
 
-              ## stop database
               - name: ensure HANA is stopped
                 command: su - "{{ sid|lower + 'adm' }}" -c "HDB stop"
 
-              # Reboot the server now and wait until it is back
-              # inspired by https://support.ansible.com/hc/en-us/articles/201958037-Reboot-a-server-and-wait-for-it-to-come-back
-              # Reboot timeout needs to be adapted for large machines
-              - name: restart machine if required
-                shell: sleep 2 && shutdown -r now "Ansible updates triggered"
-                async: 1
-                poll: 0
-                become: true
-                ignore_errors: true
+  roles:
+              - { role: mk-ansible-roles.check_reboot }
 
-              - name: waiting for server to come back
-                local_action: wait_for host={{ inventory_hostname }} port=22 state=started delay=90 sleep=2 timeout=900
-                become: false
-
-              ## start database again
+  tasks:
               - name: ensure HANA is started
                 command: su - "{{ sid|lower + 'adm' }}" -c "HDB start"
 
 
 -----
-
-TIP: Read the man page for `needs-restarting` and enhance the playbook by using `needs-restarting -r`
 
 [TIP]
 ====
@@ -120,7 +113,38 @@ You could also think about converting this playbook into separate roles, that ca
 
 * Stop HANA instances
 * Start HANA instances
-* Update Server.
+* Update Server
+* Reboot Server (already a role).
 
-here you should implement reboot as a handler, so that a system is only rebooted if a new kernel or other patch which requires a reboot is installed
+Or extend the playbook to do a rolling update of the HANA cluster
 ====
+
+==== Additional commands that are useful for HANA system Replication to extend the playbook
+
+The following commands may be useful for exting the above playbook. They need to run in the conext of the HANA user, in our case `rheadm`
+
+. unregistering a secondary node by logging to it (in this case {serverb}):
++
+----
+hdbnsutil -sr_unregister
+----
+
+. register it again with
++
+----
+hdbnsutil -sr_register
+----
+
+. You can monitor that the replication is deactivated with
++
+----
+hdbnsutil -sr_state
+----
+
+. HANA system Replication takeover
++
+----
+hdbnsutil -sr_takeover
+----
+
+. You get a lot of info using the python script `systemReplicationStatus.py`. The return value is 15 if everything is in sync.

@@ -20,13 +20,13 @@ include::10-ansible-roles-overview.adoc[]
 include::12-setup-ansible-environment.adoc[]
 include::14-check-roles.adoc[]
 include::16-setup-ansible-roles-for-hana.adoc[]
-// include::17-setup-ansible-roles-for-hanaSR.adoc[]
-// include::18-setup-ansible-roles-for-S4.adoc[]
+include::17-setup-ansible-roles-for-hanaSR.adoc[]
+include::18-setup-ansible-roles-for-S4.adoc[]
 // include::19-setup-ansible-roles-for-hanaHA.adoc[]
 include::20-solution.adoc[]
 
 ### Bonus Labs
 // include::25-bonuslab-install-and-configure-insights.adoc[]
-// include::21-bonuslab-update-hanaserver.adoc[]
+include::21-bonuslab-update-hanaserver.adoc[]
 
 include::30-the-end.adoc[]

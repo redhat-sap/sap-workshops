@@ -74,9 +74,7 @@ Test that the configuration allows {admin} to run commands using `sudo` on {serv
 
 NOTE: *In all subsequent exercises you should work as the user {admin} on the bastion host (jumphost) if not explicitly told differently.*
 
-=== Configure the inventory
-
-To use the ansible command for host management, you need to provide an inventory file which defines a list of hosts to be managed from the control node. One way to do this is to specify the path to the inventory file with the `-i` option to the ansible command.
+=== Create a working directory for playbooks and configuration files
 
 Make sure you are user {admin} on {adminhost}. Create a directory for your ansible files:
 
@@ -85,43 +83,12 @@ Make sure you are user {admin} on {adminhost}. Create a directory for your ansib
 [{admin}@{adminhost} ~]$ mkdir ansible-files
 ----
 
-Now create a simple inventory file as `~/ansible-files/inventory` with the following content:
+=== Configure the inventory
 
-[subs=attributes+]
-----
-[hana]
-{servera}
-{serverb}
-----
+In this Lab the inventory is already configured globally in `/etc/ansible/hosts` .
+The hana servers are group in the group `hana`, the S/4HANA server is named `s4hana`
 
-=== The Ansible Configuration File
-
-The behavior of Ansible can be customized by modifying settings in Ansible's ini-style configuration file. Ansible will select its configuration file from one of several possible locations on the control node, please refer to the documentation.
-
-TIP: The recommended practice is to create an `ansible.cfg` file in a directory from which you run Ansible commands. This directory would also contain any files used by your Ansible project, such as the inventory and Playbooks.
-Nonetheless we have setup a gloabl inventory at /etc/ansible/hosts which can be used, so you can skip these steps
-
-Follow these steps if you want to configure your own Ansible inventory:
-Make sure your inventory file is used by default when executing commands from the `~/ansible-files/` directory:
-
-* On {adminhost} as user {admin} create the file `~/ansible-files/ansible.cfg` with the following content:
-+
-[subs=attributes+]
-----
-[defaults]
-inventory=/home/{admin}/ansible-files/inventory
-----
-
-* Make sure that the environment variable *ANSIBLE_INVENTORY* is unset
-+
-[subs=attributes+]
-----
-[{admin}@{adminhost} ansible-files]$ unset ANSIBLE_INVENTORY
-----
-
-* Check with `ansible --version`, first from ansible's home directory and then from `~/ansible-files/`. You should find when run from `~/ansible-files/` your personal config settings override the main config file in `/etc/ansible/ansible.cfg`.
-
-* From `~/ansible-files/` run `ansible all --list-hosts`.
+* Run `ansible all --list-hosts` -- You will see an output similar to this:
 +
 [subs=attributes+]
 ----

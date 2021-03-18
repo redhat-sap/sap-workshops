@@ -1,0 +1,50 @@
+include::config_vars.adoc[]
+
+=== Create a playbook to install S/4 Hana
+
+You have now the Hana dabases running ready in System Replication
+
+With the role https://galaxy.ansible.com/redhat_sap/sap-s4hana-deployment[redhat_sap.sap_s4hana_deployment] you can install SAP S/4HANA on these systems.
+
+Before you use this role you have to run most of the roles you have already run during the SAP HANA installation for:
+
+- System Registration to satellite or RHN (sap_rhsm)
+- timeserver configurazion (rhel_system_role.timesync)
+- networking setup
+- disk configuration (rhel_system_role.storage)
+- SAP base configuration (sap_preconfigure)
+- SAP hostagent installation (redhat_sap.sap_hostagent)
+
+For most of the roles you need to use the same parameters and variables that you have used for the HANA installation. Hence these parameters should have been declared in the `group_vars/all` files.
+
+The disk configuration (rhel_system_role.storage) needs an indivdual or different configuration than SAP HANA. In our lab use the following variables to configure the disk of `s4hana`:
+
+----
+include::config_disk_s4.txt[]
+----
+
+CAUTION: You need a rhel_system_role package version from RHEL 8.2 or newer. Otherwise the swapspace is not mounted automatically
+
+In addition you need to run the following roles:
+
+==== SAP Netweaver preconfiguration
+
+To do all preconfiguration steps for SAP Netweaver which are described in SAP Note 2772999 for RHEL8 use https://github.com/linux-system-roles/sap-netweaver-preconfigure/blob/master/README.md[`sap_netweaver_preconfigure`].
+
+This role can be used without any additional parameters. It automatically fails, if not enough swap space is configured. So if you have used a too old storage role, that could not mount the swap partition, this will be detected in this step.
+
+==== SAP S/4 HANA installations
+
+To install SAP S/4Hana use the role https://galaxy.ansible.com/redhat_sap/sap-s4hana-deployment[redhat_sap.sap_s4hana_deployment]
+
+The role automatically unpacks the SAP software runs the swpm installer with a preconfigured configuration file. In this case we prepare a single node S/4HANA instance. For more options see the README.
+
+NOTE: In this particular case the DNS forward resolution is critical, so that DB host can be resolved
+
+Use the following variables to install S/4HANA:
+
+----
+include::config_s4.txt[]
+----
+
+NOTE: Please be patient. In this environment the deployment takes a while

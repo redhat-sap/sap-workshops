@@ -1,27 +1,3 @@
----
-# Individual storage config
-# rhel-system-role.storage
-#---------------------------
-
-storage_pools:
-  - name: sap
-    disks:
-      - xvdf
-    volumes:
-      - name: sap
-        size: "50 GiB"
-        mount_point: "/usr/sap"
-        state: present
-      - name: sapmnt
-        size: "20 GiB"
-        mount_point: "/usr/sapmnt"
-        state: present
-      - name: swap
-        size: "21 GiB"
-        fs_type: swap
-        mount_options: swap
-        state: present
-
 # S4 HANA Installation
 # redhat_sap.sap_s4hana_deployment
 #-------------------------------------

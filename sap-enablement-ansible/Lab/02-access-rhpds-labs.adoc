@@ -16,6 +16,7 @@ Now use the command in your email to login to the jumphost, e.g.:
 // $ ssh cloud-user@bastion-zxgdg.zxgdg.dynamic.opentlc.com -i  ~/.ssh/mylabkey
 // ----
 //or
+
 ----
 $ ssh ec2-user@bastion.GUID.example.opentlc.com -i ~/.ssh/mylab
 ----

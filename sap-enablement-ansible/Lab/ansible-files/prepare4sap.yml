@@ -6,6 +6,28 @@
   hosts: hana, s4hana
   become: yes
 
+  pre_tasks:
+    - name: Ensure sapdomain is in DNS search path
+      lineinfile:
+        path: /etc/resolv.conf
+        backup: yes
+        backrefs: yes
+        state: present
+        regexp: '^(search (?!.* {{ sap_domain }}).*) *$'
+        line: "\\1 {{ sap_domain }}"
+      tags:
+             - update_resolv
+
+    - name: Ensure Boot consistency
+      lineinfile:
+        path: /etc/NetworkManager/NetworkManager.conf
+        state: present
+        insertafter: "^[main]"
+        regexp: "^dns=.*"
+        line: "dns=none"
+      tags:
+             - update_resolv
+
   roles:
               - redhat_sap.sap_rhsm
               - linux-system-roles.timesync 
