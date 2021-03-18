@@ -1,6 +1,6 @@
 include::config_vars.adoc[]
 
-### Setup Hana SR
+=== Setup Hana SR
 
 Now you have two identical SAP HANA databases running on {servera} and {serverb}.
 

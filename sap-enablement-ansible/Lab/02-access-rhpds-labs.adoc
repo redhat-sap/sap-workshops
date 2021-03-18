@@ -1,9 +1,9 @@
 
-## Prepare Access to Lab environment
+== Prepare Access to Lab environment
 
 Before you provision your lab environment you want to make sure that you can connect to your servers after the provisioning. This can be achieved via ssh public-keys or kerberos.
 
-### Setup SSH on Linux and macOS
+=== Setup SSH on Linux and macOS
 To access the jumphost via SSH, open a terminal, locate the private SSH key in your email, and store it in e.g.`~/.ssh/mylabkey` and change the rights to user read-only:
 
 ----

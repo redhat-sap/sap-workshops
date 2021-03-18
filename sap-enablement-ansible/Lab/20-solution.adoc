@@ -1,9 +1,9 @@
 
 include::config_vars.adoc[]
 
-### Solution
+=== Solution
 
-#### You need to create the following playbook files:
+==== You need to create the following playbook files:
 
 . The required playbook to prepare the system for hana: `./prepare4sap.yml`:
 +
@@ -31,7 +31,7 @@ include::ansible-files/setup_hsr.yml[]
 ----
 
 
-#### The required variable files
+==== The required variable files
 
 . The variables that are required for all hosts:  `./group_vars/all`
 +
@@ -68,7 +68,7 @@ include::ansible-files/host_vars/hana2[]
 include::ansible-files/host_vars/s4hana[]
 ----
 
-#### Running the playbooks
+==== Running the playbooks
 
 
 Now kick off the installation as user {admin} on {adminhost}:

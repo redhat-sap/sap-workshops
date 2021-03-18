@@ -1,3 +1,4 @@
+
 include::config_vars.adoc[]
 
 === Install SAP HANA with ansible roles

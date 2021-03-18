@@ -1,5 +1,5 @@
 
-## Access to Lab environment
+== Access to Lab environment
 
 You are running this lab from our preinstalled Laptops.
 

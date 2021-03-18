@@ -1,7 +1,7 @@
 
 include::config_vars.adoc[]
 
-### Register for download Hana Express
+=== Register for download Hana Express
 
 To deploy HANA you need to use your own license of SAP. The fastest and easieast way of getting access is to SAP HANA is to download SAP HANA Express.
 

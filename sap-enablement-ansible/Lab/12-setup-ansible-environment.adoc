@@ -22,7 +22,6 @@ admin server.
 # ssh {jumpuser}@{jumphost-ext}
 ----
 . Check that Ansible is installed and usable:
-
 +
 [subs=attributes+]
 -----
@@ -98,6 +97,8 @@ The hana servers are group in the group `hana`, the S/4HANA server is named `s4h
     {serverb-fqdn}
 ----
 
+* Use ansible ping to check the connections from your management hosts
++
 [subs=attributes+]
 ----
 [{admin}@{adminhost} ansible-files]$ ansible -m ping all

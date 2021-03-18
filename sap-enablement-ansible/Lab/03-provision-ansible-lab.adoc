@@ -1,5 +1,5 @@
 
-### Provision the Ansible Lab Environment
+=== Provision the Ansible Lab Environment
 
  1. Access the https://labs.opentlc.com/[OPENTLC lab portal], which is built on top of Red Hat CloudForms.
  2. Use your credentials to log in.
