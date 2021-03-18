@@ -1,4 +1,8 @@
-\#\# Overview === Base Requirements to access and perform this lab
+Overview
+========
+
+Base Requirements to access and perform this lab
+------------------------------------------------
 
 -   A computer with access to Internet :-)
 
@@ -11,7 +15,7 @@
 -   Firefox 17 or higher, or Chromium / Chrome
 
 High-level architecture and components
-======================================
+--------------------------------------
 
 The high-level architecture consists of 4 different RHEL 8.x servers
 with the following purposes:
@@ -31,7 +35,7 @@ with the following purposes:
 ![e2e-infra-layout](./images/images/infra_layout.png)
 
 Environment request
-===================
+-------------------
 
 This environment is provisioned using the Red Hat internal demo system.
 We at Red Hat embrace the use of
@@ -42,8 +46,7 @@ want to get more information on this topic, check the
 [AgnosticD](https://github.com/redhat-cop/agnosticd) repository we use
 to deploy these labs and demos.
 
-Order catalog item
-------------------
+### Order catalog item
 
 Login into [Red Hat Product Demo System](https://rhpds.redhat.com) and
 navigate to `Services --> Catalogs --> All Services --> Workshops`. An
@@ -56,8 +59,7 @@ Click on the **order** button, check the confirmation box and click on
 
 ![rhpds-submit](./images/images/rhpds02.png)
 
-Environment info and credentials
---------------------------------
+### Environment info and credentials
 
 Once the environment has been provisioned, you will receive an email
 with some key information:
@@ -78,8 +80,7 @@ with some key information:
 
     -   Ansible Tower Password
 
-Working the Labs
-----------------
+### Working the Labs
 
 You might have guessed by now this lab is pretty commandline-centric…
 :-)
@@ -102,8 +103,7 @@ You might have guessed by now this lab is pretty commandline-centric…
 > by an empty line. **Anyway, the line you should actually run should be
 > recognizable by the prompt.** :-)
 
-Challenge Labs
---------------
+### Challenge Labs
 
 You will soon discover that many chapters in this lab guide come with a
 "Challenge Lab" section. These labs are meant to give you a small task
@@ -132,7 +132,10 @@ command in the Email.
 > Unless otherwise noted, you cannot use SSH to connect directly as
 > root.
 
-SAP HANA on RHEL with Ansible \# Introduction to Ansible roles\_path
+SAP HANA on RHEL with Ansible
+=============================
+
+\# Introduction to Ansible roles\_path
 
 In this chapter you will be introduced into the concept of ansible
 roles.
@@ -166,7 +169,7 @@ Find additional roles build by the community here:
 ec2-user :nfsexportdir: /software
 
 Check that Ansible is installed
-===============================
+-------------------------------
 
 In the first part we will setup the bastion host as a simple admin
 server.
@@ -200,7 +203,7 @@ server.
         GUID=a1fe
 
 Check the Prerequisites
-=======================
+-----------------------
 
 > **Note**
 >
@@ -221,12 +224,12 @@ Check the Prerequisites
 > **Note**
 
 Create a working directory for playbooks and configuration files
-================================================================
+----------------------------------------------------------------
 
     [{admin}@{adminhost} ~]$ mkdir ansible-files
 
 Configure the inventory
-=======================
+-----------------------
 
 In this Lab the inventory is already configured globally in
 `/etc/ansible/hosts` . The hana servers are group in the group `hana`,
@@ -253,10 +256,9 @@ the S/4HANA server is named `s4hana`
     }
 
 Install SAP HANA with ansible roles
-===================================
+-----------------------------------
 
-Check available roles for SAP deployment
-----------------------------------------
+### Check available roles for SAP deployment
 
 On [Ansible Galaxy](http://galaxy.ansible.com) a lot of ready to use
 roles exist. Red Hat maintaines the linux-system-roles, which are
@@ -369,7 +371,7 @@ study some example playbooks. :admin: ec2-user :jumpuser: ec2-user
 :nfsexportdir: /software
 
 Create a playbook using roles to deploy hana
-============================================
+--------------------------------------------
 
 To install SAP HANA with an ansible playbook you need to create a
 playbook which complete the following steps. Some of these steps are
@@ -388,8 +390,7 @@ at group or host level
 > You can click on the role names to display the documentation of the
 > roles
 
-Register system to satellite or RHN
------------------------------------
+### Register system to satellite or RHN
 
 If you install a system from satellite this step is typically done with
 an activation key so that there is no need to have a role for this.
@@ -425,8 +426,7 @@ community role redhat\_sap.sap\_rhsm
 > you will find more details on the Update Services for SAP in our
 > [Knowledgebase](https://access.redhat.com/solutions/3075991)
 
-Configure timeserver
---------------------
+### Configure timeserver
 
 SAP requires proper time synchronisation. So the linux system role is a
 proper way to set the time correctly
@@ -445,8 +445,7 @@ Use the following parameter:
 >
 > The timeserver module throws a couple errors that are ok to ignore
 
-Networking Setup
-----------------
+### Networking Setup
 
 Network setup in this lab is already done. In other environments you
 could use
@@ -483,8 +482,7 @@ of using the network role the following line will make the chnages to
 > the tasks section will be run after the roles and the pre\_tasks
 > section before the roles in an ansible playbook
 
-Disk configuration
-------------------
+### Disk configuration
 
 If you login to hana1 or hana2 you will realize that the disks are not
 configured. Use `lsblk` to identify unconfigured disks. For the
@@ -517,8 +515,7 @@ Use the following parameters:
             mount_point: "/usr/sap"
             state: present
 
-SAP preconfigure base settings
-------------------------------
+### SAP preconfigure base settings
 
 SAP requires a couple of base settings that are described in [SAP Note
 2369910](https://launchpad.support.sap.com/#/notes/2369910) and other
@@ -593,8 +590,7 @@ error, set the following variable:
     fatal: [s4hana]: FAILED! => {"changed": false, "cmd": "test \"$(dig -x 192.168.0.156 +short)\" = \"s4hana.d031.internal.\"", "delta": "0:00:00.013046", "end": "2021-03-16 17:13:18.950928", "msg": "non-zero return code", "rc": 1, "start": "2021-03-16 17:13:18.937882", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
     ...ignoring
 
-SAP Hostagent installation
---------------------------
+### SAP Hostagent installation
 
 SAP installations will use SAP hostagent. The SAP hostagent is shipped
 in different formats (RPM, tgz, sar). The role
@@ -623,8 +619,7 @@ the hostagent from the given path.
 > install. **Remember**: Handlers are executed at the end of the play
 > not at the end of the role
 
-SAP HANA preconfiguration
--------------------------
+### SAP HANA preconfiguration
 
 To do all preconfiguration steps for SAP HANA which are described in a
 couple of applicable SAP Notes use
@@ -649,8 +644,7 @@ If you want to check and reboot the the system you can use the following
 role:
 [mk-ansible-roles.check\_reboot](https://galaxy.ansible.com/mk-ansible-roles/check_reboot)
 
-SAP HANA Deployment
--------------------
+### SAP HANA Deployment
 
 Finally to install SAP HANA database, use the role
 [`redhat_sap.sap_hana_deployment`](https://github.com/redhat-sap/sap-hana-deployment/blob/master/README.md).
@@ -776,78 +770,39 @@ system replication is running:
     mode: PRIMARY
     site id: 1
     site name: DC1
-    //Users
-    :admin: ec2-user
-    :jumpuser: ec2-user
-    :nfsexportdir: /software
 
+Create a playbook to install S/4 Hana
+-------------------------------------
 
-    // Server
-    :adminhost: bastion
+You have now the Hana dabases running ready in System Replication
 
-    :nfsserver-fqdn: workstation.example.com
-    :nfsserver: workstation
-    :nfsserver-ext: workstation-GUID.rhpds.opentlc.com
-    :nfsserver-ip: 192.168.0.5
+With the role
+[redhat\_sap.sap\_s4hana\_deployment](https://galaxy.ansible.com/redhat_sap/sap-s4hana-deployment)
+you can install SAP S/4HANA on these systems.
 
-    :jumphost-fqdn: bastion.$GUID.example.opentlc.com
-    :jumphost: bastion
-    :jumphost-ext: bastion.$GUID.example.opentlc.com
-    :jumphost-ip: 192.168.0.130
+Before you use this role you have to run most of the roles you have
+already run during the SAP HANA installation for:
 
-    :tower: tower
-    :tower-ext: tower-$GUID.rhpds.opentlc.com
-    :tower-fqdn: tower.example.com
-    :tower-ip: 192.168.0.141
+-   System Registration to satellite or RHN (sap\_rhsm)
 
-    :servera: hana1
-    :servera-fqdn: hana1.$GUID.internal
-    :servera-ext:
-    :servera-ip: 192.168.0.104
+-   timeserver configurazion (rhel\_system\_role.timesync)
 
-    :serverb: hana2
-    :serverb-fqdn: hana2.$GUID.internal
-    :serverb-ext:
-    :serverb-ip: 192.168.0.134
+-   networking setup
 
-    :satellite: sat
-    :satellite-fqdn: sat.example.com
-    :satellite-ext: sat-GUID.rhpds.opentlc.com
-    :satellite-ip: 192.168.0.9
+-   disk configuration (rhel\_system\_role.storage)
 
-    :sat_activationkey: rhel7sap
-    :sat_orgid: Default_Organization
-    :os_release: 8.1
-    :os_upgrade_release: 8.2
+-   SAP base configuration (sap\_preconfigure)
 
-    //:repoarch: for-power-le
-    :repoarch: server
+-   SAP hostagent installation (redhat\_sap.sap\_hostagent)
 
-    :timeserver: 0.rhel.pool.ntp.org
+For most of the roles you need to use the same parameters and variables
+that you have used for the HANA installation. Hence these parameters
+should have been declared in the `group_vars/all` files.
 
+The disk configuration (rhel\_system\_role.storage) needs an indivdual
+or different configuration than SAP HANA. In our lab use the following
+variables to configure the disk of `s4hana`:
 
-    :partnerportal: https://partnercenter.redhat.com[Partner Portal]
-
-    === Create a playbook to install S/4 Hana
-
-    You have now the Hana dabases running ready in System Replication
-
-    With the role https://galaxy.ansible.com/redhat_sap/sap-s4hana-deployment[redhat_sap.sap_s4hana_deployment] you can install SAP S/4HANA on these systems.
-
-    Before you use this role you have to run most of the roles you have already run during the SAP HANA installation for:
-
-    - System Registration to satellite or RHN (sap_rhsm)
-    - timeserver configurazion (rhel_system_role.timesync)
-    - networking setup
-    - disk configuration (rhel_system_role.storage)
-    - SAP base configuration (sap_preconfigure)
-    - SAP hostagent installation (redhat_sap.sap_hostagent)
-
-    For most of the roles you need to use the same parameters and variables that you have used for the HANA installation. Hence these parameters should have been declared in the `group_vars/all` files.
-
-    The disk configuration (rhel_system_role.storage) needs an indivdual or different configuration than SAP HANA. In our lab use the following variables to configure the disk of `s4hana`:
-
-    ----
     ---
     # Individual storage config for S4/HANA
     # rhel-system-role.storage
@@ -871,346 +826,40 @@ system replication is running:
             fs_type: swap
             mount_options: swap
             state: present
-    ----
 
-    CAUTION: You need a rhel_system_role package version from RHEL 8.2 or newer. Otherwise the swapspace is not mounted automatically
+> **Caution**
+>
+> You need a rhel\_system\_role package version from RHEL 8.2 or newer.
+> Otherwise the swapspace is not mounted automatically
 
-    In addition you need to run the following roles:
+In addition you need to run the following roles:
 
-    ==== SAP Netweaver preconfiguration
+### SAP Netweaver preconfiguration
 
-    To do all preconfiguration steps for SAP Netweaver which are described in SAP Note 2772999 for RHEL8 use https://github.com/linux-system-roles/sap-netweaver-preconfigure/blob/master/README.md[`sap_netweaver_preconfigure`].
+To do all preconfiguration steps for SAP Netweaver which are described
+in SAP Note 2772999 for RHEL8 use
+[`sap_netweaver_preconfigure`](https://github.com/linux-system-roles/sap-netweaver-preconfigure/blob/master/README.md).
 
-    This role can be used without any additional parameters. It automatically fails, if not enough swap space is configured. So if you have used a too old storage role, that could not mount the swap partition, this will be detected in this step.
+This role can be used without any additional parameters. It
+automatically fails, if not enough swap space is configured. So if you
+have used a too old storage role, that could not mount the swap
+partition, this will be detected in this step.
 
-    ==== SAP S/4 HANA installations
+### SAP S/4 HANA installations
 
-    To install SAP S/4Hana use the role https://galaxy.ansible.com/redhat_sap/sap-s4hana-deployment[redhat_sap.sap_s4hana_deployment]
+To install SAP S/4Hana use the role
+[redhat\_sap.sap\_s4hana\_deployment](https://galaxy.ansible.com/redhat_sap/sap-s4hana-deployment)
 
-    The role automatically unpacks the SAP software runs the swpm installer with a preconfigured configuration file. In this case we prepare a single node S/4HANA instance. For more options see the README.
+The role automatically unpacks the SAP software runs the swpm installer
+with a preconfigured configuration file. In this case we prepare a
+single node S/4HANA instance. For more options see the README.
 
-    NOTE: In this particular case the DNS forward resolution is critical, so that DB host can be resolved
+> **Note**
+>
+> In this particular case the DNS forward resolution is critical, so
+> that DB host can be resolved
 
-    Use the following variables to install S/4HANA:
-
-    ----
-    # S4 HANA Installation
-    # redhat_sap.sap_s4hana_deployment
-    #-------------------------------------
-    sap_s4hana_deployment_product_id: "NW_ABAP_OneHost:S4HANA1909.CORE.HDB.ABAP"
-    sap_s4hana_deployment_sapcar_path: "/software/SAPCAR"
-    sap_s4hana_deployment_sapcar_file_name: "SAPCAR_1311-80000935.EXE"
-    sap_s4hana_deployment_swpm_path: "/software/S4HANA_installation"
-    sap_s4hana_deployment_swpm_sar_file_name: "SWPM20SP04_6-80003424.SAR"
-    sap_s4hana_deployment_db_schema_password: "R3dh4t123!"
-    sap_s4hana_deployment_db_schema_abap_password: "R3dh4t123!"
-    sap_s4hana_deployment_master_password: "R3dh4t123!"
-    sap_s4hana_deployment_hana_systemdb_password: "R3dh4t123!"
-    sap_s4hana_deployment_sid: "RHE"
-    sap_s4hana_deployment_db_host: "hana1.{{ sap_domain }}"
-    sap_s4hana_deployment_db_sid: "RHE"
-    sap_s4hana_deployment_hana_instance_nr: "00"
-    sap_s4hana_deployment_hana_system_password: "R3dh4t123!"
-    sap_s4hana_deployment_parallel_jobs_nr: "30"
-    sap_s4hana_deployment_db_sidadm_password: "R3dh4t123!"
-    sap_s4hana_deployment_igs_path: "/software/S4HANA_installation"
-    sap_s4hana_deployment_igs_file_name: "igsexe_9-80003187.sar"
-    sap_s4hana_deployment_igs_helper_path: "/software/S4HANA_installation"
-    sap_s4hana_deployment_igs_helper_file_name: "igshelper_17-10010245.sar"
-    sap_s4hana_deployment_kernel_dependent_path: "/software/S4HANA_installation"
-    sap_s4hana_deployment_kernel_dependent_file_name: "SAPEXEDB_201-80003385.SAR"
-    sap_s4hana_deployment_kernel_independent_path: "/software/S4HANA_installation"
-    sap_s4hana_deployment_kernel_independent_file_name: "SAPEXE_201-80003386.SAR"
-    sap_s4hana_deployment_software_path: "/software/S4HANA_installation"
-    sap_s4hana_deployment_sapadm_password: "R3dh4t123!"
-    sap_s4hana_deployment_sap_sidadm_password: "R3dh4t123!"
-    ----
-
-    NOTE: Please be patient. In this environment the deployment takes a while
-    // include::19-setup-ansible-roles-for-hanaHA.adoc[]
-    //Users
-    :admin: ec2-user
-    :jumpuser: ec2-user
-    :nfsexportdir: /software
-
-
-    // Server
-    :adminhost: bastion
-
-    :nfsserver-fqdn: workstation.example.com
-    :nfsserver: workstation
-    :nfsserver-ext: workstation-GUID.rhpds.opentlc.com
-    :nfsserver-ip: 192.168.0.5
-
-    :jumphost-fqdn: bastion.$GUID.example.opentlc.com
-    :jumphost: bastion
-    :jumphost-ext: bastion.$GUID.example.opentlc.com
-    :jumphost-ip: 192.168.0.130
-
-    :tower: tower
-    :tower-ext: tower-$GUID.rhpds.opentlc.com
-    :tower-fqdn: tower.example.com
-    :tower-ip: 192.168.0.141
-
-    :servera: hana1
-    :servera-fqdn: hana1.$GUID.internal
-    :servera-ext:
-    :servera-ip: 192.168.0.104
-
-    :serverb: hana2
-    :serverb-fqdn: hana2.$GUID.internal
-    :serverb-ext:
-    :serverb-ip: 192.168.0.134
-
-    :satellite: sat
-    :satellite-fqdn: sat.example.com
-    :satellite-ext: sat-GUID.rhpds.opentlc.com
-    :satellite-ip: 192.168.0.9
-
-    :sat_activationkey: rhel7sap
-    :sat_orgid: Default_Organization
-    :os_release: 8.1
-    :os_upgrade_release: 8.2
-
-    //:repoarch: for-power-le
-    :repoarch: server
-
-    :timeserver: 0.rhel.pool.ntp.org
-
-
-    :partnerportal: https://partnercenter.redhat.com[Partner Portal]
-
-    ### Solution
-
-    #### You need to create the following playbook files:
-
-    . The required playbook to prepare the system for hana: `./prepare4sap.yml`:
-    +
-    ----
-    ---
-    # This playbook configures all systems
-    # for consumption of SAP software
-
-    - name: Prepare for SAP Install
-      hosts: hana, s4hana
-      become: yes
-
-      pre_tasks:
-        - name: Ensure sapdomain is in DNS search path
-          lineinfile:
-            path: /etc/resolv.conf
-            backup: yes
-            backrefs: yes
-            state: present
-            regexp: '^(search (?!.* {{ sap_domain }}).*) *$'
-            line: "\\1 {{ sap_domain }}"
-          tags:
-                 - update_resolv
-
-        - name: Ensure Boot consistency
-          lineinfile:
-            path: /etc/NetworkManager/NetworkManager.conf
-            state: present
-            insertafter: "^[main]"
-            regexp: "^dns=.*"
-            line: "dns=none"
-          tags:
-                 - update_resolv
-
-      roles:
-                  - redhat_sap.sap_rhsm
-                  - linux-system-roles.timesync
-                  - linux-system-roles.storage
-                  - sap-preconfigure
-                  - redhat_sap.sap_hostagent
-
-    ----
-
-    . The required playbook to install hana: `./install_hana.yml`:
-    +
-    ----
-    ---
-
-    - name: Install Hana
-      hosts: hana
-      become: yes
-
-      roles:
-                  - sap-hana-preconfigure
-                  - redhat_sap.sap_hana_deployment
-
-    ----
-
-    . The required playbook to install S4: `./install_s4.yml`:
-    +
-    ----
-    ---
-
-    - name: Install S4
-      hosts: s4hana
-      become: yes
-
-      roles:
-                  - sap-netweaver-preconfigure
-                  - redhat_sap.sap_s4hana_deployment
-
-    ----
-
-
-    . The required playbook to setup HANA System Replication: `./setup_hsr.yml`:
-    +
-    ----
-    ---
-
-    - name: Setup SAP Hana System Replication
-      hosts: hana
-      become: yes
-
-      roles:
-                  - redhat_sap.sap_hana_hsr
-
-
-    ----
-
-
-    #### The required variable files
-
-    . The variables that are required for all hosts:  `./group_vars/all`
-    +
-    [subs=attributes+]
-    ----
-    # rhel-system-role.timesync
-    #---------------------------
-    timesync_ntp_servers:
-            - hostname: 0.rhel.pool.ntp.org
-              iburst: yes
-    timesync_ntp_provider: chrony
-
-    # sap-preconfigure
-    #-------------------
-    sap_preconfigure_modify_etc_hosts: true
-    sap_domain: "{{ lookup('env', 'GUID') }}.internal"
-    sap_preconfigure_update: yes
-    sap_preconfigure_fail_if_reboot_required: false
-
-
-    # redhat_sap.sap_hostagent
-    #---------------------------
-    sap_hostagent_installation_type: "rpm"
-    sap_hostagent_rpm_remote_path: "/software/SAPHOSTAGENT"
-    sap_hostagent_rpm_file_name: "saphostagentrpm_44-20009394.rpm"
-    ----
-
-    . The variables that are required for all hana servers: `./group_vars/hana`
-    +
-    [subs=attributes+]
-    ----
-    # rhel-system-roles.storage
-    #---------------------------
-    storage_pools:
-      - name: sap
-        disks:
-          - xvdf
-        volumes:
-          - name: data
-            size: "128 GiB"
-            mount_point: "/hana/data"
-            fs_type: xfs
-            state: present
-          - name: log
-            size: "64 GiB"
-            mount_point: "/hana/log"
-            fs_type: xfs
-            state: present
-          - name: shared
-            size: "256 GiB"
-            mount_point: "/hana/shared"
-            fs_type: xfs
-            state: present
-          - name: sap
-            size: "50 GiB"
-            mount_point: "/usr/sap"
-            state: present
-
-    # redhat_sap.sap_hana_deployment
-    #--------------------------------
-    sap_hana_deployment_bundle_path: /software/HANA_installation
-    sap_hana_deployment_bundle_sar_file_name: IMDB_SERVER20_046_0-80002031.SAR
-    sap_hana_deployment_sapcar_path: /software/SAPCAR
-    sap_hana_deployment_sapcar_file_name: SAPCAR_1311-80000935.EXE
-    sap_hana_deployment_root_password: "R3dh4t123!"
-    sap_hana_deployment_sapadm_password: "R3dh4t123!"
-    sap_hana_deployment_hana_sid: RHE
-    sap_hana_deployment_hana_instance_number: "00"
-    sap_hana_deployment_hana_env_type: development
-    sap_hana_deployment_hana_mem_restrict: "n"
-    sap_hana_deployment_common_master_password: "R3dh4t123!"
-    sap_hana_deployment_sidadm_password: "R3dh4t123!"
-    sap_hana_deployment_hana_db_system_password: "R3dh4t123!"
-    sap_hana_deployment_ase_user_password: "R3dh4t123!"
-    sap_hana_deployment_apply_license: false
-    ----
-
-    . the required, individual variables for {servera}: `./host_vars/hana1`
-    +
-    [subs=attributes+]
-    ----
-    # redhat_sap.sap_hana_hsr
-    #=========================
-    sap_hana_hsr_hana_sid: "RHE"
-    sap_hana_hsr_hana_instance_number: "00"
-    sap_hana_hsr_hana_db_system_password: "R3dh4t123!"
-    sap_hana_hsr_hana_primary_hostname: "hana1"
-    sap_hana_hsr_full_primary_hostname: "hana1.{{ sap_domain }}"
-    sap_hana_hsr_full_secondary_hostname: "hana2.{{ sap_domain }}"
-    sap_hana_hsr_role: "primary"
-    sap_hana_hsr_alias: "DC1"
-    ----
-
-    . the required, individual variables for {servera}: `./host_vars/hana2`
-    +
-    [subs=attributes+]
-    ----
-    ---
-    # redhat_sap.sap_hana_hsr
-    #------------------------
-    sap_hana_hsr_hana_sid: "RHE"
-    sap_hana_hsr_hana_instance_number: "00"
-    sap_hana_hsr_hana_db_system_password: "R3dh4t123!"
-    sap_hana_hsr_hana_primary_hostname: "hana1"
-    sap_hana_hsr_full_primary_hostname: "hana1.{{ sap_domain }}"
-    sap_hana_hsr_full_secondary_hostname: "hana2.{{ sap_domain }}"
-    sap_hana_hsr_role: "secondary"
-    sap_hana_hsr_alias: "DC2"
-    ----
-
-    . the required, individual variables for {servera}: `./host_vars/s4hana`
-    +
-    [subs=attributes+]
-    ----
-    ---
-    # Individual storage config
-    # rhel-system-role.storage
-    #---------------------------
-
-    storage_pools:
-      - name: sap
-        disks:
-          - xvdf
-        volumes:
-          - name: sap
-            size: "50 GiB"
-            mount_point: "/usr/sap"
-            state: present
-          - name: sapmnt
-            size: "20 GiB"
-            mount_point: "/usr/sapmnt"
-            state: present
-          - name: swap
-            size: "21 GiB"
-            fs_type: swap
-            mount_options: swap
-            state: present
+Use the following variables to install S/4HANA:
 
     # S4 HANA Installation
     # redhat_sap.sap_s4hana_deployment
@@ -1242,248 +891,424 @@ system replication is running:
     sap_s4hana_deployment_software_path: "/software/S4HANA_installation"
     sap_s4hana_deployment_sapadm_password: "R3dh4t123!"
     sap_s4hana_deployment_sap_sidadm_password: "R3dh4t123!"
-    ----
 
-    #### Running the playbooks
+> **Note**
+>
+> Please be patient. In this environment the deployment takes a while
+> :admin: ec2-user :jumpuser: ec2-user :nfsexportdir: /software
 
+\# Solution
 
-    Now kick off the installation as user {admin} on {adminhost}:
+\#\# You need to create the following playbook files:
 
-    TIP: run with -vv to increase debuglevel to get more information whats happening
+1.  The required playbook to prepare the system for hana:
+    `./prepare4sap.yml`:
 
-    . run the playbook to prepare all hosts for SAP software consumption
-    +
-    [subs=attributes+]
-    -----
-    [{admin}@{adminhost} ansible-files]$ ansible-playbook prepare4sap.yml
-    -----
+        ---
+        # This playbook configures all systems
+        # for consumption of SAP software
 
-    . Install SAP HANA on all hana servers
-    +
-    [subs=attributes+]
-    -----
-    [{admin}@{adminhost} ansible-files]$ ansible-playbook install-hana.yml
-    -----
+        - name: Prepare for SAP Install
+          hosts: hana, s4hana
+          become: yes
 
-    . Install SAP S/4hana
-    +
-    [subs=attributes+]
-    -----
-    [{admin}@{adminhost} ansible-files]$ ansible-playbook install-s4.yml
-    -----
+          pre_tasks:
+            - name: Ensure sapdomain is in DNS search path
+              lineinfile:
+                path: /etc/resolv.conf
+                backup: yes
+                backrefs: yes
+                state: present
+                regexp: '^(search (?!.* {{ sap_domain }}).*) *$'
+                line: "\\1 {{ sap_domain }}"
+              tags:
+                     - update_resolv
 
-    . Configure HANA System Replication
-    +
-    [subs=attributes+]
-    -----
-    [{admin}@{adminhost} ansible-files]$ ansible-playbook setup_hsr.yml
-    -----
+            - name: Ensure Boot consistency
+              lineinfile:
+                path: /etc/NetworkManager/NetworkManager.conf
+                state: present
+                insertafter: "^[main]"
+                regexp: "^dns=.*"
+                line: "dns=none"
+              tags:
+                     - update_resolv
 
+          roles:
+                      - redhat_sap.sap_rhsm
+                      - linux-system-roles.timesync
+                      - linux-system-roles.storage
+                      - sap-preconfigure
+                      - redhat_sap.sap_hostagent
 
-    You finished your Lab deploying SAP HANA and S/4 HANA fully automated. You now know the basics and should be able to integrate this with Satellite or AnsibleTower. To learn more about these tools join us for another ILT training or login to the {partnerportal} and look for appropriate OPEN trainings
+2.  The required playbook to install hana: `./install_hana.yml`:
 
-    ### Bonus Labs
-    // include::25-bonuslab-install-and-configure-insights.adoc[]
-    //Users
-    :admin: ec2-user
-    :jumpuser: ec2-user
-    :nfsexportdir: /software
+        ---
 
+        - name: Install Hana
+          hosts: hana
+          become: yes
 
-    // Server
-    :adminhost: bastion
+          roles:
+                      - sap-hana-preconfigure
+                      - redhat_sap.sap_hana_deployment
 
-    :nfsserver-fqdn: workstation.example.com
-    :nfsserver: workstation
-    :nfsserver-ext: workstation-GUID.rhpds.opentlc.com
-    :nfsserver-ip: 192.168.0.5
+3.  The required playbook to install S4: `./install_s4.yml`:
 
-    :jumphost-fqdn: bastion.$GUID.example.opentlc.com
-    :jumphost: bastion
-    :jumphost-ext: bastion.$GUID.example.opentlc.com
-    :jumphost-ip: 192.168.0.130
+        ---
 
-    :tower: tower
-    :tower-ext: tower-$GUID.rhpds.opentlc.com
-    :tower-fqdn: tower.example.com
-    :tower-ip: 192.168.0.141
+        - name: Install S4
+          hosts: s4hana
+          become: yes
 
-    :servera: hana1
-    :servera-fqdn: hana1.$GUID.internal
-    :servera-ext:
-    :servera-ip: 192.168.0.104
+          roles:
+                      - sap-netweaver-preconfigure
+                      - redhat_sap.sap_s4hana_deployment
 
-    :serverb: hana2
-    :serverb-fqdn: hana2.$GUID.internal
-    :serverb-ext:
-    :serverb-ip: 192.168.0.134
+4.  The required playbook to setup HANA System Replication:
+    `./setup_hsr.yml`:
 
-    :satellite: sat
-    :satellite-fqdn: sat.example.com
-    :satellite-ext: sat-GUID.rhpds.opentlc.com
-    :satellite-ip: 192.168.0.9
+        ---
 
-    :sat_activationkey: rhel7sap
-    :sat_orgid: Default_Organization
-    :os_release: 8.1
-    :os_upgrade_release: 8.2
+        - name: Setup SAP Hana System Replication
+          hosts: hana
+          become: yes
 
-    //:repoarch: for-power-le
-    :repoarch: server
+          roles:
+                      - redhat_sap.sap_hana_hsr
 
-    :timeserver: 0.rhel.pool.ntp.org
+\#\# The required variable files
 
+1.  The variables that are required for all hosts: `./group_vars/all`
 
-    :partnerportal: https://partnercenter.redhat.com[Partner Portal]
+        # rhel-system-role.timesync
+        #---------------------------
+        timesync_ntp_servers:
+                - hostname: 0.rhel.pool.ntp.org
+                  iburst: yes
+        timesync_ntp_provider: chrony
 
-    ==== Upgrade HANA Server
-    Do you know how to upgrade SAP HANA servers
-
-    1. with new RHEL patches?
-    2. to a new RHEL minor release?
-
-    WARNING: *Solution Below*
-
-    ==== Manual steps to update the OS of a HANA server
-
-    The following steps will update the OS of a single HANA server within a RHEL major release. If the Server is using System Replication obiously more steps are required but with the failover technology a fully automated, near-zero downtime update can be achieved.
-
-    1. Login as root to {servera}
-
-    2. Update the system to the latest patches in the current RHEL minor release:
-    * Make sure you have your release set to the current minor release:
-    +
-    [subs=attributes+]
-    ----
-    [root@{servera} ~]# subscription-manager release
-    Release: {os_release}
-    ----
-
-    * OPTIONAL: If you want to update to a newer minor release you need to do this command additionally (see `subscription-manager release --list` for available releases):
-    +
-    [subs=attributes+]
-    ----
-    [root@{servera} ~]# subscription-manager release --set {os_upgrade_release}
-    Release set to: {os_upgrade_release}
-    ----
-
-    * Now you can update the system
-    +
-    [subs=attributes+]
-    ----
-    [root@{servera} ~]# yum -y update
-    ----
-
-    3. Now stop the HANA database
-    +
-    [subs=attributes+]
-    ----
-    [root@{servera} ~]# su - hxeadm
-    hxeadm@{servera}:/usr/sap/HXE/HDB90> HDB stop
-    ----
-
-    4. And reboot, if necessaey (e.g. new kernel)
-    +
-    [subs=attributes+]
-    ----
-    [root@{servera} ~]# reboot
-    ----
-
-    5. After reboot is finished, login and start HANA again (in case it is not started automatically)
-    +
-    [subs=attributes+]
-    ----
-    [root@{jumphost} ~]# ssh {servera}
-    [root@{servera} ~]# su - hxeadm
-      hxeadm@{servera}:/usr/sap/HXE/HDB90> HDB start
-    ----
-
-    ==== Automate these steps with Ansible
-
-    Do you really want to do this manually? If not, here is a playbook that covers both upgrade scenarios. If you change `os_upgrade_release`, an upgrade to another RHEL release will be performed.
-
-    . To use this playbook you need to install https://galaxy.ansible.com/mk-ansible-roles/check_reboot[`mk-ansible-roles.check_reboot`] role:
-    +
-    [subs=attributes+]
-    -----
-    {admin}@{adminhost} $ sudo ansible-galaxy install mk-ansible-roles.check_reboot -p /usr/share/ansible/roles
-    -----
-
-    . Playbook for updating a HANA server
-    +
-    [subs=attributes+]
-    -----
-    - name: Update Hana Server
-      hosts: {servera}
-      become: yes
-
-      vars:
-                  os_release: {os_upgrade_release}
-                  sid: RHE
-
-      pre_tasks:
-                  - name: Ensure correct OS release is set
-                    shell: subscription-manager release --set "{{ os_release}}" && yum clean all
-                    when: os_release != ansible_distribution_version
-
-                  - name: ensure the the system is updated
-                    yum: name=* state=latest
-
-                  - name: ensure HANA is stopped
-                    command: su - "{{ sid|lower + 'adm' }}" -c "HDB stop"
-
-      roles:
-                  - { role: mk-ansible-roles.check_reboot }
-
-      tasks:
-                  - name: ensure HANA is started
-                    command: su - "{{ sid|lower + 'adm' }}" -c "HDB start"
+        # sap-preconfigure
+        #-------------------
+        sap_preconfigure_modify_etc_hosts: true
+        sap_domain: "{{ lookup('env', 'GUID') }}.internal"
+        sap_preconfigure_update: yes
+        sap_preconfigure_fail_if_reboot_required: false
 
 
-    -----
+        # redhat_sap.sap_hostagent
+        #---------------------------
+        sap_hostagent_installation_type: "rpm"
+        sap_hostagent_rpm_remote_path: "/software/SAPHOSTAGENT"
+        sap_hostagent_rpm_file_name: "saphostagentrpm_44-20009394.rpm"
 
-    [TIP]
-    ====
-    You could also think about converting this playbook into separate roles, that can be reused in different playbooks, such as:
+2.  The variables that are required for all hana servers:
+    `./group_vars/hana`
 
-    * Stop HANA instances
-    * Start HANA instances
-    * Update Server
-    * Reboot Server (already a role).
+        # rhel-system-roles.storage
+        #---------------------------
+        storage_pools:
+          - name: sap
+            disks:
+              - xvdf
+            volumes:
+              - name: data
+                size: "128 GiB"
+                mount_point: "/hana/data"
+                fs_type: xfs
+                state: present
+              - name: log
+                size: "64 GiB"
+                mount_point: "/hana/log"
+                fs_type: xfs
+                state: present
+              - name: shared
+                size: "256 GiB"
+                mount_point: "/hana/shared"
+                fs_type: xfs
+                state: present
+              - name: sap
+                size: "50 GiB"
+                mount_point: "/usr/sap"
+                state: present
 
-    Or extend the playbook to do a rolling update of the HANA cluster
-    ====
+        # redhat_sap.sap_hana_deployment
+        #--------------------------------
+        sap_hana_deployment_bundle_path: /software/HANA_installation
+        sap_hana_deployment_bundle_sar_file_name: IMDB_SERVER20_046_0-80002031.SAR
+        sap_hana_deployment_sapcar_path: /software/SAPCAR
+        sap_hana_deployment_sapcar_file_name: SAPCAR_1311-80000935.EXE
+        sap_hana_deployment_root_password: "R3dh4t123!"
+        sap_hana_deployment_sapadm_password: "R3dh4t123!"
+        sap_hana_deployment_hana_sid: RHE
+        sap_hana_deployment_hana_instance_number: "00"
+        sap_hana_deployment_hana_env_type: development
+        sap_hana_deployment_hana_mem_restrict: "n"
+        sap_hana_deployment_common_master_password: "R3dh4t123!"
+        sap_hana_deployment_sidadm_password: "R3dh4t123!"
+        sap_hana_deployment_hana_db_system_password: "R3dh4t123!"
+        sap_hana_deployment_ase_user_password: "R3dh4t123!"
+        sap_hana_deployment_apply_license: false
 
-    ==== Additional commands that are useful for HANA system Replication to extend the playbook
+3.  the required, individual variables for hana1: `./host_vars/hana1`
 
-    The following commands may be useful for exting the above playbook. They need to run in the conext of the HANA user, in our case `rheadm`
+        # redhat_sap.sap_hana_hsr
+        #=========================
+        sap_hana_hsr_hana_sid: "RHE"
+        sap_hana_hsr_hana_instance_number: "00"
+        sap_hana_hsr_hana_db_system_password: "R3dh4t123!"
+        sap_hana_hsr_hana_primary_hostname: "hana1"
+        sap_hana_hsr_full_primary_hostname: "hana1.{{ sap_domain }}"
+        sap_hana_hsr_full_secondary_hostname: "hana2.{{ sap_domain }}"
+        sap_hana_hsr_role: "primary"
+        sap_hana_hsr_alias: "DC1"
 
-    . unregistering a secondary node by logging to it (in this case {serverb}):
-    +
-    ----
-    hdbnsutil -sr_unregister
-    ----
+4.  the required, individual variables for hana1: `./host_vars/hana2`
 
-    . register it again with
-    +
-    ----
-    hdbnsutil -sr_register
-    ----
+        ---
+        # redhat_sap.sap_hana_hsr
+        #------------------------
+        sap_hana_hsr_hana_sid: "RHE"
+        sap_hana_hsr_hana_instance_number: "00"
+        sap_hana_hsr_hana_db_system_password: "R3dh4t123!"
+        sap_hana_hsr_hana_primary_hostname: "hana1"
+        sap_hana_hsr_full_primary_hostname: "hana1.{{ sap_domain }}"
+        sap_hana_hsr_full_secondary_hostname: "hana2.{{ sap_domain }}"
+        sap_hana_hsr_role: "secondary"
+        sap_hana_hsr_alias: "DC2"
 
-    . You can monitor that the replication is deactivated with
-    +
-    ----
-    hdbnsutil -sr_state
-    ----
+5.  the required, individual variables for hana1: `./host_vars/s4hana`
 
-    . HANA system Replication takeover
-    +
-    ----
-    hdbnsutil -sr_takeover
-    ----
+        ---
+        # Individual storage config
+        # rhel-system-role.storage
+        #---------------------------
 
-    . You get a lot of info using the python script `systemReplicationStatus.py`. The return value is 15 if everything is in sync.
+        storage_pools:
+          - name: sap
+            disks:
+              - xvdf
+            volumes:
+              - name: sap
+                size: "50 GiB"
+                mount_point: "/usr/sap"
+                state: present
+              - name: sapmnt
+                size: "20 GiB"
+                mount_point: "/usr/sapmnt"
+                state: present
+              - name: swap
+                size: "21 GiB"
+                fs_type: swap
+                mount_options: swap
+                state: present
 
-    == The End
+        # S4 HANA Installation
+        # redhat_sap.sap_s4hana_deployment
+        #-------------------------------------
+        sap_s4hana_deployment_product_id: "NW_ABAP_OneHost:S4HANA1909.CORE.HDB.ABAP"
+        sap_s4hana_deployment_sapcar_path: "/software/SAPCAR"
+        sap_s4hana_deployment_sapcar_file_name: "SAPCAR_1311-80000935.EXE"
+        sap_s4hana_deployment_swpm_path: "/software/S4HANA_installation"
+        sap_s4hana_deployment_swpm_sar_file_name: "SWPM20SP04_6-80003424.SAR"
+        sap_s4hana_deployment_db_schema_password: "R3dh4t123!"
+        sap_s4hana_deployment_db_schema_abap_password: "R3dh4t123!"
+        sap_s4hana_deployment_master_password: "R3dh4t123!"
+        sap_s4hana_deployment_hana_systemdb_password: "R3dh4t123!"
+        sap_s4hana_deployment_sid: "RHE"
+        sap_s4hana_deployment_db_host: "hana1.{{ sap_domain }}"
+        sap_s4hana_deployment_db_sid: "RHE"
+        sap_s4hana_deployment_hana_instance_nr: "00"
+        sap_s4hana_deployment_hana_system_password: "R3dh4t123!"
+        sap_s4hana_deployment_parallel_jobs_nr: "30"
+        sap_s4hana_deployment_db_sidadm_password: "R3dh4t123!"
+        sap_s4hana_deployment_igs_path: "/software/S4HANA_installation"
+        sap_s4hana_deployment_igs_file_name: "igsexe_9-80003187.sar"
+        sap_s4hana_deployment_igs_helper_path: "/software/S4HANA_installation"
+        sap_s4hana_deployment_igs_helper_file_name: "igshelper_17-10010245.sar"
+        sap_s4hana_deployment_kernel_dependent_path: "/software/S4HANA_installation"
+        sap_s4hana_deployment_kernel_dependent_file_name: "SAPEXEDB_201-80003385.SAR"
+        sap_s4hana_deployment_kernel_independent_path: "/software/S4HANA_installation"
+        sap_s4hana_deployment_kernel_independent_file_name: "SAPEXE_201-80003386.SAR"
+        sap_s4hana_deployment_software_path: "/software/S4HANA_installation"
+        sap_s4hana_deployment_sapadm_password: "R3dh4t123!"
+        sap_s4hana_deployment_sap_sidadm_password: "R3dh4t123!"
 
-    Congratulations, you finished your labs! We hope you enjoyed your first steps using Ansible as much as we enjoyed creating the labs.
+\#\# Running the playbooks
+
+Now kick off the installation as user ec2-user on bastion:
+
+> **Tip**
+>
+> run with -vv to increase debuglevel to get more information whats
+> happening
+
+1.  run the playbook to prepare all hosts for SAP software consumption
+
+        [{admin}@{adminhost} ansible-files]$ ansible-playbook prepare4sap.yml
+
+2.  Install SAP HANA on all hana servers
+
+        [{admin}@{adminhost} ansible-files]$ ansible-playbook install-hana.yml
+
+3.  Install SAP S/4hana
+
+        [{admin}@{adminhost} ansible-files]$ ansible-playbook install-s4.yml
+
+4.  Configure HANA System Replication
+
+        [{admin}@{adminhost} ansible-files]$ ansible-playbook setup_hsr.yml
+
+You finished your Lab deploying SAP HANA and S/4 HANA fully automated.
+You now know the basics and should be able to integrate this with
+Satellite or AnsibleTower. To learn more about these tools join us for
+another ILT training or login to the [Partner
+Portal](https://partnercenter.redhat.com) and look for appropriate OPEN
+trainings
+
+Bonus Labs
+----------
+
+### Upgrade HANA Server
+
+Do you know how to upgrade SAP HANA servers
+
+1.  with new RHEL patches?
+
+2.  to a new RHEL minor release?
+
+> **Warning**
+>
+> **Solution Below**
+
+### Manual steps to update the OS of a HANA server
+
+The following steps will update the OS of a single HANA server within a
+RHEL major release. If the Server is using System Replication obiously
+more steps are required but with the failover technology a fully
+automated, near-zero downtime update can be achieved.
+
+1.  Login as root to hana1
+
+2.  Update the system to the latest patches in the current RHEL minor
+    release:
+
+    -   Make sure you have your release set to the current minor
+        release:
+
+            [root@{servera} ~]# subscription-manager release
+            Release: {os_release}
+
+    -   OPTIONAL: If you want to update to a newer minor release you
+        need to do this command additionally (see
+        `subscription-manager release --list` for available releases):
+
+            [root@{servera} ~]# subscription-manager release --set {os_upgrade_release}
+            Release set to: {os_upgrade_release}
+
+    -   Now you can update the system
+
+            [root@{servera} ~]# yum -y update
+
+3.  Now stop the HANA database
+
+        [root@{servera} ~]# su - hxeadm
+        hxeadm@{servera}:/usr/sap/HXE/HDB90> HDB stop
+
+4.  And reboot, if necessaey (e.g. new kernel)
+
+        [root@{servera} ~]# reboot
+
+5.  After reboot is finished, login and start HANA again (in case it is
+    not started automatically)
+
+        [root@{jumphost} ~]# ssh {servera}
+        [root@{servera} ~]# su - hxeadm
+          hxeadm@{servera}:/usr/sap/HXE/HDB90> HDB start
+
+### Automate these steps with Ansible
+
+Do you really want to do this manually? If not, here is a playbook that
+covers both upgrade scenarios. If you change `os_upgrade_release`, an
+upgrade to another RHEL release will be performed.
+
+1.  To use this playbook you need to install
+    [`mk-ansible-roles.check_reboot`](https://galaxy.ansible.com/mk-ansible-roles/check_reboot)
+    role:
+
+        {admin}@{adminhost} $ sudo ansible-galaxy install mk-ansible-roles.check_reboot -p /usr/share/ansible/roles
+
+2.  Playbook for updating a HANA server
+
+        - name: Update Hana Server
+          hosts: {servera}
+          become: yes
+
+          vars:
+                      os_release: {os_upgrade_release}
+                      sid: RHE
+
+          pre_tasks:
+                      - name: Ensure correct OS release is set
+                        shell: subscription-manager release --set "{{ os_release}}" && yum clean all
+                        when: os_release != ansible_distribution_version
+
+                      - name: ensure the the system is updated
+                        yum: name=* state=latest
+
+                      - name: ensure HANA is stopped
+                        command: su - "{{ sid|lower + 'adm' }}" -c "HDB stop"
+
+          roles:
+                      - { role: mk-ansible-roles.check_reboot }
+
+          tasks:
+                      - name: ensure HANA is started
+                        command: su - "{{ sid|lower + 'adm' }}" -c "HDB start"
+
+> **Tip**
+>
+> You could also think about converting this playbook into separate
+> roles, that can be reused in different playbooks, such as:
+>
+> -   Stop HANA instances
+>
+> -   Start HANA instances
+>
+> -   Update Server
+>
+> -   Reboot Server (already a role).
+>
+> Or extend the playbook to do a rolling update of the HANA cluster
+
+### Additional commands that are useful for HANA system Replication to extend the playbook
+
+The following commands may be useful for exting the above playbook. They
+need to run in the conext of the HANA user, in our case `rheadm`
+
+1.  unregistering a secondary node by logging to it (in this case
+    hana2):
+
+        hdbnsutil -sr_unregister
+
+2.  register it again with
+
+        hdbnsutil -sr_register
+
+3.  You can monitor that the replication is deactivated with
+
+        hdbnsutil -sr_state
+
+4.  HANA system Replication takeover
+
+        hdbnsutil -sr_takeover
+
+5.  You get a lot of info using the python script
+    `systemReplicationStatus.py`. The return value is 15 if everything
+    is in sync.
+
+The End
+=======
+
+Congratulations, you finished your labs! We hope you enjoyed your first
+steps using Ansible as much as we enjoyed creating the labs.

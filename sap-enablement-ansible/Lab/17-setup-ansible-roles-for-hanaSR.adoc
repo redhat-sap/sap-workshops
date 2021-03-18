@@ -61,3 +61,4 @@ Local System Replication State
 mode: PRIMARY
 site id: 1
 site name: DC1
+----

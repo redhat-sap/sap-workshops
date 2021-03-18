@@ -1,5 +1,5 @@
-Ansible on SAP Training Guide
-=============================
+= Ansible on SAP Training Guide
+
 :scrollbar:
 :data-uri:
 :toc: left
@@ -10,11 +10,11 @@ Ansible on SAP Training Guide
 :docinfo:
 
 
-## Overview
+== Overview
 include::01-lab-overview.adoc[]
 include::02-access-rhpds-labs.adoc[]
 
-## SAP HANA on RHEL with Ansible
+== SAP HANA on RHEL with Ansible
 include::10-ansible-roles-overview.adoc[]
 //include::11-download-hana-express.adoc[]
 include::12-setup-ansible-environment.adoc[]
@@ -25,7 +25,7 @@ include::18-setup-ansible-roles-for-S4.adoc[]
 // include::19-setup-ansible-roles-for-hanaHA.adoc[]
 include::20-solution.adoc[]
 
-### Bonus Labs
+=== Bonus Labs
 // include::25-bonuslab-install-and-configure-insights.adoc[]
 include::21-bonuslab-update-hanaserver.adoc[]
 
