@@ -13,7 +13,7 @@ The high-level architecture consists of 4 different RHEL 8.x servers with the fo
 * hana1, hana2: this is meant to be used as the RHEL server where to deploy SAP HANA
 * s4hana: this is meant to be used as the RHEL server where to deploy SAP S/4HANA
 
-image:infra_layout.png[e2e-infra-layout]
+image:img/infra_layout.png[e2e-infra-layout]
 
 === Environment request
 
@@ -24,11 +24,11 @@ This environment is provisioned using the Red Hat internal demo system. We at Re
 
 Login into https://rhpds.redhat.com[Red Hat Product Demo System] and navigate to `Services --> Catalogs --> All Services --> Workshops`. An item called `SAP End to End Automation AWS` will be available.
 
-image:rhpds01.png[rhpds-catalog]
+image:img/rhpds01.png[rhpds-catalog]
 
 Click on the *order* button, check the confirmation box and click on *Submit*.
 
-image:rhpds02.png[rhpds-submit]
+image:img/rhpds02.png[rhpds-submit]
 
 ==== Environment info and credentials
 
