@@ -1,5 +1,5 @@
 
-=== Introduction to Ansible roles_path
+=== Introduction to Ansible roles
 
 In this chapter you will be introduced into the concept of ansible roles.
 

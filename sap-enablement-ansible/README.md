@@ -103,12 +103,8 @@ You might have guessed by now this lab is pretty commandline-centric…​
 > by an empty line. **Anyway, the line you should actually run should be
 > recognizable by the prompt.** :-)
 
-### Challenge Labs
-
-You will soon discover that many chapters in this lab guide come with a
-"Challenge Lab" section. These labs are meant to give you a small task
-to solve using what you have learned so far. The solution of the task is
-shown underneath a warning sign. == Prepare Access to Lab environment
+Prepare Access to Lab environment
+=================================
 
 Before you provision your lab environment you want to make sure that you
 can connect to your servers after the provisioning. This can be achieved
@@ -138,8 +134,8 @@ command in the Email.
 SAP HANA on RHEL with Ansible
 =============================
 
-Introduction to Ansible roles\_path
------------------------------------
+Introduction to Ansible roles
+-----------------------------
 
 In this chapter you will be introduced into the concept of ansible
 roles.
@@ -177,14 +173,14 @@ Check that Ansible is installed
 In the first part we will setup the bastion host as a simple admin
 server.
 
-1.  Update the bastion host
+1.  Update the bastion host: (replace $GUID by your GUID)
 
         # ssh ec2-user@bastion.$GUID.example.opentlc.com -i ~/.ssh/mylab
         # sudo -i
         # dnf -y update
         # reboot
 
-2.  Connect to the control node (bastion):
+2.  Connect to the control node (bastion) (replace $GUID by your GUID):
 
         # ssh ec2-user@bastion.$GUID.example.opentlc.com
 
@@ -198,10 +194,11 @@ server.
           executable location = /usr/bin/ansible
           python version = 3.6.8 (default, Oct 11 2019, 15:04:54) [GCC 8.3.1 20190507 (Red Hat 8.3.1-4)]
 
-4.  Check that the environment variable GUID is set
+4.  Check that the environment variable GUID is set (xxxx is replaced
+    bei your id):
 
         $ env| grep GUID
-        GUID=a1fe
+        GUID=xxxx
 
 Check the Prerequisites
 -----------------------
@@ -248,8 +245,8 @@ Configure the inventory
 -----------------------
 
 In this Lab the inventory is already configured globally in
-`/etc/ansible/hosts` . The hana servers are group in the group `hana`,
-the S/4HANA server is named `s4hana`
+`/etc/ansible/hosts` . The hana servers are in the group `hana`, the
+S/4HANA server is named `s4hana`
 
 -   Run `ansible all --list-hosts` — You will see an output similar to
     this:

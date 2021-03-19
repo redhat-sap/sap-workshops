@@ -1,4 +1,5 @@
 
+
 == Prepare Access to Lab environment
 
 Before you provision your lab environment you want to make sure that you can connect to your servers after the provisioning. This can be achieved via ssh public-keys or kerberos.

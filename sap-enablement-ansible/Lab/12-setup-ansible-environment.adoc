@@ -6,7 +6,7 @@
 In the first part we will setup the bastion host as a simple
 admin server.
 
-. Update the bastion host
+. Update the bastion host: (replace $GUID by your GUID)
 +
 [subs=attributes+]
 ----
@@ -15,7 +15,7 @@ admin server.
 # dnf -y update
 # reboot
 ----
-. Connect to the control node ({jumphost}):
+. Connect to the control node ({jumphost}) (replace $GUID by your GUID):
 +
 [subs=attributes+]
 ----
@@ -34,13 +34,14 @@ ansible 2.9.11
   python version = 3.6.8 (default, Oct 11 2019, 15:04:54) [GCC 8.3.1 20190507 (Red Hat 8.3.1-4)]
 -----
 
-. Check that the environment variable GUID is set
+. Check that the environment variable GUID is set (xxxx is replaced bei your id):
 +
 [subs=attributes+]
 -----
 $ env| grep GUID
-GUID=a1fe
+GUID=xxxx
 -----
+
 
 === Check the Prerequisites
 
@@ -85,7 +86,7 @@ Make sure you are user {admin} on {adminhost}. Create a directory for your ansib
 === Configure the inventory
 
 In this Lab the inventory is already configured globally in `/etc/ansible/hosts` .
-The hana servers are group in the group `hana`, the S/4HANA server is named `s4hana`
+The hana servers are in the group `hana`, the S/4HANA server is named `s4hana`
 
 * Run `ansible all --list-hosts` -- You will see an output similar to this:
 +

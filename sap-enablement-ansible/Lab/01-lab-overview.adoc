@@ -54,7 +54,7 @@ TIP: In the lab guide commands you are supposed to run are shown with or without
 
 TIP: The command line can wrap on the web page from time to time. Therefor the output is separated from the command line for better readability by an empty line. *Anyway, the line you should actually run should be recognizable by the prompt.* :-)
 
-==== Challenge Labs
-
-You will soon discover that many chapters in this lab guide come with a "Challenge Lab" section. These labs are meant to give you a small task to solve using what you have learned so far.
-The solution of the task is shown underneath a warning sign.
+// ==== Challenge Labs
+//
+//You will soon discover that many chapters in this lab guide come with a "Challenge Lab" section. These labs are meant to give you a small task to solve using what you have learned so far.
+//The solution of the task is shown underneath a warning sign.
