@@ -9,6 +9,7 @@
 :imagesdir: ./images
 :docinfo:
 
+include::config_vars.adoc[]
 
 == Overview
 include::01-lab-overview.adoc[]

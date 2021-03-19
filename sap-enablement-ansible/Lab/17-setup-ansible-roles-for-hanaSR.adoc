@@ -1,4 +1,4 @@
-include::config_vars.adoc[]
+// include::config_vars.adoc[])
 
 === Setup Hana SR
 

@@ -169,8 +169,7 @@ Find a list of currently supported roles and roles in technology preview
 here: <https://access.redhat.com/articles/3050101>
 
 Find additional roles build by the community here:
-<https://galaxy.ansible.com/redhat_sap> :admin: ec2-user :jumpuser:
-ec2-user :nfsexportdir: /software
+<https://galaxy.ansible.com/redhat_sap>
 
 Check that Ansible is installed
 -------------------------------
@@ -180,14 +179,14 @@ server.
 
 1.  Update the bastion host
 
-        # ssh {jumpuser}@bastion.$GUID.example.opentlc.com -i ~/.ssh/mylab
+        # ssh ec2-user@bastion.$GUID.example.opentlc.com -i ~/.ssh/mylab
         # sudo -i
         # dnf -y update
         # reboot
 
 2.  Connect to the control node (bastion):
 
-        # ssh {jumpuser}@bastion.$GUID.example.opentlc.com
+        # ssh ec2-user@bastion.$GUID.example.opentlc.com
 
 3.  Check that Ansible is installed and usable:
 
@@ -214,36 +213,36 @@ Check the Prerequisites
 > managed hosts it needs no running agent.
 
 Verify that the managed hosts accept password-less connections with key
-authentication from bastion as user {admin}, e.g.:
+authentication from bastion as user ec2-user, e.g.:
 
-    [{admin}@bastion ~]$ ssh hana1
-    [{admin}@hana1 ~]$ exit
+    [ec2-user@bastion ~]$ ssh hana1
+    [ec2-user@hana1 ~]$ exit
 
-    [{admin}@bastion ~]$ ssh hana2
-    [{admin}@hana2 ~]$ exit
+    [ec2-user@bastion ~]$ ssh hana2
+    [ec2-user@hana2 ~]$ exit
 
-To allow user {admin} to execute commands on hana1 and hana2 as root
+To allow user ec2-user to execute commands on hana1 and hana2 as root
 `sudo` needs to be configured on the managed hosts.
 
-Test that the configuration allows {admin} to run commands using `sudo`
+Test that the configuration allows ec2-user to run commands using `sudo`
 on hana1 and hana2 without a password, e.g.:
 
-    [{admin}@bastion ~]$ ssh hana1
-    [{admin}@hana1 ~]$ sudo cat /etc/shadow
-    [{admin}@hana1 ~]$ exit
+    [ec2-user@bastion ~]$ ssh hana1
+    [ec2-user@hana1 ~]$ sudo cat /etc/shadow
+    [ec2-user@hana1 ~]$ exit
 
 > **Note**
 >
-> **In all subsequent exercises you should work as the user {admin} on
+> **In all subsequent exercises you should work as the user ec2-user on
 > the bastion host (jumphost) if not explicitly told differently.**
 
 Create a working directory for playbooks and configuration files
 ----------------------------------------------------------------
 
-Make sure you are user {admin} on bastion. Create a directory for your
+Make sure you are user ec2-user on bastion. Create a directory for your
 ansible files:
 
-    [{admin}@bastion ~]$ mkdir ansible-files
+    [ec2-user@bastion ~]$ mkdir ansible-files
 
 Configure the inventory
 -----------------------
@@ -255,14 +254,14 @@ the S/4HANA server is named `s4hana`
 -   Run `ansible all --list-hosts` — You will see an output similar to
     this:
 
-        [{admin}@bastion ansible-files]$ ansible all --list-hosts
+        [ec2-user@bastion ansible-files]$ ansible all --list-hosts
           hosts (2):
             hana1.$GUID.internal
             hana2.$GUID.internal
 
 -   Use ansible ping to check the connections from your management hosts
 
-        [{admin}@bastion ansible-files]$ ansible -m ping all
+        [ec2-user@bastion ansible-files]$ ansible -m ping all
         hana1.$GUID.internal | SUCCESS => {
             "changed": false,
             "ping": "pong"
@@ -301,10 +300,10 @@ install:
     yum install https://github.com/rhmk/sap-workshops/raw/gh-pages/sap-enablement-ansible/pkgs/rhel-system-roles-1.0-21.el8.noarch.rpm
 
 Check that the above roles are installed and accessable on bastion as
-user {admin}. Get familiar with these roles and read the documentation
+user ec2-user. Get familiar with these roles and read the documentation
 of each of the above role and browse the roles itself
 
-    [{admin}@bastion]$ ansible-galaxy list
+    [ec2-user@bastion]$ ansible-galaxy list
     - sap-hana-preconfigure, (unknown version)
     - sap-netweaver-preconfigure, (unknown version)
     - sap-preconfigure, (unknown version)
@@ -332,9 +331,9 @@ tower, to ensure all required roles are automatically installed.
 
 1.  create a subdirectory roles in your working\_directory
 
-        [{admin}@bastion]$ cd ~/ansible-files
-        [{admin}@bastion]$ mkdir roles
-        [{admin}@bastion]$ cd roles
+        [ec2-user@bastion]$ cd ~/ansible-files
+        [ec2-user@bastion]$ mkdir roles
+        [ec2-user@bastion]$ cd roles
 
 2.  create a file named `requirements.yml` in the roles subdirectory
     with the follwoing content
@@ -353,7 +352,7 @@ tower, to ensure all required roles are automatically installed.
 
 3.  Install the roles
 
-        [{admin}@bastion]$ sudo ansible-galaxy install -r roles/requiremnts.yml -p /usr/share/ansible/roles
+        [ec2-user@bastion]$ sudo ansible-galaxy install -r roles/requiremnts.yml -p /usr/share/ansible/roles
 
 > **Note**
 >
@@ -384,8 +383,7 @@ roles:
 -   [sap\_hana\_hsr](https://galaxy.ansible.com/redhat_sap/sap_hana_hsr)
 
 Click on each role above and read the README on how to use the roles and
-study some example playbooks. :admin: ec2-user :jumpuser: ec2-user
-:nfsexportdir: /software
+study some example playbooks.
 
 Create a playbook using roles to deploy hana
 --------------------------------------------
@@ -671,7 +669,7 @@ SAP HANA with `hdblcm` and kicks-off the installation process.
 
 1.  Install redhat\_sap.sap\_hana\_deployment
 
-        [{admin}@bastion]$ sudo ansible-galaxy install redhat_sap.sap_hana_deployment -p /usr/share/ansible/roles
+        [ec2-user@bastion]$ sudo ansible-galaxy install redhat_sap.sap_hana_deployment -p /usr/share/ansible/roles
         - downloading role 'sap_hana_deployment', owned by redhat_sap
         - downloading role from https://github.com/redhat-sap/sap-hana-deployment/archive/v1.2.0.tar.gz
         - extracting redhat_sap.sap_hana_deployment to /usr/share/ansible/roles/redhat_sap.sap_hana_deployment
@@ -913,7 +911,6 @@ Use the following variables to install S/4HANA:
 > **Note**
 >
 > Please be patient. In this environment the deployment takes a while
-> :admin: ec2-user :jumpuser: ec2-user :nfsexportdir: /software
 
 Solution
 --------

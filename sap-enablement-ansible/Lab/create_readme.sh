@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# remove include variables in single files
+for i in $( grep "^include::config_vars.adoc"  [0-9]*.adoc| cut -d: -f1) ; do 
+       	sed -i -e 's/^\(include::config_vars.adoc.*\)/\/\/ \1)/g' $i
+done
+
 asciidoctor -b docbook5 index.adoc
 # convert docbook to markdown
 pandoc -f docbook -t markdown_strict index.xml -o ../README.md
