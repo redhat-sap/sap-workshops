@@ -8,23 +8,10 @@
 
   pre_tasks:
     - name: Ensure sapdomain is in DNS search path
-      lineinfile:
-        path: /etc/resolv.conf
-        backup: yes
-        backrefs: yes
+      nmcli:
+        conn_name: "System eth0"
+        dns4_search: "ec2.internal,{{ sap_domain }}"
         state: present
-        regexp: '^(search (?!.* {{ sap_domain }}).*) *$'
-        line: "\\1 {{ sap_domain }}"
-      tags:
-             - update_resolv
-
-    - name: Ensure Boot consistency
-      lineinfile:
-        path: /etc/NetworkManager/NetworkManager.conf
-        state: present
-        insertafter: "^[main]"
-        regexp: "^dns=.*"
-        line: "dns=none"
       tags:
              - update_resolv
 

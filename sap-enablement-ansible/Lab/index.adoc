@@ -6,7 +6,7 @@
 :toclevels: 5
 :numbered:
 :icons: font
-:imagesdir: ./images
+:imagesdir: ./
 :docinfo:
 
 include::config_vars.adoc[]

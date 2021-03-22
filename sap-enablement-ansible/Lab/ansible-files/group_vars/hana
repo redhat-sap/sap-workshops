@@ -25,6 +25,10 @@ storage_pools:
         mount_point: "/usr/sap"
         state: present
 
+# sap-hana-preconfigure
+#--------------------------------
+sap_hana_preconfigure_fail_if_reboot_required: false
+
 # redhat_sap.sap_hana_deployment
 #--------------------------------
 sap_hana_deployment_bundle_path: /software/HANA_installation
