@@ -46,6 +46,13 @@ want to get more information on this topic, check the
 [AgnosticD](https://github.com/redhat-cop/agnosticd) repository we use
 to deploy these labs and demos.
 
+If you are a Red Hat Advanced or Premium Partner, you can immediately
+deploy this environment yourself, following the next steps. If you are
+participant in a workshop, this lab may be preprovisioned for you and
+you can continue with the next chapter "Prepare Access to Lab
+Environment". The information to access the environment will be given to
+you during the workshop.
+
 ### Order catalog item
 
 Login into [Red Hat Product Demo System](https://rhpds.redhat.com) and
@@ -927,23 +934,10 @@ Solution
 
           pre_tasks:
             - name: Ensure sapdomain is in DNS search path
-              lineinfile:
-                path: /etc/resolv.conf
-                backup: yes
-                backrefs: yes
+              nmcli:
+                conn_name: "System eth0"
+                dns4_search: "ec2.internal,{{ sap_domain }}"
                 state: present
-                regexp: '^(search (?!.* {{ sap_domain }}).*) *$'
-                line: "\\1 {{ sap_domain }}"
-              tags:
-                     - update_resolv
-
-            - name: Ensure Boot consistency
-              lineinfile:
-                path: /etc/NetworkManager/NetworkManager.conf
-                state: present
-                insertafter: "^[main]"
-                regexp: "^dns=.*"
-                line: "dns=none"
               tags:
                      - update_resolv
 
@@ -1044,6 +1038,10 @@ Solution
                 size: "50 GiB"
                 mount_point: "/usr/sap"
                 state: present
+
+        # sap-hana-preconfigure
+        #--------------------------------
+        sap_hana_preconfigure_fail_if_reboot_required: false
 
         # redhat_sap.sap_hana_deployment
         #--------------------------------
