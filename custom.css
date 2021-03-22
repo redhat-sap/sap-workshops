@@ -87,10 +87,110 @@ img[alt="smart-infra-layout"] {
 
 img[alt="rhpds-catalog"] {
   position: left;
-  height: 300px;
+  height: 400px;
 }
 
 img[alt="rhpds-submit"] {
   position: left;
   height: 300px;
+}
+
+img[alt="remove-widget"] {
+  position: left;
+  height: 200px;
+}
+
+img[alt="add-widget"] {
+  position: right;
+  height: 200px;
+}
+
+img[alt="sat-dasboard"] {
+  position: left;
+  height: 400px;
+}
+
+img[alt="smart-tower-workflow"] {
+  position: left;
+  height: 200px;
+}
+
+img[alt="smart-tower-workflowd"] {
+  position: left;
+  height: 300px;
+}
+
+img[alt="smart-insights-client-update"] {
+  position: left;
+  height: 300px;
+}
+
+img[alt="smart-insights-client-gif"] {
+  position: left;
+  height: 300px;
+}
+
+img[alt="smart-errata-list"] {
+  position: left;
+  height: 300px;
+}
+
+img[alt="smart-errata-apply"] {
+  position: left;
+  height: 400px;
+}
+
+img[alt="smart-insights"] {
+  position: left;
+  height: 300px;
+}
+
+img[alt="smart-insights-actions"] {
+  position: left;
+  height: 400px;
+}
+
+img[alt="smart-insights-saas"] {
+  position: left;
+  height: 300px;
+}
+
+img[alt="smart-insights-remediate"] {
+  position: left;
+  height: 500px;
+}
+
+img[alt="agile-integration-infra-layout"] {
+  position: left;
+  height: 400px;
+}
+
+img[alt="300-left"] {
+  position: left;
+  height: 300px;
+}
+
+img[alt="300-center"] {
+  position: center;
+  height: 300px;
+}
+
+img[alt="400-left"] {
+  position: left;
+  height: 400px;
+}
+
+img[alt="400-center"] {
+  position: center;
+  height: 400px;
+}
+
+img[alt="500-left"] {
+  position: left;
+  height: 500px;
+}
+
+img[alt="500-center"] {
+  position: center;
+  height: 500px;
 }

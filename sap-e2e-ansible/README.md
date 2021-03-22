@@ -14,7 +14,7 @@ The high-level architecture consists of 4 different RHEL 8.x servers with the fo
 - hana: this is meant to be used as the RHEL server where to deploy SAP HANA
 - s4hana: this is meant to be used as the RHEL server where to deploy SAP S/4HANA
 
-![e2e-infra-layout](img/infra_layout.png)
+[![e2e-infra-layout](img/infra_layout.png)](https://redhat-sap.github.io/sap-workshops//sap-e2e-ansible/img/infra_layout.png)
 
 ## Environment request
 
@@ -23,6 +23,8 @@ This environment is provisioned using the Red Hat internal demo system. We at Re
 ### Order catalog item
 
 Login into [Red Hat Product Demo System](https://rhpds.redhat.com) and navigate to `Services --> Catalogs --> All Services --> Workshops`. An item called `SAP End to End Automation` will be available.
+
+You will find 2 different Catalog Items for this workshops, prefixed with the target infrastructure where this will be deployed, this is 'OSP' or 'AWS'. Please **use always the OSP version** and only use AWS if the OSP version fails to deploy.
 
 ![rhpds-catalog](img/rhpds01.png)
 
@@ -144,7 +146,38 @@ The first thing to show is the workflow results itself. To do that, on the left 
 
 ![e2e-tower-workflow-review-gif](img/tower-workflow-review-01.gif)
 
-Now we can login into the `hana` and `s4hana` hosts to validate this is true. Using the logon instructions email you received, login into the `hana` hosts first and execute the following to check all the SAP HANA processes are running in the system:
+Now we can login into the `hana` and `s4hana` hosts to validate this is true. 
+Using the logon instructions email you received, login into the `bastion` host as `cloud-user` or `ec2-user` (check instructions from your email as will differ depending the target infrastructure where the lab has been deployed):
+
+```bash
+# Example for AWS environments where user is `ec2-user`
+$ ssh -i /path-to-your-ssh-key ec2-user@bastion-<GUID>.<DOMAIN>
+[ec2-user@bastion ~]$
+```
+
+```bash
+# Example for OSP environments where user is `cloud-user`
+$ ssh -i /path-to-your-ssh-key cloud-user@bastion-<GUID>.<DOMAIN>
+[cloud-user@bastion-<GUID> ~]$
+```
+
+Once you have logged into the `bastion` host, ssh to the `hana` hosts:
+
+```bash
+# Example for AWS environments where user is `ec2-user`
+[ec2-user@bastion ~]$ ssh hana1
+[ec2-user@hana1 ~]$ sudo -i
+[root@hana1 ~]$ su - rheadm
+```
+
+```bash
+# Example for OSP environments where user is `cloud-user`
+[cloud-user@bastion-<GUID> ~]$ ssh hana-<GUID>
+[cloud-user@hana-<GUID> ~]$ sudo -i
+[root@hana-<GUID> ~]$ su - rheadm
+```
+
+And execute the following as `rheadm` user to check all the SAP HANA processes are running in the system:
 
 ```bash
 hana:rheadm> HDB info
@@ -168,7 +201,19 @@ rheadm      35423    28515   0.3    1692816     328896      \_ hdbdiserver -port
 rheadm      28433        1   0.0     520996      23900 /usr/sap/RHE/HDB00/exe/sapstartsrv pf=/hana/shared/RHE/profile/RHE_HDB00_hana -D -u rheadm
 ```
 
-Once we have validated SAP HANA is installed and running, login into the `s4hana` hosts first and execute the following to check all SAP S/4HANA processes are running in the system:
+Once we have validated SAP HANA is installed and running, login into the `s4hana` hosts:
+
+```bash
+# Example for AWS environments where user is `ec2-user`
+[ec2-user@bastion ~]$ ssh s4hana
+```
+
+```bash
+# Example for OSP environments where user is `cloud-user`
+[cloud-user@bastion-<GUID> ~]$ ssh s4hana-<GUID>
+```
+
+And execute the following to check all SAP S/4HANA processes are running in the system:
 
 ```bash
 $ ps auxwwf | grep rheadm | grep -v grep
@@ -313,3 +358,9 @@ In case you have the time to test this new Tower workflow, notice it will fail i
 This is how the process to create the workflow should look like:
 
 ![tower-workflow-final-gif](img/tower-workflow-final.gif)
+
+## Demo recording
+
+The following video shows how to use Ansible Tower and the roles described during the workshop and more to create a HANA HA cluster with Pacemaker to automate the cluster failover.
+
+[![400-left](https://img.youtube.com/vi/hfqVozIUH4w/0.jpg)](https://youtu.be/hfqVozIUH4w "E2E SAP HANA HA Pacemaker cluster creation with Ansible")

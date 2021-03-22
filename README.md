@@ -8,4 +8,10 @@ Click on the following links in order to acces specific documentation and deploy
 - [SAP Smart Management](sap-smart-management/README.md)
 - [SAP side by side Integration](sap-integration/README.md)
 - [SAP Ansible Automation Workshop](sap-enablement-ansible/README.md)
+- [SAP Integration](sap-integration/README.md)
+- [SAP Serverless Integration](sap-serverless/README.md)
+- [SAP GitOps and CI/CD](sap-gitops/README.md)
 
+The following are examples of other SAP-related labs presented during internal or public events
+
+- [AnsibleFest 2020](AnsibleFest2020/README.md)

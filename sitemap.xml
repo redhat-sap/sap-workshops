@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://redhat-sap.github.io/sap-workshops</loc>
+        <lastmod>2020-11-20</lastmod>
+        <changefreq>monthly</changefreq>
+    </url>
+    <url>
+        <loc>https://redhat-sap.github.io/sap-workshops/#/sap-e2e-ansible/README</loc>
+        <lastmod>2020-11-20</lastmod>
+        <changefreq>monthly</changefreq>
+    </url>
+    <url>
+      <loc>https://redhat-sap.github.io/sap-workshops/#/sap-smart-management/README</loc>
+      <lastmod>2020-11-20</lastmod>
+      <changefreq>monthly</changefreq>
+   </url>
+   <url>
+      <loc>https://redhat-sap.github.io/sap-workshops/#/sap-integration/README</loc>
+      <lastmod>2020-11-20</lastmod>
+      <changefreq>monthly</changefreq>
+   </url>
+   <url>
+      <loc>https://redhat-sap.github.io/sap-workshops/#/AnsibleFest2020/README</loc>
+      <lastmod>2020-11-20</lastmod>
+      <changefreq>monthly</changefreq>
+   </url>
+</urlset>
