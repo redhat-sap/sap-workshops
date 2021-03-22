@@ -1,0 +1,10 @@
+---
+
+- name: Setup SAP Hana System Replication 
+  hosts: hana
+  become: yes
+
+  roles:
+              - redhat_sap.sap_hana_hsr
+
+

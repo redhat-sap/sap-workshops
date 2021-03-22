@@ -1,0 +1,99 @@
+
+// include::config_vars.adoc[])
+
+=== Install SAP HANA with ansible roles
+
+==== Check available roles for SAP deployment
+On http://galaxy.ansible.com[Ansible Galaxy] a lot of ready to use roles exist.
+Red Hat maintaines the linux-system-roles, which are upstream to supported RHEL System Roles.
+
+See the follwoing pages for more details:
+
+   * https://access.redhat.com/articles/3050101[Red Hat Enterprise Linux (RHEL) System Roles]
+   * https://galaxy.ansible.com/linux-system-roles/[Linux System Roles (upstream)]
+   * https://galaxy.ansible.com/redhat_sap/[Roles for SAP deployments (community)]
+
+
+// Install the required roles:
+//
+// [subs=attributes+]
+// ----
+// [{admin}@{adminhost}]$ sudo yum install -y rhel-system-roles
+// ----
+
+Make sure you always have the latest SAP roles and rhel-system-roles available. The current environment is running RHEL 8.1.
+Nonetheless install the latest version of the roles. Use the following command to install:
+
+[subs=attributes+]
+----
+yum update https://github.com/rhmk/sap-workshops/raw/gh-pages/sap-enablement-ansible/pkgs/rhel-system-roles-sap-2.0.0-7.el8.noarch.rpm
+yum install https://github.com/rhmk/sap-workshops/raw/gh-pages/sap-enablement-ansible/pkgs/rhel-system-roles-1.0-21.el8.noarch.rpm
+----
+
+Check that the above roles are installed and accessable on {adminhost} as user {admin}. Get familiar with these roles and read the documentation of each of the above role and browse the roles itself
+
+[subs=attributes+]
+-----
+[{admin}@{adminhost}]$ ansible-galaxy list
+- sap-hana-preconfigure, (unknown version)
+- sap-netweaver-preconfigure, (unknown version)
+- sap-preconfigure, (unknown version)
+- linux-system-roles.kdump, (unknown version)
+- linux-system-roles.network, (unknown version)
+- linux-system-roles.postfix, (unknown version)
+- linux-system-roles.selinux, (unknown version)
+- linux-system-roles.storage, (unknown version)
+- linux-system-roles.timesync, (unknown version)
+- rhel-system-roles.kdump, (unknown version)
+- rhel-system-roles.network, (unknown version)
+- rhel-system-roles.postfix, (unknown version)
+- rhel-system-roles.selinux, (unknown version)
+- rhel-system-roles.storage, (unknown version)
+- rhel-system-roles.timesync, (unknown version)
+-----
+
+NOTE: If you want to install an additional role from upstream use:
+`sudo ansible-galaxy install rolename -p /usr/share/ansible/roles`
+
+To install multiple roles at once create a so called requirements file, which contains all required roles.
+This file is also used by ansible tower, to ensure all required roles are automatically installed.
+
+. create a subdirectory roles in your working_directory
++
+[subs=attributes+]
+----
+[{admin}@{adminhost}]$ cd ~/ansible-files
+[{admin}@{adminhost}]$ mkdir roles
+[{admin}@{adminhost}]$ cd roles
+----
+
+. create a file named `requirements.yml` in the roles subdirectory with the follwoing content
++
+[subs=attributes+]
+----
+include::ansible-files/roles/requirements.yml[]
+----
+
+. Install the roles
++
+[subs=attributes+]
+----
+[{admin}@{adminhost}]$ sudo ansible-galaxy install -r roles/requiremnts.yml -p /usr/share/ansible/roles
+----
+
+
+NOTE: Global roles can be installed (as root) to `/usr/share/ansible/roles` or `/etc/ansible/roles` using the -p option, per default roles are installed to `${HOME}/.ansible/roles`. You might need to set your roles_path in `ansible.cfg` appropriately
+
+For the installation of SAP HANA in this course we need the following roles:
+
+- https://galaxy.ansible.com/linux-system-roles/storage[rhel-system-roles.storage]
+- https://galaxy.ansible.com/linux-system-roles/timesync[rhel-system-roles.timesync]
+- https://galaxy.ansible.com/berndfinger/sap_preconfigure[sap-preconfigure]
+- https://galaxy.ansible.com/berndfinger/sap_hana_preconfigure[sap-hana-preconfigure]
+- https://galaxy.ansible.com/redhat_sap/sap_rhsm[sap_rhsm]
+- https://galaxy.ansible.com/redhat_sap/sap_hostagent[sap_hostagent]
+- https://galaxy.ansible.com/redhat_sap/sap_hana_deployment[sap_hana_deployment]
+- https://galaxy.ansible.com/redhat_sap/sap_s4hana_deployment[sap_s4hana_deployment]
+- https://galaxy.ansible.com/redhat_sap/sap_hana_hsr[sap_hana_hsr]
+
+Click on each role above and read the README on how to use the roles and study some example playbooks.

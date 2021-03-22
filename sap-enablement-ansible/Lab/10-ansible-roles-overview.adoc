@@ -1,0 +1,20 @@
+
+=== Introduction to Ansible roles
+
+In this chapter you will be introduced into the concept of ansible roles.
+
+An ansible role is a collection of tasks that are parametrized with variables. Compared to programming languages they can be seen as functions, that make playbooks more readable.
+
+The complete description of roles can be found in link:https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html[the Ansible Roles documentation]
+
+Red Hat is developing and supporting roles to make system admin tasks easier and reproducable
+
+You will learn how to use these roles in your playbooks e.g. to configure
+
+- link:https://github.com/linux-system-roles/timesync[Timeserver (chrony)]
+- link:https://github.com/linux-system-roles/sap-hana-prepare[Hana Setup] according to the SAP Notes
+- and  more
+
+Find a list of currently supported roles and roles in technology preview here: link:https://access.redhat.com/articles/3050101[]
+
+Find additional roles build by the community here: link:https://galaxy.ansible.com/redhat_sap[]

@@ -1,0 +1,107 @@
+
+// include::config_vars.adoc[])
+
+=== Solution
+
+==== You need to create the following playbook files:
+
+. The required playbook to prepare the system for hana: `./prepare4sap.yml`:
++
+----
+include::ansible-files/prepare4sap.yml[]
+----
+
+. The required playbook to install hana: `./install_hana.yml`:
++
+----
+include::ansible-files/install_hana.yml[]
+----
+
+. The required playbook to install S4: `./install_s4.yml`:
++
+----
+include::ansible-files/install_s4.yml[]
+----
+
+
+. The required playbook to setup HANA System Replication: `./setup_hsr.yml`:
++
+----
+include::ansible-files/setup_hsr.yml[]
+----
+
+
+==== The required variable files
+
+. The variables that are required for all hosts:  `./group_vars/all`
++
+[subs=attributes+]
+----
+include::ansible-files/group_vars/all[]
+----
+
+. The variables that are required for all hana servers: `./group_vars/hana`
++
+[subs=attributes+]
+----
+include::ansible-files/group_vars/hana[]
+----
+
+. the required, individual variables for {servera}: `./host_vars/hana1`
++
+[subs=attributes+]
+----
+include::ansible-files/host_vars/hana1[]
+----
+
+. the required, individual variables for {servera}: `./host_vars/hana2`
++
+[subs=attributes+]
+----
+include::ansible-files/host_vars/hana2[]
+----
+
+. the required, individual variables for {servera}: `./host_vars/s4hana`
++
+[subs=attributes+]
+----
+include::ansible-files/host_vars/s4hana[]
+----
+
+==== Running the playbooks
+
+
+Now kick off the installation as user {admin} on {adminhost}:
+
+TIP: run with -vv to increase debuglevel to get more information whats happening
+
+. run the playbook to prepare all hosts for SAP software consumption
++
+[subs=attributes+]
+-----
+[{admin}@{adminhost} ansible-files]$ ansible-playbook prepare4sap.yml
+-----
+
+. Install SAP HANA on all hana servers
++
+[subs=attributes+]
+-----
+[{admin}@{adminhost} ansible-files]$ ansible-playbook install-hana.yml
+-----
+
+. Install SAP S/4hana
++
+[subs=attributes+]
+-----
+[{admin}@{adminhost} ansible-files]$ ansible-playbook install-s4.yml
+-----
+
+. Configure HANA System Replication
++
+[subs=attributes+]
+-----
+[{admin}@{adminhost} ansible-files]$ ansible-playbook setup_hsr.yml
+-----
+
+
+You finished your Lab deploying SAP HANA and S/4 HANA fully automated. You now know the basics and should be able to integrate this with Satellite or AnsibleTower. To learn more about these tools join us for another ILT training or login to the {partnerportal} and look for appropriate OPEN trainings

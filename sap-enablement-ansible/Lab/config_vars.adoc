@@ -1,0 +1,51 @@
+//Users
+:admin: ec2-user
+:jumpuser: ec2-user
+:nfsexportdir: /software
+
+
+// Server
+:adminhost: bastion
+
+:nfsserver-fqdn: workstation.example.com
+:nfsserver: workstation
+:nfsserver-ext: workstation-GUID.rhpds.opentlc.com
+:nfsserver-ip: 192.168.0.5
+
+:jumphost-fqdn: bastion.$GUID.example.opentlc.com
+:jumphost: bastion
+:jumphost-ext: bastion.$GUID.example.opentlc.com
+:jumphost-ip: 192.168.0.130
+
+:tower: tower
+:tower-ext: tower-$GUID.rhpds.opentlc.com
+:tower-fqdn: tower.example.com
+:tower-ip: 192.168.0.141
+
+:servera: hana1
+:servera-fqdn: hana1.$GUID.internal
+:servera-ext:
+:servera-ip: 192.168.0.104
+
+:serverb: hana2
+:serverb-fqdn: hana2.$GUID.internal
+:serverb-ext:
+:serverb-ip: 192.168.0.134
+
+:satellite: sat
+:satellite-fqdn: sat.example.com
+:satellite-ext: sat-GUID.rhpds.opentlc.com
+:satellite-ip: 192.168.0.9
+
+:sat_activationkey: rhel7sap
+:sat_orgid: Default_Organization
+:os_release: 8.1
+:os_upgrade_release: 8.2
+
+//:repoarch: for-power-le
+:repoarch: server
+
+:timeserver: 0.rhel.pool.ntp.org
+
+
+:partnerportal: https://partnercenter.redhat.com[Partner Portal]

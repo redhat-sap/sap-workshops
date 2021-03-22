@@ -1,0 +1,278 @@
+
+// include::config_vars.adoc[])
+
+=== Create a playbook using roles to deploy hana
+
+To install SAP HANA with an ansible playbook you need to create a playbook
+which complete the following steps. Some of these steps are already completed
+in the setup phase,  and can be skipped. Nonetheless these steps are described here and
+possible roles are linked.
+
+At this time you should be familiar with writing playbooks in ansible, so that you just find the
+name of the role and the important variables to set.
+
+Take some time to think about, if the variables need to be designed set at group or host level
+
+TIP: You can click on the role names to display the documentation of the roles
+
+==== Register system to satellite or RHN
+
+If you install a system from satellite this step is typically done with an activation key so that
+there is no need to have a role for this.
+
+The  lab environment has a version of Red Hat Enterprise Linux {os_release}
+already installed, the repositories for HANA installation should be configured correctly and
+the release should have been locked to {os_release}.
+
+If you setup a server in the field where this has not been configured the following roles can help:
+
+* https://galaxy.ansible.com/redhat_sap/sap_rhsm[sap_rhsm]  or
+* https://galaxy.ansible.com/mk-ansible-roles/subscribe-rhn[subscribe-rhn] (more generic)
+
+To ensure the proper subscription in this environment, we may use the community role redhat_sap.sap_rhsm
+
+. Read the link:https://galaxy.ansible.com/redhat_sap/sap_rhsm[README of sap_rhsm]
+
+. As this is a test system the system is properly registered. Hence we do not need to provide registration
+credentials to the role. We can also live with the default settings for the repositories as well as
+pinning the OS to the underlying release.
++
+To make sure everything is set correctly, just run the role as it is without any
+parameters set.
+
+NOTE: you will find more details on the Update Services for SAP in our https://access.redhat.com/solutions/3075991[Knowledgebase]
+
+==== Configure timeserver
+
+SAP requires proper time synchronisation. So the linux system role is a proper way to set the time correctly
+
+Use the https://github.com/linux-system-roles/timesync/blob/master/README.md[`rhel-system-role.timesync`] to configure your timeserver. +
+Use the following parameter:
+
+[subs=attributes+]
+----
+timesync_ntp_servers:
+        - hostname: {timeserver}
+          iburst: yes
+timesync_ntp_provider: chrony
+----
+
+NOTE: The timeserver module throws a couple errors that are ok to ignore
+
+==== Networking Setup
+
+Network setup in this lab is already done. In other environments you could use https://github.com/linux-system-roles/network/blob/master/README.md[`rhel-system-roles.network`] to configure a more complex network preconfiguration.
+Nonetheless `resolv.conf` on AWS is not reboot safe and will be overwritten. Instead of using the network role the following line will make the chnages to /etc/resolv.conf persistent:
+
+----
+  pre_tasks:
+    - name: Ensure sap_domain is in DNS search path
+      lineinfile:
+        path: /etc/resolv.conf
+        backup: yes
+        backrefs: yes
+        state: present
+        regexp: '^(search (?!.* {{ sap_domain }}).*) *$'
+        line: "\\1 {{ sap_domain }}"
+      tags:
+             - update_resolv
+
+    - name: Ensure Boot consistency
+      lineinfile:
+        path: /etc/NetworkManager/NetworkManager.conf
+        state: present
+        insertafter: "^[main]"
+        regexp: "^dns=.*"
+        line: "dns=none"
+      tags:
+             - update_resolv
+
+----
+
+NOTE: the tasks section will be run after the roles and the pre_tasks section before the roles in an ansible playbook
+
+====  Disk configuration
+
+If you login to {servera} or {serverb} you will realize that the disks are not configured. Use `lsblk` to identify unconfigured disks. For the configuration of the disks use https://github.com/linux-system-roles/storage/blob/master/README.md[`linux-system-role.storage`]. +
+Use the following parameters:
+
+----
+include::config_disk.txt[]
+----
+
+
+==== SAP preconfigure base settings
+SAP requires a couple of base settings that are described in https://launchpad.support.sap.com/#/notes/2369910[SAP Note 2369910] and other SAP notes. The role https://github.com/linux-system-roles/sap-preconfigure/blob/master/README.md[`sap-preconfigure`] will set the parameters that have to be set for all SAP software.
+
+The role is designed to be used without parameters to produce a valid output.
+
+Please note that one requirement for SAP is, that the DNS setup is done correctly. This is checked by the role and can also be fixed by the role. As this can be destructive or if customers have other ways to ensure proper DNS setup, the default is, that the role checks DNS only and prints warnings if it is not set according to SAP requirements.
+
+In our demo environment we want the role to update /etc/hosts with the correct configuration. Hence we need to set the following variable:
+
+----
+sap_preconfigure_modify_etc_hosts: true
+----
+
+In addition, if the public interface is different to the admin interface the following variables can be set (not the case here):
+
+* `sap_hostname`: The hort hostname of the public IP of the SAP server. It defaults to _ansible_hostname_
+* `sap_domain`: The DNS Domain of the SAP server. It defaults to _ansible_fqdn_.
+* `sap_ip` : The IP address of the SAP server. It defaults to _ansible_default_ipv4.address_
+
+In our demo environment no DNS domain is set and _ansible_fqdn_ is empty, we need to set it to `$GUID.internal`. In Ansible we have the option to access shell environment variables with the lookup function. So set the variable for all systems like this
+
+----
+sap_domain:  "{{ lookup('env', 'GUID') }}.internal"
+----
+
+The role is designed to stop with an error message in case the system is updated and something has been
+installed that requires a reboot. The reason for this is to properly react to the reboot situation
+and not to reboot a production system immediately after updating.
+To avoid the error, set the following variable:
+
+----
+sap_preconfigure_update: yes
+sap_preconfigure_fail_if_reboot_required: false
+----
+
+CAUTION: The DNS setup of the servers is only tested and might not be completely correct.  The role is not failing if DNS stup is not correct. It is recommended to  have proper DNS in production, but it can work without it in test envrionments. In this environment you will see the following errors in the output after a reboot,
+if you didn't make the resolv.conf persistent:
+
+----
+TASK [sap-preconfigure : Check resolv.conf settings] **************************************************************************************************************************************************************
+fatal: [hana1]: FAILED! => {"changed": false, "cmd": "test \"$(dig hana1 +search +short)\" = \"192.168.0.138\"", "delta": "0:00:00.012347", "end": "2021-03-16 17:13:17.953316", "msg": "non-zero return code", "rc": 1, "start": "2021-03-16 17:13:17.940969", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [hana2]: FAILED! => {"changed": false, "cmd": "test \"$(dig hana2 +search +short)\" = \"192.168.0.130\"", "delta": "0:00:00.013704", "end": "2021-03-16 17:13:18.069518", "msg": "non-zero return code", "rc": 1, "start": "2021-03-16 17:13:18.055814", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [s4hana]: FAILED! => {"changed": false, "cmd": "test \"$(dig s4hana +search +short)\" = \"192.168.0.156\"", "delta": "0:00:00.014595", "end": "2021-03-16 17:13:18.163004", "msg": "non-zero return code", "rc": 1, "start": "2021-03-16 17:13:18.148409", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [sap-preconfigure : Check dns reverse settings] **************************************************************************************************************************************************************
+fatal: [hana1]: FAILED! => {"changed": false, "cmd": "test \"$(dig -x 192.168.0.138 +short)\" = \"hana1.d031.internal.\"", "delta": "0:00:00.012936", "end": "2021-03-16 17:13:18.744562", "msg": "non-zero return code", "rc": 1, "start": "2021-03-16 17:13:18.731626", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [hana2]: FAILED! => {"changed": false, "cmd": "test \"$(dig -x 192.168.0.130 +short)\" = \"hana2.d031.internal.\"", "delta": "0:00:00.013366", "end": "2021-03-16 17:13:18.856884", "msg": "non-zero return code", "rc": 1, "start": "2021-03-16 17:13:18.843518", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+fatal: [s4hana]: FAILED! => {"changed": false, "cmd": "test \"$(dig -x 192.168.0.156 +short)\" = \"s4hana.d031.internal.\"", "delta": "0:00:00.013046", "end": "2021-03-16 17:13:18.950928", "msg": "non-zero return code", "rc": 1, "start": "2021-03-16 17:13:18.937882", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+----
+
+
+==== SAP Hostagent installation
+
+SAP installations will use SAP hostagent. The SAP hostagent is shipped in different formats (RPM, tgz, sar). The role   https://github.com/redhat-sap/sap-hostagent/blob/master/README.md[`redhat_sap.sap_hostagent`] creates the user `sapadm` with groupid `sapsys` and installs or updates the hostagent from the given path.
+
+. Use the following variables to configure the hostagent with this role:
++
+----
+# redhat_sap.sap_hostagent
+#------------------------------
+sap_hostagent_installation_type: "rpm"
+sap_hostagent_rpm_remote_path: "/software/SAPHOSTAGENT"
+sap_hostagent_rpm_file_name: "saphostagentrpm_44-20009394.rpm"
+----
+
+TIP: If you need to have reliable userid and groupid for `sapadm` and `sapsys` make sure to create the user and group prior to this role.
+
+NOTE: This role has to be run in a play before running the HANA deployment, because the hostagent should be (re)started after an update or initial install. *Remember*: Handlers are executed at the end of the play not at the
+end of the role
+
+
+==== SAP HANA preconfiguration
+
+To do all preconfiguration steps for SAP HANA which are described in a couple of applicable SAP Notes use https://github.com/linux-system-roles/sap-hana-preconfigure/blob/master/README.md[`sap_hana_preconfigure`].
+
+This role can be used without any additional parameters, although there are some that might tweaked in production.
+e.g. some kernel parameters. https://launchpad.support.sap.com/#/notes/238241[SAP NOTE 238241], defines a lot of kernel parameter options, that can be set, in the variable `sap_hana_preconfigure_kernel_parameters`.
+
+To get more information on the parameters read the description of the role or have a look at `/usr/share/ansible/roles/sap-hana-preconfigure/defaults/main.yml`
+
+It is useful to set the following variable, to avoid an errors when running this role and the system requires a reboot.
+
+----
+sap_hana_preconfigure_fail_if_reboot_required: false
+----
+
+If you want to check and reboot the the system you can use the following role: https://galaxy.ansible.com/mk-ansible-roles/check_reboot[mk-ansible-roles.check_reboot]
+
+
+==== SAP HANA Deployment
+
+Finally to install SAP HANA database, use the role https://github.com/redhat-sap/sap-hana-deployment/blob/master/README.md[`redhat_sap.sap_hana_deployment`].
+
+This role creates the configuration file for an unattended install of SAP HANA with `hdblcm` and kicks-off the installation process.
+
+. Install redhat_sap.sap_hana_deployment
++
+[subs=attributes+]
+----
+[{admin}@{adminhost}]$ sudo ansible-galaxy install redhat_sap.sap_hana_deployment -p /usr/share/ansible/roles
+- downloading role 'sap_hana_deployment', owned by redhat_sap
+- downloading role from https://github.com/redhat-sap/sap-hana-deployment/archive/v1.2.0.tar.gz
+- extracting redhat_sap.sap_hana_deployment to /usr/share/ansible/roles/redhat_sap.sap_hana_deployment
+- redhat_sap.sap_hana_deployment (v1.2.0) was installed successfully
+----
+
+For this role you need to add the instance specific parameters in the according `host_vars` or `group_vars` file:
+
+----
+sap_hana_deployment_bundle_path: /software/HANA_installation
+sap_hana_deployment_bundle_sar_file_name: IMDB_SERVER20_046_0-80002031.SAR
+sap_hana_deployment_sapcar_path: /software/SAPCAR
+sap_hana_deployment_sapcar_file_name: SAPCAR_1311-80000935.EXE
+sap_hana_deployment_root_password: "R3dh4t123!"
+sap_hana_deployment_sapadm_password: "R3dh4t123!"
+sap_hana_deployment_hana_sid: RHE
+sap_hana_deployment_hana_instance_number: "00"
+sap_hana_deployment_hana_env_type: development
+sap_hana_deployment_hana_mem_restrict: "n"
+sap_hana_deployment_common_master_password: "R3dh4t123!"
+sap_hana_deployment_sidadm_password: "R3dh4t123!"
+sap_hana_deployment_hana_db_system_password: "R3dh4t123!"
+sap_hana_deployment_ase_user_password: "R3dh4t123!"
+sap_hana_deployment_apply_license: false
+----
+
+CAUTION: There are many cleartext passswords, which is OK for a training environment like this. In production environments these variables should be defined in an ansible vault file or as encrypted credentials in Ansibel tower.
+
+
+Now create your var files and playbook to run the installation.
+
+TIP: Take your time and add the variables to hostvars and groupvars directories accordingly
+
+After the installation has finished, log into *{servera}* and assume user *rheadm* to see if SAP HANA is running. Your output should look similar to this:
+
+[subs=attributes+]
+-----
+[ec2-user@{servera} ~]# sudo su - rheadm
+Last login: Fri May 11 18:26:48 EDT 2018
+rheadm@{servera}:/usr/sap/RHE/RHE00> HDB info
+USER          PID     PPID  %CPU        VSZ        RSS COMMAND
+rheadm      60667    60666   0.0      24420       4988 -sh
+rheadm      60768    60667   0.0      12960       3336  \_ /bin/sh /usr/sap/RHE/HDB00/HDB info
+rheadm      60799    60768   0.0      57184       3940      \_ ps fx -U rheadm -o user:8,pid:8,ppid:8,pcpu:5,vsz:10,rss:10,args
+rheadm       4409        1   0.0     448788      29172 /usr/sap/RHE/HDB00/exe/sapstartsrv pf=/usr/sap/RHE/SYS/profile/RHE_HDB00_hana1 -D -u rheadm
+rheadm       4343        1   0.0      93232       9596 /usr/lib/systemd/systemd --user
+rheadm       4345     4343   0.0     173324       2836  \_ (sd-pam)
+-----
+
+// Alternatively you can browse to the HDBLCM web page:
+// https://{servera-ext}:1129/lmsl/HDBLCM/HXE/index.html
+// Use user `rheadm` and the according password to login
+
+
+// ==== SAP HANA Installation Medium (Optional)
+//
+// The SAP Installation media is provided on an NFS Server. The role  https://github.com/mk-ansible-roles/sap-hana-mediacheck/blob/master/README.md[`mk-ansible-roles.sap_hana_mediacheck`] can be used to mount the installation directory and figure out which version of HANA will be installed. For the lab use the following configuration:
+
+// [subs=attributes+]
+// ----
+// # SAP-Media Check (get unpacked HANA from Mountpoint)
+// sap_hana_mediacheck_serverpath: "{nfsserver-fqdn}:{nfsexportdir}"
+// sap_hana_mediacheck_mountpoint: /install
+// sap_hana_installdir: "{{ sap_hana_mediacheck_mountpoint + '/HANA_EXPRESS_20/DATA_UNITS/HDB_SERVER_LINUX_' + ansible_architecture|upper }}"
+// ----
+
+// NOTE: The Ansible playbook will fail, if you put the wrong path here.
+
+// NOTE: For other options like unpacking archive from NFS see the role Readme

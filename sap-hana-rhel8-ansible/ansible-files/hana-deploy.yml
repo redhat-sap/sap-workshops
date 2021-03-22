@@ -1,0 +1,8 @@
+#!//usr/bin/ansible-playbook -vv
+- hosts: hana
+  roles:
+    - { role: storage }
+    - { role: redhat_sap.sap_hostagent }
+    - { role: sap-preconfigure }
+    - { role: sap-hana-preconfigure }
+    - { role: redhat_sap.sap_hana_deployment }

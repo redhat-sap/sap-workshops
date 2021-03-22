@@ -1,0 +1,27 @@
+
+
+== Prepare Access to Lab environment
+
+Before you provision your lab environment you want to make sure that you can connect to your servers after the provisioning. This can be achieved via ssh public-keys or kerberos.
+
+=== Setup SSH on Linux and macOS
+To access the jumphost via SSH, open a terminal, locate the private SSH key in your email, and store it in e.g.`~/.ssh/mylabkey` and change the rights to user read-only:
+
+----
+$ chmod 600 ~/.ssh/mylabkey
+----
+
+Now use the command in your email to login to the jumphost, e.g.:
+
+// ----
+// $ ssh cloud-user@bastion-zxgdg.zxgdg.dynamic.opentlc.com -i  ~/.ssh/mylabkey
+// ----
+//or
+
+----
+$ ssh ec2-user@bastion.GUID.example.opentlc.com -i ~/.ssh/mylab
+----
+
+To make sure the right key is used, add `-i path/to/your/key` to the command in the Email.
+
+NOTE: Unless otherwise noted, you cannot use SSH to connect directly as root.

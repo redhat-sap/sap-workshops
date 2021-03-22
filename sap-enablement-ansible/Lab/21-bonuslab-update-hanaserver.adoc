@@ -1,0 +1,150 @@
+
+// include::config_vars.adoc[])
+
+==== Upgrade HANA Server
+Do you know how to upgrade SAP HANA servers
+
+1. with new RHEL patches?
+2. to a new RHEL minor release?
+
+WARNING: *Solution Below*
+
+==== Manual steps to update the OS of a HANA server
+
+The following steps will update the OS of a single HANA server within a RHEL major release. If the Server is using System Replication obiously more steps are required but with the failover technology a fully automated, near-zero downtime update can be achieved.
+
+1. Login as root to {servera}
+
+2. Update the system to the latest patches in the current RHEL minor release:
+* Make sure you have your release set to the current minor release:
++
+[subs=attributes+]
+----
+[root@{servera} ~]# subscription-manager release
+Release: {os_release}
+----
+
+* OPTIONAL: If you want to update to a newer minor release you need to do this command additionally (see `subscription-manager release --list` for available releases):
++
+[subs=attributes+]
+----
+[root@{servera} ~]# subscription-manager release --set {os_upgrade_release}
+Release set to: {os_upgrade_release}
+----
+
+* Now you can update the system
++
+[subs=attributes+]
+----
+[root@{servera} ~]# yum -y update
+----
+
+3. Now stop the HANA database
++
+[subs=attributes+]
+----
+[root@{servera} ~]# su - hxeadm
+hxeadm@{servera}:/usr/sap/HXE/HDB90> HDB stop
+----
+
+4. And reboot, if necessaey (e.g. new kernel)
++
+[subs=attributes+]
+----
+[root@{servera} ~]# reboot
+----
+
+5. After reboot is finished, login and start HANA again (in case it is not started automatically)
++
+[subs=attributes+]
+----
+[root@{jumphost} ~]# ssh {servera}
+[root@{servera} ~]# su - hxeadm
+  hxeadm@{servera}:/usr/sap/HXE/HDB90> HDB start
+----
+
+==== Automate these steps with Ansible
+
+Do you really want to do this manually? If not, here is a playbook that covers both upgrade scenarios. If you change `os_upgrade_release`, an upgrade to another RHEL release will be performed.
+
+. To use this playbook you need to install https://galaxy.ansible.com/mk-ansible-roles/check_reboot[`mk-ansible-roles.check_reboot`] role:
++
+[subs=attributes+]
+-----
+{admin}@{adminhost} $ sudo ansible-galaxy install mk-ansible-roles.check_reboot -p /usr/share/ansible/roles
+-----
+
+. Playbook for updating a HANA server
++
+[subs=attributes+]
+-----
+- name: Update Hana Server
+  hosts: {servera}
+  become: yes
+
+  vars:
+              os_release: {os_upgrade_release}
+              sid: RHE
+
+  pre_tasks:
+              - name: Ensure correct OS release is set
+                shell: subscription-manager release --set "{{ os_release}}" && yum clean all
+                when: os_release != ansible_distribution_version
+
+              - name: ensure the the system is updated
+                yum: name=* state=latest
+
+              - name: ensure HANA is stopped
+                command: su - "{{ sid|lower + 'adm' }}" -c "HDB stop"
+
+  roles:
+              - { role: mk-ansible-roles.check_reboot }
+
+  tasks:
+              - name: ensure HANA is started
+                command: su - "{{ sid|lower + 'adm' }}" -c "HDB start"
+
+
+-----
+
+[TIP]
+====
+You could also think about converting this playbook into separate roles, that can be reused in different playbooks, such as:
+
+* Stop HANA instances
+* Start HANA instances
+* Update Server
+* Reboot Server (already a role).
+
+Or extend the playbook to do a rolling update of the HANA cluster
+====
+
+==== Additional commands that are useful for HANA system Replication to extend the playbook
+
+The following commands may be useful for exting the above playbook. They need to run in the conext of the HANA user, in our case `rheadm`
+
+. unregistering a secondary node by logging to it (in this case {serverb}):
++
+----
+hdbnsutil -sr_unregister
+----
+
+. register it again with
++
+----
+hdbnsutil -sr_register
+----
+
+. You can monitor that the replication is deactivated with
++
+----
+hdbnsutil -sr_state
+----
+
+. HANA system Replication takeover
++
+----
+hdbnsutil -sr_takeover
+----
+
+. You get a lot of info using the python script `systemReplicationStatus.py`. The return value is 15 if everything is in sync.

@@ -1,0 +1,7 @@
+---
+sap_preconfigure_modify_etc_hosts: true
+sap_preconfigure_fail_if_reboot_required: "no"
+sap_domain: "labs.local"
+sap_hostagent_installation_type: "rpm"
+sap_hostagent_rpm_remote_path: "/software/SAPHOSTAGENT"
+sap_hostagent_rpm_file_name: "saphostagentrpm_44-20009394.rpm"

@@ -1,0 +1,19 @@
+#!//usr/bin/ansible-playbook -vv
+- hosts: all
+  become: yes 
+  gather_facts: no
+
+  tasks:
+    - name: find installed SIDs
+      command: "/usr/sap/hostctrl/exe/saphostctrl -function ListInstances" 
+      changed_when: false
+      register: sids
+
+    - name: Show all instances found
+      debug:
+              var: sids.stdout_lines
+
+    - name: Remove all HANA instaces
+      command: "/hana/shared/{{item[13:16]}}/global/hdb/install/bin/hdbuninst -b --force"
+      loop: "{{ sids.stdout_lines|list }}"
+

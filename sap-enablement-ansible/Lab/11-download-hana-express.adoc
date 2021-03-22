@@ -1,0 +1,82 @@
+
+// include::config_vars.adoc[])
+
+=== Register for download Hana Express
+
+To deploy HANA you need to use your own license of SAP. The fastest and easieast way of getting access is to SAP HANA is to download SAP HANA Express.
+
+HANA Express is a reduced Version of SAP HANA and requires less resources than HANA Platform Edition. It lacks at least the following features:
+
+- Smart Data Integration (SDI)
+- Smart Data Streaming
+- Sytem Replication (HSR)
+- Dynamic tiering
+
+For a full list see http://news.sap.com/germany/files/2017/01/SAP-HANA-Express-Edition-FAQ-extern.pdf[the HANA Express FAQ]
+
+For this quickstart guide you need to download the Binary installer method as described in detail on this page: https://www.sap.com/developer/tutorials/hxe-ua-installing-binary.html
+
+As the SAP tutorial only describes the graphical interface which is not feasible for the training server in the cloud, you need to do the following
+
+1. Register for Hana Express at https://www.sap.com/sap-hana-express
++
+image::hana01.png[]
+
+2. Download the platform independant installer (HXEDownloadManager.jar)
++
+image::hana02.png[]
+
+3. Copy the Installer to your nfsserver, e.g. from Linux or Mac:
++
+[subs=attributes+]
+----
+$ scp HXEDownloadManager.jar {nfsserver-ext}:{nfsexportdir}
+HXEDownloadManager.jar                             100%  561KB 971.1KB/s   00:00
+----
++
+If you use mobaXterm on Windows just login to {nfsserver-ext} and drag the jar file to the dialog box on the left. If you use putty, you can use winscp to upload the files
+
+4. Login to the jumphost and switch to {nfsexportdir}
++
+[subs=attributes+]
+----
+[root@{nfsserver} ~]# cd {nfsexportdir}
+[root@{nfsserver} {nfsexportdir}]# ls
+HXEDownloadManager.jar
+----
+
+5. Download Hana express
++
+[subs=attributes+]
+----
+[root@{nfsserver} {nfsexportdir}]#  java -jar HXEDownloadManager.jar -d . linuxx86_64 installer hxe.tgz
+Connecting to download server...
+
+SAP HANA, express edition version: 2.00.036.00.20190223.1
+
+Downloading "Server only installer"...
+hxe.tgz : 100%
+Concatenate download files to ./hxe.tgz...
+./hxe.tgz created.
+Verify ./hxe.tgz file checksum...
+./hxe.tgz file checksum is OK.
+----
+
+6. unpack HANA Express
++
+[subs=attributes+]
+----
+[root@{nfsserver} {nfsexportdir}]# tar xzvf hxe.tgz
+setup_hxe.sh
+HANA_EXPRESS_20/change_key.sh
+HANA_EXPRESS_20/hxe_gc.sh
+HANA_EXPRESS_20/hxe_optimize.sh
+[...]
+[root@{nfsserver} {nfsexportdir}]# ls -l
+insgesamt 1557052
+drwxr-xr-x. 3 root    root        4096  6. Mai 08:06 HANA_EXPRESS_20
+-rw-r--r--. 1 root    root      574824  6. Mai 07:23 HXEDownloadManager.jar
+-rw-r--r--. 1 root    root  1593773828  6. Mai 07:31 hxe.tgz
+-rwxr-xr-x. 1 3312651 10102      65405 23. Feb 20:27 setup_hxe.sh
+
+----

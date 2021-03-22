@@ -1,0 +1,64 @@
+// include::config_vars.adoc[])
+
+=== Setup Hana SR
+
+Now you have two identical SAP HANA databases running on {servera} and {serverb}.
+
+With the role https://galaxy.ansible.com/redhat_sap/sap_hana_hsr[redhat_sap.sap_hana_hsr] you can easily setup Hana System Replication between these instances.
+
+Click on the link and read the README of the role to learn more about the required variables.
+
+The following variables need to be set for {servera} and {serverb} in this lab:
+
+----
+sap_hana_hsr_hana_sid: "RHE"
+sap_hana_hsr_hana_instance_number: "00"
+sap_hana_hsr_hana_db_system_password: "R3dh4t123!"
+sap_hana_hsr_hana_primary_hostname: "hana1"
+----
+
+While the folloing are individual per host:
+
+- On {servera} you need:
++
+----
+sap_hana_hsr_role: "primary"
+sap_hana_hsr_alias: "DC1"
+----
+
+- On {serverb} you need:
++
+----
+sap_hana_hsr_role: "secondary"
+sap_hana_hsr_alias: "DC2"
+----
+
+Now add the above variables to `host_vars` and `group_vars` variable definitions and create a playbook using this role to setup HANA System Replication.
+
+NOTE: If you need some hints have a glimpse at the solutions paragraph
+
+Once you have run your role, you can login to {servera} and check that the system replication is running:
+
+[subs=attributes+]
+----
+{admin}@{adminhost} $ ssh {servera}
+{admin}@{servera} $ sudo su - rheadm
+rheadm@{servera}:/usr/sap/RHE/HDB00> cdpy
+rheadm@{servera}:/usr/sap/RHE/HDB00/exe/python_support> python ./systemReplicationStatus.py
+| Database | Host  | Port  | Service Name | Volume ID | Site ID | Site Name | Secondary | Secondary | Secondary | Secondary | Secondary     | Replication | Replication | Replication    |
+|          |       |       |              |           |         |           | Host      | Port      | Site ID   | Site Name | Active Status | Mode        | Status      | Status Details |
+| -------- | ----- | ----- | ------------ | --------- | ------- | --------- | --------- | --------- | --------- | --------- | ------------- | ----------- | ----------- | -------------- |
+| SYSTEMDB | hana1 | 30001 | nameserver   |         1 |       1 | DC1       | hana2     |     30001 |         2 | DC2       | YES           | SYNC        | ACTIVE      |                |
+| RHE      | hana1 | 30007 | xsengine     |         2 |       1 | DC1       | hana2     |     30007 |         2 | DC2       | YES           | SYNC        | ACTIVE      |                |
+| RHE      | hana1 | 30003 | indexserver  |         3 |       1 | DC1       | hana2     |     30003 |         2 | DC2       | YES           | SYNC        | ACTIVE      |                |
+
+status system replication site "2": ACTIVE
+overall system replication status: ACTIVE
+
+Local System Replication State
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+mode: PRIMARY
+site id: 1
+site name: DC1
+----

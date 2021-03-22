@@ -201,7 +201,7 @@ NOTE: you do not need subscription-manager to subscribe or set the OS release fo
     [root@hana-<GUID> ~]#
     ```
 
-- Check that the systems are subscribed to the correct channels
+- Check that the systems are subscribed to the correct channels. The following should be included:
 
 ```bash
 [root@hana-<GUID> ~]# yum repolist
@@ -213,34 +213,98 @@ rhel-sap-hana-for-rhel-7-server-e4s-rpms                    RHEL for SAP HANA (f
 repolist: 10.534
 ```
 
+- Check that the system release is locked to 8.1
+
+```bash
+[root@hana-<GUID> ~]# subscription-manager release
+Release: 8.1
+```
+#### Challenge Lab
+Create a small playbook that does the above checks for you. The modules you might use for this could be:
+- `rhsm_repository` for checking repositories
+- `shell` (for running commands where no module exist)
+
 ## Deploy SAP HANA using Ansible
 
-Once we have updloaded all the required installation files to deploy SAP HANA, we can now work in the Ansible automation we are going to use to deploy SAP HANA in the RHEL host. We are going to use the `bastion` host where Ansible Engine is already installed as the automation host where to create the Ansible inventory and Ansible playbook required to fully automate SAP HANA deployment.
+Once we have updloaded all the required installation files to deploy SAP HANA, we can now work in the Ansible automation we are going to use to deploy SAP HANA in the RHEL host. We are going to use the `bastion` host where <!--- Ansible Engine is already installed as the automation host where to create the Ansible inventory and Ansible playbook required to fully automate SAP HANA deployment.
+--> need to prepare the environment accordingly.
+
+> :warning: **Make sure you are now logged in as `cloud-user` on your bastion host `bastion-<GUID>`**
+
+### Make sure ansible is installed
+
+check if ansible is installed:
+```bash
+[cloud-user@hana-<GUID> ~]# rpm -q  ansible
+ansible-2.9.7-1.el8ae.noarch
+```
+
+In case it is not installed, please install ansible:
+```bash
+[root@hana-<GUID> ~]# rpm -q  ansible
+package ansible is not installed
+[root@hana-<GUID> ~]# yum -y install ansible
+[...]
+```
 
 ### Create the Ansible Inventory
+
+Make sure you have the host `hana-<GUID>` in your inventory and it to the group hana.
+You can run the following command to check if your setup is correct:
+
+```bash
+[cloud-ansible_user@bastion-<GUID> 0 ~]# ansible hana --list-hosts
+  hosts (1):
+    hana-<GUID>
+```
+
 
 The `bastion` host is configured already with a simple Ansible inventory where the `hana` hosts has been included. Check the inventory content to review how the `hana` host is included and do a simple test to validate we can connect with the host:
 
 ```bash
 
-[cloud-user@bastion-<GUID> ~]# sudo -i
-[root@bastion-<GUID> ~]# cat /etc/ansible/hosts
-COPY OUTPUT HERE
-..
-..
-[root@bastion-<GUID> ~]# ansible -i /etc/ansible/hosts hana -m ping
-COPY OUTPUT HERE
-..
-..
+[cloud-user@bastion-<GUID> ~]$  cat /etc/ansible/hosts
+[hanas]
+hana-<GUID>
+
+[s4hanas]
+s4hana-<GUID>
+
+[hana:children]
+hanas
+
+[s4hana:children]
+s4hanas
+
+[sap:children]
+hanas
+s4hanas
+
+[sap:vars]
+timeout=60
+ansible_become=yes
+ansible_user=cloud-user
+ansible_ssh_common_args="-o StrictHostKeyChecking=no"
+sap_preconfigure_modify_etc_hosts=true
+sap_domain=automation.local
+
+[cloud-user@bastion-<GUID> 2 ~]$ ansible hana -m ping
+hana-<GUID> | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    },
+    "changed": false,
+    "ping": "pong"
+}    
 ```
 
 Once we have tested the inventory, we need to extend it with all the required variables that are going to be consumed by the multiple Ansible roles we are going to use to automate the SAP HANA deployment process.
 
-Ansible is very flexible when it comes to inventory definition. For this particual use case we are going to add all the required variables to the `hana` host YAML file. To do this, we need first to create the directory tha will contain the hosts variables for our inventory, and then a specific YAML file for the `hana` host:
+Ansible is very flexible when it comes to inventory definition. For this particual use case we are going to add all the required variables to the `hana` host YAML file. To do this, we need first to create the directory that will contain the hosts variables for our inventory, and then a specific YAML file for the `hana` host:
 
 ```bash
-[root@bastion-<GUID> ~]# mkdir /etc/ansible/host_vars
-[root@bastion-<GUID> ~]# touch /etc/ansible/host_vars/hana-<GUID>.yml
+[cloud-user@bastion-<GUID> ~]$ sudo mkdir /etc/ansible/host_vars
+[cloud-user@bastion-<GUID> ~]$ sudo touch /etc/ansible/host_vars/hana-<GUID>.yml
 ```
 
 As mentioned before, we are going to use multiple Ansible roles, and some of these roles require variables to be defined with valid values. You can check each Ansible role documentation to understand what are these requirements and what values are expected. For these use case these are the variables we need to add with the values to the `/etc/ansible/host_vars/hana-<GUID>.yml` file:
@@ -254,6 +318,10 @@ sap_hostagent_rpm_file_name: "saphostagentrpm_44-20009394.rpm"
 ## Variables reqiured for `sap_preconfigure` role
 sap_preconfigure_modify_etc_hosts: true
 sap_domain: "lab.local"
+
+## Variables for sap_hana_preconfigure
+sap_hana_preconfigure_fail_if_reboot_required: no
+
 
 ## Variables required for 'storage' role
 storage_pools:
@@ -270,7 +338,7 @@ storage_pools:
         mount_point: "/hana/log"
         state: present
       - name: shared
-        size: "512 GiB"
+        size: "120 GiB"
         mount_point: "/hana/shared"
         state: present
       - name: sap
@@ -300,11 +368,12 @@ Now we have defined the Ansible inventory, the next thing we need to create is a
 
 ### Create the Ansible Playbook
 
-As we are using already available Ansible roles to automa the process of deploying SAP HANA, we don't need to create a complex playbook. The playbook we are going to create is basically going to consume these roles and use those with the inventory we just have created. The first thing we are going to do before creating the playbook, is to pull the required Ansible roles. In order to do this, Ansible comes with a CLI we can use for this, `ansible-galaxy`.
+As we are using already available Ansible roles to automate the process of deploying SAP HANA, we don't need to create a complex playbook. The playbook we are going to create is basically going to consume these roles and use those with the inventory we just have created. The first thing we are going to do before creating the playbook, is to pull the required Ansible roles. In order to do this, Ansible comes with a CLI we can use for this, `ansible-galaxy`.
 
-This CLI can use a requirements file where we will add all the required roles. Let's create this file and manually pull the roles:
+This CLI can use a requirements file where we will add all the required roles. Let's create this file and manually pull the roles. We need to be root for the next steps:
 
 ```bash
+[cloud-user@bastion-<GUID> ~]$ sudo -i
 [root@bastion-<GUID> ~]# cd /etc/ansible
 [root@bastion-<GUID> ansible ~]# touch requirements.yml
 ```
@@ -319,13 +388,13 @@ The following content will be added to the `requirements.yml` file:
 # From upstream 'RHEL System Roles'
 - src: https://github.com/linux-system-roles/sap-preconfigure.git
 - src: https://github.com/linux-system-roles/sap-hana-preconfigure.git
-- src: https://github.com/linux-system-roles/storage.git 
+- src: https://github.com/linux-system-roles/storage.git
 ```
 
 Once added, we can manually pull these roles:
 
 ```bash
-[root@bastion-<GUID> ansible ~]# ansible-galaxy install -r requirements.yml -p roles
+[root@bastion-<GUID> ansible ~]# ansible-galaxy install -f -r requirements.yml -p /usr/share/ansible/roles
 - downloading role 'sap_hostagent', owned by redhat_sap
 - downloading role from https://github.com/redhat-sap/sap-hostagent/archive/master.tar.gz
 - extracting redhat_sap.sap_hostagent to /Users/mak/GIT/sap-blog-part-4/sap-automation/plays/roles/redhat_sap.sap_hostagent
@@ -342,16 +411,23 @@ Once added, we can manually pull these roles:
 - storage was installed successfully
 ```
 
-We can now create the Ansible playbook to consume these roles with the inventory:
+Now all prerequitsites are globally installed.
+
+> :heavy_exclamation_mark: You could have done all these steps as the unpriviledged cloud-user in a local directory as well. This way it is globally available for all users.
+
+We can now create the Ansible playbook to consume these roles with the inventory as the local cloud-user:
+Make sure you are logged in as cloud-user on you bastion host:
 
 ```bash
-[root@bastion-<GUID> ansible ~]# touch hana-deploy.yml
+$ whoami
+cloud-user
 ```
 
-And add the following content to the playbook:
+Now create the playbook `hana-deploy.yml` with the following content:
 
 ```yaml
-- hosts: hana-<GUID>
+#!/usr/bin/ansible-playbook -vv
+- hosts: hana
   roles:
     - { role: storage }
     - { role: redhat_sap.sap_hostagent }
@@ -362,15 +438,25 @@ And add the following content to the playbook:
 
 ### Deploy SAP HANA with Ansible
 
+Now you are ready to deploy HANA with the recently created playbook:
 
+```bash
+[cloud-user@bastion-<GUID> ~]$ ansible-playbook -vv hana-deploy.yml
+```
+> :heavy_exclamation_mark: The -vvv enables debugging, so that you can better research, in case something unexpected will happen during execution
 
-
+> :warning: Please note the first line in the ansible playbook. With that line you can run the playbook like any other command in Linux:
+> ```bash
+> [cloud-user@bastion-<GUID> ~]$ chmod 755 hana-deploy.yml
+> [cloud-user@bastion-<GUID> ~]$ ./hana-deploy.yml
+> ```
 
 
 ## Test SAP HANA Database
 
 **Check the status of the SAP HANA database:**
 
+<!---
 ```bash
 [root@hana-<GUID> SAP_HANA_DATABASE]# su - hxeadm
 hxeadm@hana-<GUID>:/usr/sap/HXE/HDB90> HDB info
@@ -386,9 +472,32 @@ hxeadm       3511     2867  52.6    4284616    1859432      \_ hdbindexserver -p
 hxeadm       4326     2867   3.2    1397416     277040      \_ hdbwebdispatcher
 hxeadm       2591        1   0.6     511028      24440 /usr/sap/HXE/HDB90/exe/sapstartsrv pf=/hana/shared/HXE/profile/HXE_HDB90_hana1.example.com -D -u hxeadm
 ```
+-->
+
+```bash
+[root@hana-<GUID> ~]# su - rh1adm
+Last login: So Jul  5 07:17:36 EDT 2020
+rh1adm@hana-<GUID>:/usr/sap/RH1/HDB00> HDB info
+USER          PID     PPID  %CPU        VSZ        RSS COMMAND
+rh1adm      41265    41264   0.3     234212       5248 -sh
+rh1adm      41366    41265   0.0     222752       3344  \_ /bin/sh /usr/sap/RH1/HDB00/HDB info
+rh1adm      41397    41366   0.0     266976       4052      \_ ps fx -U rh1adm -o user:8,pid:8,ppid:8,pcpu:5,vsz:10,rss:10,args
+rh1adm      18017        1   0.0     673848      47280 hdbrsutil  --start --port 30003 --volume 3 --volumesuffix mnt00001/hdb00003.00003 --identifier 1593947929
+rh1adm      17553        1   0.0     673852      48120 hdbrsutil  --start --port 30001 --volume 1 --volumesuffix mnt00001/hdb00001 --identifier 1593947876
+rh1adm      17410        1   0.0      24960       3284 sapstart pf=/hana/shared/RH1/profile/RH1_HDB00_hana-<GUID>
+rh1adm      17418    17410   0.0     426400      64164  \_ /usr/sap/RH1/HDB00/hana-<GUID>/trace/hdb.sapRH1_HDB00 -d -nw -f /usr/sap/RH1/HDB00/hana-<GUID>/daemon.ini pf=/usr/sap/RH1/SYS/profile/RH1_HDB00_hana-<GUID>
+rh1adm      17437    17418  24.9    9750216    6743256      \_ hdbnameserver
+rh1adm      17722    17418   0.6    1439360     130832      \_ hdbcompileserver
+rh1adm      17725    17418  56.6    3827236    3278228      \_ hdbpreprocessor
+rh1adm      17791    17418  27.7    9796748    6903416      \_ hdbindexserver -port 30003
+rh1adm      17794    17418   1.5    3784184    1180320      \_ hdbxsengine -port 30007
+rh1adm      18246    17418   0.7    2708228     389572      \_ hdbwebdispatcher
+rh1adm      17335        1   0.0     520472      30752 /usr/sap/RH1/HDB00/exe/sapstartsrv pf=/hana/shared/RH1/profile/RH1_HDB00_hana-<GUID> -D -u rh1adm
+```
 
 **Stop the SAP HANA database:**
 
+<!---
 ```bash
 [root@hana-<GUID> ~]# su - hxeadm
 hxeadm@hana-<GUID>:/usr/sap/HXE/HDB90> HDB stop
@@ -405,9 +514,29 @@ WaitforStopped
 OK
 hdbdaemon is stopped.
 ```
+-->
+
+```bash
+rh1adm@hana-<GUID>:/usr/sap/RH1/HDB00> HDB stop
+hdbdaemon will wait maximal 300 seconds for NewDB services finishing.
+Stopping instance using: /usr/sap/RH1/SYS/exe/hdb/sapcontrol -prot NI_HTTP -nr 00 -function Stop 400
+
+05.07.2020 09:19:57
+Stop
+OK
+Waiting for stopped instance using: /usr/sap/RH1/SYS/exe/hdb/sapcontrol -prot NI_HTTP -nr 00 -function WaitforStopped 600 2
+
+
+05.07.2020 09:20:37
+WaitforStopped
+OK
+hdbdaemon is stopped.
+
+```
 
 **Start the SAP HANA database:**
 
+<!---
 ```bash
 [root@hana-<GUID> ~]# su - hxeadm
 hxeadm@hana-<GUID>:/usr/sap/HXE/HDB90> HDB start
@@ -426,6 +555,27 @@ Start
 OK
 
 17.10.2019 10:38:47
+StartWait
+OK
+```
+-->
+```bash
+rh1adm@hana-<GUID>:/usr/sap/RH1/HDB00> HDB start
+
+
+StartService
+Impromptu CCC initialization by 'rscpCInit'.
+  See SAP note 1266393.
+OK
+OK
+Starting instance using: /usr/sap/RH1/SYS/exe/hdb/sapcontrol -prot NI_HTTP -nr 00 -function StartWait 2700 2
+
+
+05.07.2020 09:21:05
+Start
+OK
+
+05.07.2020 09:22:07
 StartWait
 OK
 ```

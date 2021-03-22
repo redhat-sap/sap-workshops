@@ -1,0 +1,24 @@
+---
+# This playbook configures all systems 
+# for consumption of SAP software
+
+- name: Prepare for SAP Install
+  hosts: hana, s4hana
+  become: yes
+
+  pre_tasks:
+    - name: Ensure sapdomain is in DNS search path
+      nmcli:
+        conn_name: "System eth0"
+        dns4_search: "ec2.internal,{{ sap_domain }}"
+        state: present
+      tags:
+             - update_resolv
+
+  roles:
+              - redhat_sap.sap_rhsm
+              - linux-system-roles.timesync 
+              - linux-system-roles.storage
+              - sap-preconfigure
+              - redhat_sap.sap_hostagent
+
