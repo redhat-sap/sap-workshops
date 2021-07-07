@@ -356,7 +356,7 @@ tower, to ensure all required roles are automatically installed.
 
 3.  Install the roles
 
-        [ec2-user@bastion]$ sudo ansible-galaxy install -r roles/requiremnts.yml -p /usr/share/ansible/roles
+        [ec2-user@bastion]$ sudo ansible-galaxy install -r roles/requirements.yml -p /usr/share/ansible/roles
 
 > **Note**
 >
@@ -471,30 +471,17 @@ could use
 [`rhel-system-roles.network`](https://github.com/linux-system-roles/network/blob/master/README.md)
 to configure a more complex network preconfiguration. Nonetheless
 `resolv.conf` on AWS is not reboot safe and will be overwritten. Instead
-of using the network role the following line will make the chnages to
+of using the network role the following line will make the changes to
 /etc/resolv.conf persistent:
 
-      pre_tasks:
-        - name: Ensure sap_domain is in DNS search path
-          lineinfile:
-            path: /etc/resolv.conf
-            backup: yes
-            backrefs: yes
-            state: present
-            regexp: '^(search (?!.* {{ sap_domain }}).*) *$'
-            line: "\\1 {{ sap_domain }}"
-          tags:
-                 - update_resolv
-
-        - name: Ensure Boot consistency
-          lineinfile:
-            path: /etc/NetworkManager/NetworkManager.conf
-            state: present
-            insertafter: "^[main]"
-            regexp: "^dns=.*"
-            line: "dns=none"
-          tags:
-                 - update_resolv
+    pre_tasks:
+      - name: Ensure sapdomain is in DNS search path
+        nmcli:
+          conn_name: "System eth0"
+          dns4_search: "ec2.internal,{{ sap_domain }}"
+          state: present
+        tags:
+               - update_resolv
 
 > **Note**
 >

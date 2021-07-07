@@ -62,31 +62,17 @@ NOTE: The timeserver module throws a couple errors that are ok to ignore
 ==== Networking Setup
 
 Network setup in this lab is already done. In other environments you could use https://github.com/linux-system-roles/network/blob/master/README.md[`rhel-system-roles.network`] to configure a more complex network preconfiguration.
-Nonetheless `resolv.conf` on AWS is not reboot safe and will be overwritten. Instead of using the network role the following line will make the chnages to /etc/resolv.conf persistent:
+Nonetheless `resolv.conf` on AWS is not reboot safe and will be overwritten. Instead of using the network role the following line will make the changes to DNS resolution persistent:
 
 ----
   pre_tasks:
-    - name: Ensure sap_domain is in DNS search path
-      lineinfile:
-        path: /etc/resolv.conf
-        backup: yes
-        backrefs: yes
+    - name: Ensure sapdomain is in DNS search path
+      nmcli:
+        conn_name: "System eth0"
+        dns4_search: "ec2.internal,{{ sap_domain }}"
         state: present
-        regexp: '^(search (?!.* {{ sap_domain }}).*) *$'
-        line: "\\1 {{ sap_domain }}"
       tags:
              - update_resolv
-
-    - name: Ensure Boot consistency
-      lineinfile:
-        path: /etc/NetworkManager/NetworkManager.conf
-        state: present
-        insertafter: "^[main]"
-        regexp: "^dns=.*"
-        line: "dns=none"
-      tags:
-             - update_resolv
-
 ----
 
 NOTE: the tasks section will be run after the roles and the pre_tasks section before the roles in an ansible playbook
