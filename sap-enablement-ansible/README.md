@@ -56,7 +56,8 @@ you during the workshop.
 ### Order catalog item
 
 Login into [Red Hat Product Demo System](https://rhpds.redhat.com) and
-navigate to `Services -→ Catalogs -→ All Services -→ Workshops`. An item
+navigate to
+`Services -→ Catalogs -→ All Services -→ RHEL Platform Demo`. An item
 called `SAP End to End Automation AWS` will be available.
 
 ![rhpds-catalog](img/rhpds01.png)
