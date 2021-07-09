@@ -1,6 +1,6 @@
 ---
 # Individual storage config for S4/HANA
-# rhel-system-role.storage
+# rhel-system-roles.storage
 #---------------------------
 
 storage_pools:

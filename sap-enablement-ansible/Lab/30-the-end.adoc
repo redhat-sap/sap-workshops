@@ -1,3 +1,76 @@
+== Troubleshooting
+
+This section gives some hints on how to handle common problems
+
+=== Check if HANA is running
+
+Please note, that after a reboot HANA is not started automatically, which is by intention, login into the HANA host, assume the sidadm user (which in our case is rheadm) and run `HDB info`
+
+=== Start SAP HANA
+Login into the HANA host, assume the sidadm user (which in our case is rheadm) and run `HDB start`
+
+=== Stop SAP HANA
+Login into the HANA host, assume the sidadm user (which in our case is rheadm) and run `HDB stop`
+
+=== Check if an SAP system is installed
+Login to an SAP system an run the following command `/usr/sap/hostctrl/exe/saphostctrl -function GetCIMObject -enuminstances SAPInstance`
+
+Or you can run the following playbook against your servers:
+
+----
+- name: Check for SAP Instances
+  hosts: all
+  become: True
+  tasks:
+    - name:  Search for installed SAP Systems
+      shell: |
+        if [ -x /usr/sap/hostctrl/exe/saphostctrl ]; then
+              /usr/sap/hostctrl/exe/saphostctrl -function GetCIMObject -enuminstances SAPInstance
+        fi
+      register: sap_hana_deployment_sap_systems_list
+
+    - name: Display installed SAP Systems
+      debug:
+          var: sap_hana_deployment_sap_systems_list
+          
+    - set_fact:
+        installed_sid: "{{ item.split(',').2|trim }}"
+      loop: "{{ sap_hana_deployment_sap_systems_list.stdout_lines|list }}"
+      when: item is search("^ SID")
+    
+    - set_fact:
+        installed_num: "{{ item.split(',').2|trim }}"
+      loop: "{{ sap_hana_deployment_sap_systems_list.stdout_lines|list }}"
+      when: item is search("^ SystemNumber")
+    
+    - set_fact:
+        installed_typ: "{{ item.split(',').2|trim }}"
+      loop: "{{ sap_hana_deployment_sap_systems_list.stdout_lines|list }}"
+      when: item is search("^ InstanceName")
+    
+    
+    - name: Display SID
+      debug:
+        msg: "SID is {{ installed_sid }}, Number {{ installed_num }}\nTyp {{ installed_typ}}" 
+      when: installed_sid is defined
+          
+    - name: Fail if you try to install HANA with same SID/Instance than other SAP system
+      fail:
+          msg: "There is a non-HANA software with the same SID/instance number running"
+      when:
+         - installed_typ is defined
+         - installed_sid == sap_hana_deployment_hana_sid
+         - installed_num == sap_hana_deployment_hana_instance_number
+         - installed_typ != "HDB"+sap_hana_deployment_hana_instance_number
+
+----
+
+
+=== Cleanup the System to redo your installtion
+
+
+If you happen to run into new issues or have additional requests or tipps, please report them https://github.com/rhmk/sap-workshops/issues[here]. Please name the "sap-enablement-ansible" workshop", when you open an issue
+
 == The End
 
 Congratulations, you finished your labs! We hope you enjoyed your first steps deploying SAP with Ansible as much as we enjoyed creating the labs.

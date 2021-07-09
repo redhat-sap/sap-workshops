@@ -46,7 +46,7 @@ NOTE: you will find more details on the Update Services for SAP in our https://a
 
 SAP requires proper time synchronisation. So the linux system role is a proper way to set the time correctly
 
-Use the https://github.com/linux-system-roles/timesync/blob/master/README.md[`rhel-system-role.timesync`] to configure your timeserver. +
+Use the https://github.com/linux-system-roles/timesync/blob/master/README.md[`rhel-system-roles.timesync`] to configure your timeserver. +
 Use the following parameter:
 
 [subs=attributes+]
@@ -69,8 +69,16 @@ Nonetheless `resolv.conf` on AWS is not reboot safe and will be overwritten. Ins
     - name: Ensure sapdomain is in DNS search path
       nmcli:
         conn_name: "System eth0"
+        type: ethernet
         dns4_search: "ec2.internal,{{ sap_domain }}"
         state: present
+      tags:
+             - update_resolv
+
+    - name: power cycle NetworkManager to rewrite resolv.conf
+      service:
+        name: NetworkManager
+        state: restarted
       tags:
              - update_resolv
 ----
@@ -79,15 +87,16 @@ NOTE: the tasks section will be run after the roles and the pre_tasks section be
 
 ====  Disk configuration
 
-If you login to {servera} or {serverb} you will realize that the disks are not configured. Use `lsblk` to identify unconfigured disks. For the configuration of the disks use https://github.com/linux-system-roles/storage/blob/master/README.md[`linux-system-role.storage`]. +
+If you login to {servera} or {serverb} you will realize that the disks are not configured. Use `lsblk` to identify unconfigured disks. For the configuration of the disks use https://github.com/linux-system-roles/storage/blob/master/README.md[`linux-system-roles.storage`]. +
 Use the following parameters:
 
 ----
 include::config_disk.txt[]
 ----
 
+NOTE: If you happen to misconfigure the disk, take your config and change the state to `absent`. Then rerun the storage configuration role to remove your setting, correct your entry, change the state to `present` again  and rerun the storage configuration once more
 
-==== SAP preconfigure base settings
+==== SAP preconfigure base settings:w
 SAP requires a couple of base settings that are described in https://launchpad.support.sap.com/#/notes/2369910[SAP Note 2369910] and other SAP notes. The role https://github.com/linux-system-roles/sap-preconfigure/blob/master/README.md[`sap-preconfigure`] will set the parameters that have to be set for all SAP software.
 
 The role is designed to be used without parameters to produce a valid output.
@@ -187,17 +196,6 @@ If you want to check and reboot the the system you can use the following role: h
 Finally to install SAP HANA database, use the role https://github.com/redhat-sap/sap-hana-deployment/blob/master/README.md[`redhat_sap.sap_hana_deployment`].
 
 This role creates the configuration file for an unattended install of SAP HANA with `hdblcm` and kicks-off the installation process.
-
-. Install redhat_sap.sap_hana_deployment
-+
-[subs=attributes+]
-----
-[{admin}@{adminhost}]$ sudo ansible-galaxy install redhat_sap.sap_hana_deployment -p /usr/share/ansible/roles
-- downloading role 'sap_hana_deployment', owned by redhat_sap
-- downloading role from https://github.com/redhat-sap/sap-hana-deployment/archive/v1.2.0.tar.gz
-- extracting redhat_sap.sap_hana_deployment to /usr/share/ansible/roles/redhat_sap.sap_hana_deployment
-- redhat_sap.sap_hana_deployment (v1.2.0) was installed successfully
-----
 
 For this role you need to add the instance specific parameters in the according `host_vars` or `group_vars` file:
 

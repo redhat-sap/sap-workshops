@@ -10,21 +10,23 @@ With the role https://galaxy.ansible.com/redhat_sap/sap-s4hana-deployment[redhat
 Before you use this role you have to run most of the roles you have already run during the SAP HANA installation for:
 
 - System Registration to satellite or RHN (sap_rhsm)
-- timeserver configurazion (rhel_system_role.timesync)
+- timeserver configurazion (rhel_system_roles.timesync)
 - networking setup
-- disk configuration (rhel_system_role.storage)
+- disk configuration (rhel_system_roles.storage)
 - SAP base configuration (sap_preconfigure)
 - SAP hostagent installation (redhat_sap.sap_hostagent)
 
 For most of the roles you need to use the same parameters and variables that you have used for the HANA installation. Hence these parameters should have been declared in the `group_vars/all` files.
 
-The disk configuration (rhel_system_role.storage) needs an indivdual or different configuration than SAP HANA. In our lab use the following variables to configure the disk of `s4hana`:
+The disk configuration (rhel_system_roles.storage) needs an indivdual or different configuration than SAP HANA. In our lab use the following variables to configure the disk of `s4hana`:
 
 ----
 include::config_disk_s4.txt[]
 ----
 
 CAUTION: You need a rhel_system_role package version from RHEL 8.2 or newer. Otherwise the swapspace is not mounted automatically
+
+NOTE: If you happen to misconfigure the disk, take your config and change the state to `absent`. Then rerun the storage configuration role to remove your setting, correct your entry, change the state to `present` again  and rerun the storage configuration once more
 
 In addition you need to run the following roles:
 

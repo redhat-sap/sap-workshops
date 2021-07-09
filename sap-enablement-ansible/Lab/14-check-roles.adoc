@@ -78,7 +78,7 @@ include::ansible-files/roles/requirements.yml[]
 +
 [subs=attributes+]
 ----
-[{admin}@{adminhost}]$ sudo ansible-galaxy install -r roles/requiremnts.yml -p /usr/share/ansible/roles
+[{admin}@{adminhost}]$ sudo ansible-galaxy install -r roles/requirements.yml -p /usr/share/ansible/roles
 ----
 
 

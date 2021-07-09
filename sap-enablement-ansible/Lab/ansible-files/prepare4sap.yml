@@ -11,7 +11,15 @@
       nmcli:
         conn_name: "System eth0"
         dns4_search: "ec2.internal,{{ sap_domain }}"
+        type: ethernet
         state: present
+      tags:
+             - update_resolv
+
+    - name: power cycle NetworkManager to rewrite resolv.conf
+      service:
+        name: NetworkManager
+        state: restarted
       tags:
              - update_resolv
 
