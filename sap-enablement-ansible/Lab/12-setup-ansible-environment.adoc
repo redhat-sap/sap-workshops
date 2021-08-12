@@ -112,3 +112,5 @@ The hana servers are in the group `hana`, the S/4HANA server is named `s4hana`
     "ping": "pong"
 }
 ----
+
+NOTE: If you want to work with your own inventory, you can copy `/etc/ansible/hosts' to your ansible-files directory and e.g. point the environment variable `ANSIBLE_INVENTORY` to it.

@@ -1,4 +1,4 @@
-# rhel-system-role.timesync
+# rhel-system-roles.timesync
 #---------------------------
 timesync_ntp_servers:
         - hostname: 0.rhel.pool.ntp.org

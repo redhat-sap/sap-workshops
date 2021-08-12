@@ -23,7 +23,7 @@ If you are a Red Hat Advanced or Premium Partner, you can immediately deploy thi
 
 ==== Order catalog item
 
-Login into https://rhpds.redhat.com[Red Hat Product Demo System] and navigate to `Services --> Catalogs --> All Services --> Workshops`. An item called `SAP End to End Automation AWS` will be available.
+Login into https://rhpds.redhat.com[Red Hat Product Demo System] and navigate to `Services --> Catalogs --> All Services --> RHEL Platform Demo`. An item called `SAP End to End Automation AWS` will be available.
 
 image:img/rhpds01.png[rhpds-catalog]
 

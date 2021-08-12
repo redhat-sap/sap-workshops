@@ -1,14 +1,47 @@
 
-
 == Prepare Access to Lab environment
 
-Before you provision your lab environment you want to make sure that you can connect to your servers after the provisioning. This can be achieved via ssh public-keys or kerberos.
+Before you provision your lab environment you want to make sure that you can connect to your servers after the provisioning. This can be achieved via ssh public-keys.
 
 === Setup SSH on Linux and macOS
-To access the jumphost via SSH, open a terminal, locate the private SSH key in your email, and store it in e.g.`~/.ssh/mylabkey` and change the rights to user read-only:
+To access the jumphost via SSH, open a terminal, locate the provided private SSH key, and store it in e.g.`~/.ssh/mylabkey` and change the rights to user read-only:
 
 ----
 $ chmod 600 ~/.ssh/mylabkey
+----
+
+NOTE: You need to copy all the lines incl. the header and footer line, so that the content looks like this:
++
+----
+$ cat ~/.ssh/mylabkey
+-----BEGIN RSA PRIVATE KEY-----
+Ofu9VdWCBNm4XJiruBFpZMyz1fY8hs28u3xKQeFf utVjbXS6SH1eYve34IDtm4Z
+WYUVFVLU30mLnEZ8laZTYFS53gMO6CAhvKFt7h2DH16OwZ9e155kKuHYnri5J28O
+lkpW2mf4fHiAXY2ORmKBa2xMFjqZs9hCvtEMA5s939IILC9oEAQkvO15WOLMvEYu
+FuoMu0gaS3NhkILLvgt3tJToHz2Mzv4GYlNSOy6bsojM0ZqtHPByIPpF0NFEgMx5
+8JvdwoETVMOoJack43Db6OulOWWA3k0bnTsNEDrvDR8a0O8p9KtjvJwteSleoCgX
+C6Hrh62mtxQtXrqLNYA1ZZIbKYHim3K5CkEmAMrsO0qHwDRe5iGo8bAC8hrVe8Cx
+Cgr0Dktx7lfoZ8d6tV5ViSzaqQk1SrAKk0LRiiTbyimzsaJouLF4a1TcVsp3k4g2
+HFmONZNdR1XvQBmap62bJBErGAZru5bQmi755q8wwAJkyW6clZ4RSO8lDnksKlYw
+4ikQ1OkPndE5SId0bQ1g3szdOoB42LwlY7RilIap5P54TTbPim0oeEL1kbFlLhE2
+tFP0mGsVKA49AwXFH585HgopQZAd4J331Gh0yetNVKvljzmfKyjNYlda5jPgpNRA
+JObXb4CEeW5kzz6GZUTva2YzSl6uhGebXKtrPD8WCmxOMwm5HyaxLnmaWN55kigc
+kx8B5vPelnqZTxcx9RWRoCzprJATodqzWG1VvX2tZBamfgxt5WSSQQy4DmPzXYsJ
+Rd8l0HLRKfZQ7K8oF13jVoDgEk1FRADa2YMmZfcDg7zyqouUuksqVen5V78s5qX1
+U1gVsq0Tl4GDvxjdPO7yzTaps0gtzOrVvWLuUwlJCipk4FnaBovRBRALMPlf7Iz7
+JvzE5aB88tTJG9iJ02bUaDVG2lIM4wy1bNe0PE8axxq4lhji7GLP6jXcZVCxmB9J
+NWpNcNcGPPbF0tsaqGYIDjVG2VwxjJjDoh6cr5oFKCtyaUFDOBxjtHsGNNPl33SB
+GzYC8OvgertwNIxUI4f145rBerFzj0FCndZQsd4wyUQxKuiGFc5dbu0GR6m2dkHT
+ZEqsXZajUz5MrH5AZ3xOiwHKtBtcAcmTBIGUnEnBfo67GJU7kQXYBBhvubNVM4Ja
+XWZFQ6RiScQr4y1aOQrMfVzeOibU8AOcf5oskqVb2mdOKXpuk82CQdRR1wb0ODIy
+GDCF0yzvpbNiIMsbj6naAcPj2LWELztK9J3mcde9X3bdZUmUAAwCDIvjfXP1hAjP
+pIQo2guFzESWPiTDEJFlHz065y61rjr10PK28qtVVXkt8OsIwClZsa3UPhiEObTb
+DW5Lo39dZzxYJeQ94Q5thOY4Gn99bV2LIAgsoSfIGwWQJDQEVxyZDqSMs2cghlOl
+yzjggpLDFpS6Ezmwx30ORP4cMTg9zFCqumioeGn7Eh0fV6t3WjI8q69pxBZabsGp
+qKOruKfZvIoBUfP84y7YD3QfwV8D29puX0WZcE6CJQTivLRZBASaPSv8UiDAdEan
+8OKDi6eMQZsbIBZtEIl9tUcAuZBJRNmSEzCpfvXP9gRTVY9iMnHVVK3yGJw3Ilfn
+6oMhoaQU6NAaWoo1SbsumJ1VHtWb+WNXrpAESntDaFUStOTu8b84yA==
+-----END RSA PRIVATE KEY-----
 ----
 
 Now use the command in your email to login to the jumphost, e.g.:
@@ -25,3 +58,38 @@ $ ssh ec2-user@bastion.GUID.example.opentlc.com -i ~/.ssh/mylab
 To make sure the right key is used, add `-i path/to/your/key` to the command in the Email.
 
 NOTE: Unless otherwise noted, you cannot use SSH to connect directly as root.
+
+=== Setup SSH on Microsoft Windows
+
+Analog to Linux/MacOS create a file e.g. named mylabkey.txt on your Windows PC and copy the content of the private key into that file, incl. header and footer line (see NOTE above)
+
+==== On Windows 10
+You can open Powershell or Command window. Check if the ssh command is available, which is now part of the Windows 10 packages. If you have ssh available, you can login with
+
+----
+C:\USERS\name> ssh ec2-user@bastion.GUID.example.opentlc.com -i ~/.ssh/mylabkey.txt
+----
+
+==== PuTTY
+
+If you use putty, you cannot directly import the SSH private key file. You have to generate a so called ppk file 
+to login with putty. To do this you need the command PuTTYgen which you can download from the link:http://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html[PuTTY download page]
+
+. run PuTTYgen
+. Click "Load" after "Load an existing private key file" and load the previously created keyfile
+. Click the Save private key button to create the ppk file.
+. Now you can Open PuTTY
+. Add the generated ppk file to Connection -> SSH -> Auth -> Private key file for authentication
+
+see also: https://my.justhost.com/hosting/help/putty#puttygen
+
+==== MobaXterm
+
+. open mobaXterm
+. Click Session -> SSH
+. Enter Remote Host bastion.GUID.example.opentlc.com and User ec2-user 
+. click on Advanced SSH settings and enter the keyfile at "Use private key" 
+. click OK
+
+
+

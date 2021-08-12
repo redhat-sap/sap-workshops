@@ -1,6 +1,6 @@
 ---
 # Individual storage config
-# rhel-system-role.storage
+# rhel-system-roles.storage
 #---------------------------
 
 storage_pools:

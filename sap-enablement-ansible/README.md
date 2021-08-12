@@ -56,7 +56,8 @@ you during the workshop.
 ### Order catalog item
 
 Login into [Red Hat Product Demo System](https://rhpds.redhat.com) and
-navigate to `Services -→ Catalogs -→ All Services -→ Workshops`. An item
+navigate to
+`Services -→ Catalogs -→ All Services -→ RHEL Platform Demo`. An item
 called `SAP End to End Automation AWS` will be available.
 
 ![rhpds-catalog](img/rhpds01.png)
@@ -115,16 +116,53 @@ Prepare Access to Lab environment
 
 Before you provision your lab environment you want to make sure that you
 can connect to your servers after the provisioning. This can be achieved
-via ssh public-keys or kerberos.
+via ssh public-keys.
 
 Setup SSH on Linux and macOS
 ----------------------------
 
-To access the jumphost via SSH, open a terminal, locate the private SSH
-key in your email, and store it in e.g.`~/.ssh/mylabkey` and change the
+To access the jumphost via SSH, open a terminal, locate the provided
+private SSH key, and store it in e.g.`~/.ssh/mylabkey` and change the
 rights to user read-only:
 
     $ chmod 600 ~/.ssh/mylabkey
+
+> **Note**
+>
+> You need to copy all the lines incl. the header and footer line, so
+> that the content looks like this:
+
+\+
+
+    $ cat ~/.ssh/mylabkey
+    -----BEGIN RSA PRIVATE KEY-----
+    Ofu9VdWCBNm4XJiruBFpZMyz1fY8hs28u3xKQeFf utVjbXS6SH1eYve34IDtm4Z
+    WYUVFVLU30mLnEZ8laZTYFS53gMO6CAhvKFt7h2DH16OwZ9e155kKuHYnri5J28O
+    lkpW2mf4fHiAXY2ORmKBa2xMFjqZs9hCvtEMA5s939IILC9oEAQkvO15WOLMvEYu
+    FuoMu0gaS3NhkILLvgt3tJToHz2Mzv4GYlNSOy6bsojM0ZqtHPByIPpF0NFEgMx5
+    8JvdwoETVMOoJack43Db6OulOWWA3k0bnTsNEDrvDR8a0O8p9KtjvJwteSleoCgX
+    C6Hrh62mtxQtXrqLNYA1ZZIbKYHim3K5CkEmAMrsO0qHwDRe5iGo8bAC8hrVe8Cx
+    Cgr0Dktx7lfoZ8d6tV5ViSzaqQk1SrAKk0LRiiTbyimzsaJouLF4a1TcVsp3k4g2
+    HFmONZNdR1XvQBmap62bJBErGAZru5bQmi755q8wwAJkyW6clZ4RSO8lDnksKlYw
+    4ikQ1OkPndE5SId0bQ1g3szdOoB42LwlY7RilIap5P54TTbPim0oeEL1kbFlLhE2
+    tFP0mGsVKA49AwXFH585HgopQZAd4J331Gh0yetNVKvljzmfKyjNYlda5jPgpNRA
+    JObXb4CEeW5kzz6GZUTva2YzSl6uhGebXKtrPD8WCmxOMwm5HyaxLnmaWN55kigc
+    kx8B5vPelnqZTxcx9RWRoCzprJATodqzWG1VvX2tZBamfgxt5WSSQQy4DmPzXYsJ
+    Rd8l0HLRKfZQ7K8oF13jVoDgEk1FRADa2YMmZfcDg7zyqouUuksqVen5V78s5qX1
+    U1gVsq0Tl4GDvxjdPO7yzTaps0gtzOrVvWLuUwlJCipk4FnaBovRBRALMPlf7Iz7
+    JvzE5aB88tTJG9iJ02bUaDVG2lIM4wy1bNe0PE8axxq4lhji7GLP6jXcZVCxmB9J
+    NWpNcNcGPPbF0tsaqGYIDjVG2VwxjJjDoh6cr5oFKCtyaUFDOBxjtHsGNNPl33SB
+    GzYC8OvgertwNIxUI4f145rBerFzj0FCndZQsd4wyUQxKuiGFc5dbu0GR6m2dkHT
+    ZEqsXZajUz5MrH5AZ3xOiwHKtBtcAcmTBIGUnEnBfo67GJU7kQXYBBhvubNVM4Ja
+    XWZFQ6RiScQr4y1aOQrMfVzeOibU8AOcf5oskqVb2mdOKXpuk82CQdRR1wb0ODIy
+    GDCF0yzvpbNiIMsbj6naAcPj2LWELztK9J3mcde9X3bdZUmUAAwCDIvjfXP1hAjP
+    pIQo2guFzESWPiTDEJFlHz065y61rjr10PK28qtVVXkt8OsIwClZsa3UPhiEObTb
+    DW5Lo39dZzxYJeQ94Q5thOY4Gn99bV2LIAgsoSfIGwWQJDQEVxyZDqSMs2cghlOl
+    yzjggpLDFpS6Ezmwx30ORP4cMTg9zFCqumioeGn7Eh0fV6t3WjI8q69pxBZabsGp
+    qKOruKfZvIoBUfP84y7YD3QfwV8D29puX0WZcE6CJQTivLRZBASaPSv8UiDAdEan
+    8OKDi6eMQZsbIBZtEIl9tUcAuZBJRNmSEzCpfvXP9gRTVY9iMnHVVK3yGJw3Ilfn
+    6oMhoaQU6NAaWoo1SbsumJ1VHtWb+WNXrpAESntDaFUStOTu8b84yA==
+    -----END RSA PRIVATE KEY-----
 
 Now use the command in your email to login to the jumphost, e.g.:
 
@@ -137,6 +175,56 @@ command in the Email.
 >
 > Unless otherwise noted, you cannot use SSH to connect directly as
 > root.
+
+Setup SSH on Microsoft Windows
+------------------------------
+
+Analog to Linux/MacOS create a file e.g. named mylabkey.txt on your
+Windows PC and copy the content of the private key into that file, incl.
+header and footer line (see NOTE above)
+
+### On Windows 10
+
+You can open Powershell or Command window. Check if the ssh command is
+available, which is now part of the Windows 10 packages. If you have ssh
+available, you can login with
+
+    C:\USERS\name> ssh ec2-user@bastion.GUID.example.opentlc.com -i ~/.ssh/mylabkey.txt
+
+### PuTTY
+
+If you use putty, you cannot directly import the SSH private key file.
+You have to generate a so called ppk file to login with putty. To do
+this you need the command PuTTYgen which you can download from the
+[PuTTY download
+page](http://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)
+
+1.  run PuTTYgen
+
+2.  Click "Load" after "Load an existing private key file" and load the
+    previously created keyfile
+
+3.  Click the Save private key button to create the ppk file.
+
+4.  Now you can Open PuTTY
+
+5.  Add the generated ppk file to Connection → SSH → Auth → Private key
+    file for authentication
+
+see also: <https://my.justhost.com/hosting/help/putty#puttygen>
+
+### MobaXterm
+
+1.  open mobaXterm
+
+2.  Click Session → SSH
+
+3.  Enter Remote Host bastion.GUID.example.opentlc.com and User ec2-user
+
+4.  click on Advanced SSH settings and enter the keyfile at "Use private
+    key"
+
+5.  click OK
 
 SAP HANA on RHEL with Ansible
 =============================
@@ -356,7 +444,7 @@ tower, to ensure all required roles are automatically installed.
 
 3.  Install the roles
 
-        [ec2-user@bastion]$ sudo ansible-galaxy install -r roles/requiremnts.yml -p /usr/share/ansible/roles
+        [ec2-user@bastion]$ sudo ansible-galaxy install -r roles/requirements.yml -p /usr/share/ansible/roles
 
 > **Note**
 >
@@ -451,7 +539,7 @@ SAP requires proper time synchronisation. So the linux system role is a
 proper way to set the time correctly
 
 Use the
-[`rhel-system-role.timesync`](https://github.com/linux-system-roles/timesync/blob/master/README.md)
+[`rhel-system-roles.timesync`](https://github.com/linux-system-roles/timesync/blob/master/README.md)
 to configure your timeserver.  
 Use the following parameter:
 
@@ -471,28 +559,23 @@ could use
 [`rhel-system-roles.network`](https://github.com/linux-system-roles/network/blob/master/README.md)
 to configure a more complex network preconfiguration. Nonetheless
 `resolv.conf` on AWS is not reboot safe and will be overwritten. Instead
-of using the network role the following line will make the chnages to
-/etc/resolv.conf persistent:
+of using the network role the following line will make the changes to
+DNS resolution persistent:
 
       pre_tasks:
-        - name: Ensure sap_domain is in DNS search path
-          lineinfile:
-            path: /etc/resolv.conf
-            backup: yes
-            backrefs: yes
+        - name: Ensure sapdomain is in DNS search path
+          nmcli:
+            conn_name: "System eth0"
+            type: ethernet
+            dns4_search: "ec2.internal,{{ sap_domain }}"
             state: present
-            regexp: '^(search (?!.* {{ sap_domain }}).*) *$'
-            line: "\\1 {{ sap_domain }}"
           tags:
                  - update_resolv
 
-        - name: Ensure Boot consistency
-          lineinfile:
-            path: /etc/NetworkManager/NetworkManager.conf
-            state: present
-            insertafter: "^[main]"
-            regexp: "^dns=.*"
-            line: "dns=none"
+        - name: power cycle NetworkManager to rewrite resolv.conf
+          service:
+            name: NetworkManager
+            state: restarted
           tags:
                  - update_resolv
 
@@ -506,7 +589,7 @@ of using the network role the following line will make the chnages to
 If you login to hana1 or hana2 you will realize that the disks are not
 configured. Use `lsblk` to identify unconfigured disks. For the
 configuration of the disks use
-[`linux-system-role.storage`](https://github.com/linux-system-roles/storage/blob/master/README.md).  
+[`linux-system-roles.storage`](https://github.com/linux-system-roles/storage/blob/master/README.md).  
 Use the following parameters:
 
     storage_pools:
@@ -534,7 +617,14 @@ Use the following parameters:
             mount_point: "/usr/sap"
             state: present
 
-### SAP preconfigure base settings
+> **Note**
+>
+> If you happen to misconfigure the disk, take your config and change
+> the state to `absent`. Then rerun the storage configuration role to
+> remove your setting, correct your entry, change the state to `present`
+> again and rerun the storage configuration once more
+
+### SAP preconfigure base settings:w
 
 SAP requires a couple of base settings that are described in [SAP Note
 2369910](https://launchpad.support.sap.com/#/notes/2369910) and other
@@ -671,14 +761,6 @@ Finally to install SAP HANA database, use the role
 This role creates the configuration file for an unattended install of
 SAP HANA with `hdblcm` and kicks-off the installation process.
 
-1.  Install redhat\_sap.sap\_hana\_deployment
-
-        [ec2-user@bastion]$ sudo ansible-galaxy install redhat_sap.sap_hana_deployment -p /usr/share/ansible/roles
-        - downloading role 'sap_hana_deployment', owned by redhat_sap
-        - downloading role from https://github.com/redhat-sap/sap-hana-deployment/archive/v1.2.0.tar.gz
-        - extracting redhat_sap.sap_hana_deployment to /usr/share/ansible/roles/redhat_sap.sap_hana_deployment
-        - redhat_sap.sap_hana_deployment (v1.2.0) was installed successfully
-
 For this role you need to add the instance specific parameters in the
 according `host_vars` or `group_vars` file:
 
@@ -805,11 +887,11 @@ already run during the SAP HANA installation for:
 
 -   System Registration to satellite or RHN (sap\_rhsm)
 
--   timeserver configurazion (rhel\_system\_role.timesync)
+-   timeserver configurazion (rhel\_system\_roles.timesync)
 
 -   networking setup
 
--   disk configuration (rhel\_system\_role.storage)
+-   disk configuration (rhel\_system\_roles.storage)
 
 -   SAP base configuration (sap\_preconfigure)
 
@@ -819,13 +901,13 @@ For most of the roles you need to use the same parameters and variables
 that you have used for the HANA installation. Hence these parameters
 should have been declared in the `group_vars/all` files.
 
-The disk configuration (rhel\_system\_role.storage) needs an indivdual
+The disk configuration (rhel\_system\_roles.storage) needs an indivdual
 or different configuration than SAP HANA. In our lab use the following
 variables to configure the disk of `s4hana`:
 
     ---
     # Individual storage config for S4/HANA
-    # rhel-system-role.storage
+    # rhel-system-roles.storage
     #---------------------------
 
     storage_pools:
@@ -851,6 +933,13 @@ variables to configure the disk of `s4hana`:
 >
 > You need a rhel\_system\_role package version from RHEL 8.2 or newer.
 > Otherwise the swapspace is not mounted automatically
+
+> **Note**
+>
+> If you happen to misconfigure the disk, take your config and change
+> the state to `absent`. Then rerun the storage configuration role to
+> remove your setting, correct your entry, change the state to `present`
+> again and rerun the storage configuration once more
 
 In addition you need to run the following roles:
 
@@ -937,7 +1026,15 @@ Solution
               nmcli:
                 conn_name: "System eth0"
                 dns4_search: "ec2.internal,{{ sap_domain }}"
+                type: ethernet
                 state: present
+              tags:
+                     - update_resolv
+
+            - name: power cycle NetworkManager to rewrite resolv.conf
+              service:
+                name: NetworkManager
+                state: restarted
               tags:
                      - update_resolv
 
@@ -988,7 +1085,7 @@ Solution
 
 1.  The variables that are required for all hosts: `./group_vars/all`
 
-        # rhel-system-role.timesync
+        # rhel-system-roles.timesync
         #---------------------------
         timesync_ntp_servers:
                 - hostname: 0.rhel.pool.ntp.org
@@ -1092,7 +1189,7 @@ Solution
 
         ---
         # Individual storage config
-        # rhel-system-role.storage
+        # rhel-system-roles.storage
         #---------------------------
 
         storage_pools:
@@ -1317,6 +1414,91 @@ need to run in the conext of the HANA user, in our case `rheadm`
 5.  You get a lot of info using the python script
     `systemReplicationStatus.py`. The return value is 15 if everything
     is in sync.
+
+Troubleshooting
+===============
+
+This section gives some hints on how to handle common problems
+
+Check if HANA is running
+------------------------
+
+Please note, that after a reboot HANA is not started automatically,
+which is by intention, login into the HANA host, assume the sidadm user
+(which in our case is rheadm) and run `HDB info`
+
+Start SAP HANA
+--------------
+
+Login into the HANA host, assume the sidadm user (which in our case is
+rheadm) and run `HDB start`
+
+Stop SAP HANA
+-------------
+
+Login into the HANA host, assume the sidadm user (which in our case is
+rheadm) and run `HDB stop`
+
+Check if an SAP system is installed
+-----------------------------------
+
+Login to an SAP system an run the following command
+`/usr/sap/hostctrl/exe/saphostctrl -function GetCIMObject -enuminstances SAPInstance`
+
+Or you can run the following playbook against your servers:
+
+    - name: Check for SAP Instances
+      hosts: all
+      become: True
+      tasks:
+        - name:  Search for installed SAP Systems
+          shell: |
+            if [ -x /usr/sap/hostctrl/exe/saphostctrl ]; then
+                  /usr/sap/hostctrl/exe/saphostctrl -function GetCIMObject -enuminstances SAPInstance
+            fi
+          register: sap_hana_deployment_sap_systems_list
+
+        - name: Display installed SAP Systems
+          debug:
+              var: sap_hana_deployment_sap_systems_list
+
+        - set_fact:
+            installed_sid: "{{ item.split(',').2|trim }}"
+          loop: "{{ sap_hana_deployment_sap_systems_list.stdout_lines|list }}"
+          when: item is search("^ SID")
+
+        - set_fact:
+            installed_num: "{{ item.split(',').2|trim }}"
+          loop: "{{ sap_hana_deployment_sap_systems_list.stdout_lines|list }}"
+          when: item is search("^ SystemNumber")
+
+        - set_fact:
+            installed_typ: "{{ item.split(',').2|trim }}"
+          loop: "{{ sap_hana_deployment_sap_systems_list.stdout_lines|list }}"
+          when: item is search("^ InstanceName")
+
+
+        - name: Display SID
+          debug:
+            msg: "SID is {{ installed_sid }}, Number {{ installed_num }}\nTyp {{ installed_typ}}"
+          when: installed_sid is defined
+
+        - name: Fail if you try to install HANA with same SID/Instance than other SAP system
+          fail:
+              msg: "There is a non-HANA software with the same SID/instance number running"
+          when:
+             - installed_typ is defined
+             - installed_sid == sap_hana_deployment_hana_sid
+             - installed_num == sap_hana_deployment_hana_instance_number
+             - installed_typ != "HDB"+sap_hana_deployment_hana_instance_number
+
+Cleanup the System to redo your installtion
+-------------------------------------------
+
+If you happen to run into new issues or have additional requests or
+tipps, please report them
+[here](https://github.com/rhmk/sap-workshops/issues). Please name the
+"sap-enablement-ansible" workshop", when you open an issue
 
 The End
 =======
