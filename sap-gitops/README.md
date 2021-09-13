@@ -128,7 +128,7 @@ oc create -f argocd/argo-app-fe-cicd.yml
 oc get secret sap-argocd-cluster -o jsonpath='{.data.admin\.password}' | base64 -d
 ```
 
-You can also obtain the credentials from the OpenShift console and:
+You can also obtain the credentials from the OpenShift console:
 
 ![ArgoCD credentials](img/argocd_credentials.gif)
 
