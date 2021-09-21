@@ -50,6 +50,10 @@ Once the environment has been provisioned, you will receive an email with some k
 
 ## How to run the workshop
 
+**IMPORTANT NOTE:** Do NOT refresh the manifest in Satellite since it will invalidate further deployments of this lab
+
+![DO NOT refreah manifest](img/do-not-refresh-manifest.png)
+
 The goal for this demo is to showcase the management capabilities RHEL for SAP Solutions subscription can offer to SAP customers, helping them to manage SAP landscapes using Red Hat Satellite and Red Hat Insights. Red Hat Satellite can manage the whole lifecycle for you RHEL landscape, but the focus for this workshop will be on the remediation and risk management capabilities from Insights as well as bug fixes and enhancement updates management from Satellite. With this in mind, these are the main points we are going to cover during this workshop:
 
   1. Explore Red Hat Satellite Monitor Dashboard and customize it to show specific widgets
