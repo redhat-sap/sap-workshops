@@ -1,4 +1,4 @@
-# Exercise 4: Serverless Integration
+# Serverless Integration
 
 Using Red Hat Integration Portfolio and Red Hat Openshift to integrate with SAP side-by-side using an event-driven system and OpenShift Serverless.
 
