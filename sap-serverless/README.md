@@ -6,7 +6,7 @@ Using Red Hat Integration Portfolio and Red Hat Openshift to integrate with SAP 
 
 This workshop can be used to demonstrate the integration capabilities for Red Hat Integration portfolio with SAP's Digital Core. 
 
-![Infra layout](images/infra_layout.png)
+![Infra layout](img/infra_layout.png)
 
 Using Openshift Serverless we can build scenarios where we do not need to have pods running constantly and they will be only scaled up when they receive a request and once they have served it they will be scaled down again. The requests and their results once they are served will be the events in this scenario.
 
@@ -14,17 +14,17 @@ Using Openshift Serverless we can build scenarios where we do not need to have p
 
 The Red Hat Integration component that allows for serverless integration is Camel K and Openshift has an operator to install it on an OCP cluster. You can look at the Installed Operators in your cluster and you will see it on the list. Go to `Administrator` view and then click on `Operators -> Installed Operators`
 
-![Installed operators](images/installed_operators.png)
+![Installed operators](img/installed_operators.png)
 
 In this exercise we are going to integrate Slack with an SAP S/4HANA backend. We will ask about a sales order number on Slack and the SAP backend will receive this sales order number and return the details of the order back to the Slack channel we are using.
 
 This is the process flow of the scenario:
 
-![Serverless flow](images/serverless_flow.png)
+![Serverless flow](img/serverless_flow.png)
 
 Select the project `sap-serverless` in the `Administrator` view, change to `Developer` view and go to `Topology`
 
-![Change Project](images/topology.gif)
+![Change Project](img/topology.gif)
 
 There you can see all the components of the solution:
 
@@ -40,4 +40,4 @@ Connect to the `sales-order` channel created in Slack for this exercise https://
 
 Type a valid sale order number in the Slack chat, for example any number between 500000001 and 500000099. You will be see then how the `sap-odata` pod where the application that sends the sales order number to SAP runs will scale up and then down once it has sent the information to SAP. After that, once the repsonse has been produced by the SAP backend, the `sap-sales-slack` pod will scale up as well so that it can send the response to the Slack channel and finally after some time you will see this response with the sales order details on the Slack chat. and the `sap-sales-slack` pod will be scaled down again.
 
-![Slack response](images/slack.png)
+![Slack response](img/slack.png)
