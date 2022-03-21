@@ -630,7 +630,7 @@ $ ansible-navigator run 02-basic-os-setup.yml
 
 Workflow Step 3: Install SAP HANA
 --------------------------------------------
-![Workflow Step 2](workflow-step2.png)
+![Workflow Step 3](workflow-step3.png)
 
 In this lab we only focus on workflow steps 3A and 3B
 
