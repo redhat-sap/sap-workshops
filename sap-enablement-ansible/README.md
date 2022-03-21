@@ -500,13 +500,13 @@ $ mkdir host_vars group_vars
 ```
 Workflow Step 1: Create VMs:
 ----------------------------
-![Workflow Step 1](workflow-step1.png)
+![Workflow Step 1](img/workflow-step1.png)
 
 This step has already been done when you have ordered your lab. So no need to execute it
 
 Workflow Step 2: Prepare the basic OS
 --------------------
-![Workflow Step 2](workflow-step2.png)
+![Workflow Step 2](img/workflow-step2.png)
 
 In this workflow step we perform the following tasks:
 
@@ -630,7 +630,7 @@ $ ansible-navigator run 02-basic-os-setup.yml
 
 Workflow Step 3: Install SAP HANA
 --------------------------------------------
-![Workflow Step 3](workflow-step3.png)
+![Workflow Step 3](img/workflow-step3.png)
 
 In this lab we only focus on workflow steps 3A and 3B
 
@@ -819,7 +819,7 @@ similar to this:
 
 Workflow Step 4: Create a playbook to install S/4 Hana
 -------------------------------------
-![Workflow Step 4](workflow-step4.png)
+![Workflow Step 4](img/workflow-step4.png)
 
 In this lab we only focus on workflow steps 4A and 4B
 
