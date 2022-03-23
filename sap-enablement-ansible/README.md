@@ -1012,6 +1012,8 @@ sap_swpm_inifile_custom_values_dictionary:
 Overview of the playbooks and variable configurations
 --------
 
+You will find the most current versions of these playbooks also on [GitHub](https://github.com/sap-linuxlab/demo.sap-install/tree/rhpds).
+
 ### Variable files
 
 #### group_vars/all
