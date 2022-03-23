@@ -871,6 +871,8 @@ The following variables need to be defined to install S/4HANA in `group_vars/s4h
 #----------
 # Product ID for New Installation
 sap_swpm_product_catalog_id: "NW_ABAP_OneHost:S4HANA1909.CORE.HDB.ABAP"
+# Do not touch /etc/hosts
+sap_swpm_update_etchosts: false
 # Software
 sap_swpm_software_path: "/software/S4HANA_installation"
 sap_swpm_sapcar_path: "/software/SAPCAR"
