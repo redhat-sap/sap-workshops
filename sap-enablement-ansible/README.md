@@ -884,23 +884,105 @@ sap_swpm_db_host: "hana-${GUID}1"
 sap_swpm_db_sid: RHE
 sap_swpm_db_instance_nr: "00"
 ```
-
-
 > **Note**
 > The directories have to contain the files you need to use for a particular Installation
-> In this lab setup we have a little misconfiguration. To fix this please login to
-> s4hana-${GUID} and remove the following files:
-> - `/software/S4HANA_installation/SAPEXEDB_100-80004392.SAR`
-> - `/software/S4HANA_installation/SAPEXE_100-80004393.SAR`
+> In this lab setup we have a little misconfiguration. To fix this assume `root` on the bastion
+> host and remove the following files:
+> - `/nfs/S4HANA_installation/SAPEXE_201-80003386.SAR`
+> - `/nfs/S4HANA_installation/SAPEXEDB_201-80003385.SAR`
 
-Now you can create a playbook executing this role.
-
-If the role fails for whatever reason, the error is not passed to
-the ansible output.  As the execution of the role takes a while and to properly get the error
-message, you can login to `s4hna-${GUID}` and run the following command as root:
+Now you can create a playbook executing just this role.
 
 ```
-#  tail -f $(find /tmp/sapinst_instdir -name sapinst.log)
+---
+- name: Install S4
+  hosts: s4hanas
+  become: true
+
+  roles:
+    - community.sap_install.sap_swpm
+```
+
+If the role fails for whatever reason, the error is very often not passed correctly to
+the ansible output.  As the execution of the role takes a while and to get the corect error
+message, you can login to `s4hana-${GUID}` and run the following command as root:
+
+```
+#  tail -f /tmp/sapinst_instdir/S4HANA1909/CORE/HDB/INSTALL/STD/ABAP/sapinst.log
+```
+
+These variables work fine with S/4HANA2020 , but we have S/4JHANA1909 in the lab. If you use these variables, you will notice, that the installation fails with the following error message:
+
+```
+ERROR 2022-03-21 21:11:31.350 (root/sapinst) id=nw.usernameNotUnique errno=CJS-30207
+<html> <head> </head> <body> The name <b>SAPHANADB</b> for user <b>DBACOCKPIT</b> is not unique. It is already used for user <b>SAPSID</b>. <br>SOLUTION: Choose a different username. </body></html>
+
+ERROR 2022-03-21 21:11:31.481 (root/sapinst) id=controller.stepExecuted errno=FCO-00011
+The step replicateSchemaPasswordsForExistingDatabase with step key |NW_ABAP_OneHost|ind|ind|ind|ind|0|0|NW_Onehost_System|ind|ind|ind|ind|onehost|0|NW_CreateDBandLoad|ind|ind|ind|ind|createdbandload|0|NW_CreateDB|ind|ind|ind|ind|createdb|0|NW_HDB_DB|ind|ind|ind|ind|nw_hdb_db|0|replicateSchemaPasswordsForExistingDatabase was executed with status ERROR (Last error reported by the step: <html> <head> </head> <body> The name <b>SAPHANADB</b> for user <b>DBACOCKPIT</b> is not unique. It is already used for user <b>SAPSID</b>. <br>SOLUTION: Choose a different username. </body></html>).
+```
+
+Watch the output of the `sap_swpm`. You will find a place where the logfiles of the SWPM execution go.
+You may want to copy the created `ìnifile.params` on `s4hana-${GUID}` for further investigation.
+To make the installation successful, we need to add some parameters into this config file, which cannot be done with the default method.
+The good news is that the `sap_swpm` role is able to perform any execution scenarion that SAP SWPM is capable of doing. For that reason the role can be run in the following modes:
+- default (the method we used before)
+- default_templates
+- advanced
+- advanced_templates
+- inifile_reuse
+
+To make the role execution successful we switch to the advanced mode. In the advanced mode we can create a custom inifile. So run the playbook again using the follwoing variables:
+
+```
+# sap_swpm
+#----------
+sap_swpm_ansible_role_mode: advanced
+sap_swpm_sapcar_path: "/software/SAPCAR"
+sap_swpm_software_path: "/software/S4HANA_installation"
+sap_swpm_swpm_path: "/software/S4HANA_installation"
+
+# Do not touch /etc/hosts
+sap_swpm_update_etchosts: false
+
+sap_swpm_master_password: "R3dh4t$123"
+
+sap_swpm_inifile_custom_values_dictionary:
+   '# Custom Config file created for SAP Workshop': ''
+   '# Product catalog ID': ''
+   '# NW_ABAP_OneHost:S4HANA1909.CORE.HDB.ABAP': ''
+   HDB_Schema_Check_Dialogs.schemaPassword:  "{{ sap_swpm_master_password }}"
+   HDB_Schema_Check_Dialogs.validateSchemaName:  "false"
+   NW_CI_Instance.ascsInstanceNumber:  ""
+   NW_CI_Instance.ascsVirtualHostname :  ""
+   NW_CI_Instance.ciInstanceNumber :  ""
+   NW_CI_Instance.ciVirtualHostname :  ""
+   NW_CI_Instance.scsVirtualHostname :  ""
+   NW_DDIC_Password.ddic000Password :  ""
+   NW_Delete_Sapinst_Users.removeUsers :  "true"
+   NW_GetMasterPassword.masterPwd : "{{ sap_swpm_master_password }}"
+   NW_GetSidNoProfiles.sid :  RHE
+   NW_HDB_DB.abapSchemaName :  ""
+   NW_HDB_DB.abapSchemaPassword :  "{{ sap_swpm_master_password }}"
+   NW_HDB_DB.javaSchemaName :  ""
+   NW_HDB_DB.javaSchemaPassword :  ""
+   NW_HDB_getDBInfo.dbhost : "hana-{{ guid }}1.example.com"
+   NW_HDB_getDBInfo.dbsid :  RHE
+   NW_HDB_getDBInfo.instanceNumber :  '00'
+   NW_HDB_getDBInfo.systemDbPassword :  "{{ sap_swpm_master_password }}"
+   NW_HDB_getDBInfo.systemPassword :  "{{ sap_swpm_master_password }}"
+   NW_HDB_getDBInfo.systemid :  RHE
+   NW_Recovery_Install_HDB.extractLocation :  /usr/sap/RHE/HDB00/backup/data/DB_RHE
+   NW_Recovery_Install_HDB.extractParallelJobs :  '30'
+   NW_Recovery_Install_HDB.sidAdmName :  rheadm
+   NW_Recovery_Install_HDB.sidAdmPassword :  "{{ sap_swpm_master_password }}"
+   NW_SAPCrypto.SAPCryptoFile :  '{{ sap_swpm_software_path }}'
+   NW_getFQDN.FQDN : ''
+   NW_getFQDN.setFQDN :  "true"
+   NW_getLoadType.loadType :  SAP
+   archives.downloadBasket :  '{{ sap_swpm_software_path }}'
+   hdb.create.dbacockpit.user :  "true"
+   hostAgent.sapAdmPassword :  "{{ sap_swpm_master_password }}"
+   nwUsers.sidadmPassword :  "{{ sap_swpm_master_password }}"
 ```
 
 > **Note**
@@ -1003,33 +1085,51 @@ storage_pools:
 
 # sap_swpm
 #----------
-# Product ID for New Installation
-sap_swpm_product_catalog_id: "NW_ABAP_OneHost:S4HANA1909.CORE.HDB.ABAP"
-# Software
-sap_swpm_software_path: "/software/S4HANA_installation"
+sap_swpm_ansible_role_mode: advanced
 sap_swpm_sapcar_path: "/software/SAPCAR"
-sap_swpm_swpm_path: "{{ sap_swpm_software_path }}"
-# NW Passwords
+sap_swpm_software_path: "/software/S4HANA_installation"
+sap_swpm_swpm_path: "/software/S4HANA_installation"
+# Do not touch /etc/hosts
+sap_swpm_update_etchosts: false
 sap_swpm_master_password: "R3dh4t$123"
-sap_swpm_ddic_000_password: "{{ sap_swpm_master_password }}"
-# HDB Passwords
-sap_swpm_db_system_password: "{{ sap_swpm_master_password }}"
-sap_swpm_db_systemdb_password: "{{ sap_swpm_master_password }}"
-sap_swpm_db_schema_abap_password: "{{ sap_swpm_master_password }}"
-sap_swpm_db_sidadm_password: "{{ sap_swpm_master_password }}"
-# Default Value
-#sap_swpm_db_schema_abap: "SAPHANADB"
-# NW Instance Parameters
-sap_swpm_sid: RHE
-sap_swpm_pas_instance_nr: "01"
-sap_swpm_ascs_instance_nr: "02"
-sap_swpm_ascs_instance_hostname: "{{ ansible_hostname }}"
-sap_swpm_fqdn: "{{ sap_domain }}"
-# HDB Instance Parameters
-# For dual host installation, change the db_host to appropriate value
-sap_swpm_db_host: "hana-${GUID}1"
-sap_swpm_db_sid: RHE
-sap_swpm_db_instance_nr: "00"
+sap_swpm_inifile_custom_values_dictionary:
+   '# Custom Config file created for SAP Workshop': ''
+   '# Product catalog ID': ''
+   '# NW_ABAP_OneHost:S4HANA1909.CORE.HDB.ABAP': ''
+   HDB_Schema_Check_Dialogs.schemaPassword:  "{{ sap_swpm_master_password }}"
+   HDB_Schema_Check_Dialogs.validateSchemaName:  "false"
+   NW_CI_Instance.ascsInstanceNumber:  ""
+   NW_CI_Instance.ascsVirtualHostname :  ""
+   NW_CI_Instance.ciInstanceNumber :  ""
+   NW_CI_Instance.ciVirtualHostname :  ""
+   NW_CI_Instance.scsVirtualHostname :  ""
+   NW_DDIC_Password.ddic000Password :  ""
+   NW_Delete_Sapinst_Users.removeUsers :  "true"
+   NW_GetMasterPassword.masterPwd : "{{ sap_swpm_master_password }}"
+   NW_GetSidNoProfiles.sid :  RHE
+   NW_HDB_DB.abapSchemaName :  ""
+   NW_HDB_DB.abapSchemaPassword :  "{{ sap_swpm_master_password }}"
+   NW_HDB_DB.javaSchemaName :  ""
+   NW_HDB_DB.javaSchemaPassword :  ""
+   NW_HDB_getDBInfo.dbhost : "hana-{{ guid }}1.example.com"
+   NW_HDB_getDBInfo.dbsid :  RHE
+   NW_HDB_getDBInfo.instanceNumber :  '00'
+   NW_HDB_getDBInfo.systemDbPassword :  "{{ sap_swpm_master_password }}"
+   NW_HDB_getDBInfo.systemPassword :  "{{ sap_swpm_master_password }}"
+   NW_HDB_getDBInfo.systemid :  RHE
+   NW_Recovery_Install_HDB.extractLocation :  /usr/sap/RHE/HDB00/backup/data/DB_RHE
+   NW_Recovery_Install_HDB.extractParallelJobs :  '30'
+   NW_Recovery_Install_HDB.sidAdmName :  rheadm
+   NW_Recovery_Install_HDB.sidAdmPassword :  "{{ sap_swpm_master_password }}"
+   NW_SAPCrypto.SAPCryptoFile :  '{{ sap_swpm_software_path }}'
+   NW_getFQDN.FQDN : ''
+   NW_getFQDN.setFQDN :  "true"
+   NW_getLoadType.loadType :  SAP
+   archives.downloadBasket :  '{{ sap_swpm_software_path }}'
+   hdb.create.dbacockpit.user :  "true"
+   hostAgent.sapAdmPassword :  "{{ sap_swpm_master_password }}"
+   nwUsers.sidadmPassword :  "{{ sap_swpm_master_password }}"
+
 ```
 
 ### playbook files:
@@ -1139,19 +1239,19 @@ Now kick off the installation as user cloud-user on bastion:
 
 1.  run the playbook to prepare the basic OS (Corporate Standard Build)
     ```
-    $ ansible-navigator run 02-basic-os-setup.yml -m stdout
+    ansible-navigator run 02-basic-os-setup.yml -m stdout
     ```
 
 2.  Install SAP HANA
-```
-$ ansible-navigator run 03-A-sap-hana-prepare.yml -m stdout
-$ ansible-navigator run 03-B-sap-hana-install.yml -m stdout
-```
+    ```
+    ansible-navigator run 03-A-sap-hana-prepare.yml -m stdout
+    ansible-navigator run 03-B-sap-hana-install.yml -m stdout
+    ```
 3.  Install SAP S/4hana
-```
-$ ansible-navigator run 04-A-sap-netweaver-prepare.yml -m stdout
-$ ansible-navigator run 04-B-S4-deployment.yml -m stdout
-```
+    ```
+    ansible-navigator run 04-A-sap-netweaver-prepare.yml -m stdout
+    ansible-navigator run 04-B-S4-deployment.yml -m stdout
+    ```
 
 You finished your Lab deploying SAP HANA and S/4 HANA fully automated.
 You now know the basics and should be able to integrate this with
