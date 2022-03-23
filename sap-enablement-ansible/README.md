@@ -498,6 +498,13 @@ $ pwd
 /home/cloud-user/ansible_files
 $ mkdir host_vars group_vars
 ```
+
+Before running this lab add the following lines to `group_vars/all` to access your labs GUID inside the playbooks:
+```
+## set GUID for more generic files
+guid: "{{ lookup('env', 'GUID') }}"
+
+```
 Workflow Step 1: Create VMs:
 ----------------------------
 ![Workflow Step 1](img/workflow-step1.png)
@@ -778,6 +785,12 @@ sap_hana_install_instance_number: "00"
 ```
 Add these variables to your `groups_var/hanas` file.
 
+Also add the following variable to a local directory to avoid race conditions
+ when installing HANA in parallel on multiple host:
+```
+sap_hana_install_software_extract_directory: /sap-hana
+```
+
 The role expects the SAPCAR*.EXE in the directory defined in `sap_hana_install_software_directory`.
 If it is places somewhere else, like in this lab you need to define the  variable `sap_hana_install_sapcar_filename`.
 
@@ -880,7 +893,7 @@ sap_swpm_ascs_instance_hostname: "{{ ansible_hostname }}"
 sap_swpm_fqdn: "{{ ansible_domain }}"
 # HDB Instance Parameters
 # For dual host installation, change the db_host to appropriate value
-sap_swpm_db_host: "hana-${GUID}1"
+sap_swpm_db_host: "hana-{{ guid }}1"
 sap_swpm_db_sid: RHE
 sap_swpm_db_instance_nr: "00"
 ```
@@ -985,6 +998,13 @@ sap_swpm_inifile_custom_values_dictionary:
    nwUsers.sidadmPassword :  "{{ sap_swpm_master_password }}"
 ```
 
+> Note:
+> If you run in error again, that you cannot reach the database check
+> the following:
+> - /etc/hosts on s4-hana-${GUID} - may be scrambled from sap_swpm
+> - HANA running on hana-${GUID}1
+> - firewall active on hana-${GUID}1
+
 > **Note**
 >
 > Please be patient. In this environment the deployment takes a while
@@ -992,14 +1012,15 @@ sap_swpm_inifile_custom_values_dictionary:
 Overview of the playbooks and variable configurations
 --------
 
-Please replace `${GUID}` with your local guid.
-
 ### Variable files
 
 #### group_vars/all
 
 ```
 ---
+## set GUID for more generic files
+guid: "{{ lookup('env', 'GUID') }}"
+
 ## timesync
 timesync_ntp_servers:
       - hostname: 0.rhel.pool.ntp.org
@@ -1052,6 +1073,7 @@ sap_hana_preconfigure_reboot_ok: true
 # sap_hana_install
 #------------------
 sap_hana_install_software_directory: /software/HANA_installation
+sap_hana_install_software_extract_directory: /sap-hana
 sap_hana_install_sapcar_filename: ../SAPCAR/SAPCAR_1311-80000935.EXE
 sap_hana_install_common_master_password: "R3dh4t$123"
 sap_hana_install_sid: 'RHE'
@@ -1185,7 +1207,7 @@ sap_swpm_inifile_custom_values_dictionary:
 # Then it calls the installation of SAP HANA with the configured paramters
 
 - name: Phase 3-B - Install Hana
-  hosts: hana-${GUID}1
+  hosts: hanas
   become: true
 
   tasks:
@@ -1203,7 +1225,7 @@ sap_swpm_inifile_custom_values_dictionary:
 # for consumption of SAP Netweaver software
 
 - name: Prepare for SAP Netweaver Installation
-  hosts: s4hana-${GUID}
+  hosts: s4hanas
   become: true
   roles:
                - community.sap_install.sap_general_preconfigure
