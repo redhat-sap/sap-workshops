@@ -1,7 +1,7 @@
-# SAP E2E Automation 
-Automating SAP HANA and SAP S/4HANA end to end using Ansible Automation Platform
+# SAP E2E Automation
+Automating SAP HANA and SAP S/4HANA deployment on RHEL 9 using Ansible Automation Platform
 
-> You find the old version [here](sap-e2e-ansible/sap-e2e-rhel8.md)
+> You find the old RHEL8 version [here](sap-e2e-ansible/sap-e2e-rhel8.md)
 
 ## Intro
 
