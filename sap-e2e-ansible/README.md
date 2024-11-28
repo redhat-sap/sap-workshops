@@ -29,7 +29,7 @@ Login into [Red Hat Product Demo System](https://demo.redhat.com) and navigate t
 ![rhpds-catalog](img/rhds01.png)
 
 Click on the **order** button, fill out the form, and  check the confirmation box and click on **Submit**.
-You will need a SalesForce Number, and an SAP S-User with download permission.
+To be able to deploy the lab you will need a Salesforce ID and an SAP S-User with download permission.
 
 ![rhpds-submit](img/rhds02.png)
 
