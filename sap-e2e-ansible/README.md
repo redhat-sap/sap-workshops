@@ -5,7 +5,7 @@ Automating SAP HANA and SAP S/4HANA deployment on RHEL 9 using Ansible Automatio
 
 ## Intro
 
-This demo can be used to demonstrate end to end automation for both HANA and S/4HANA using Ansible and Ansible Automation platform.
+This demo can be used to demonstrate end to end automation and management for both HANA and S/4HANA using Ansible and Ansible Automation platform.
 
 ## High-level architecture and components
 
@@ -46,17 +46,18 @@ Once the environment has been provisioned, you will receive an email with some k
   - AAP admin user
   - AAP admin password
 
-## How to run the demo/workshop
+## How to run the demo
 
 The goal for this demo is to showcase the following day-1 and day-2 use cases to SAP customers:
 
 - Simple S/4HANA deployment (no HA)
-- HA HANA deployment (planned)
-- HA S/4 HANA deployment (planned)
-- update OS (planned)
-- update HANA (planned)
-- update SAP Kernel (planned)
-- Cleanup (removing all HANA and S/4 instances)
+- HA HANA deployment (planned for FY25Q1)
+- HA S/4 HANA deployment (planned for FY25Q2)
+- update OS (planned for FY25Q1)
+- update HANA (planned for FY25Q1)
+- update SAP Kernel (planned for FY25Q2)
+- insights (planned for FY25Q2)
+- Cleanup (removing all HANA and S/4 instances FY24Q4)
 
 Thes use cases shoul demonstarte that we can make managent of SAP solutions easy and reliable using Ansible Automation Platform. 
 To be able to demonstrate these uses cases, AAP Workflows have been configured.
