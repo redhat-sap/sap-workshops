@@ -96,7 +96,7 @@ The deployment time of HANA and S/4 HANA is approximately 30 minutes.
 
 The whole lab can be run as a quick demo, to show the end to end automation or as a workshop depending on the audience, the time and the level of detail you want to show from the lab.
 
-Alternatively you can use this pre-recorded demo to show your customer the values of AAP or to learn how to use it:
+You can use this pre-recorded demo to familiarize yourself with the demo or use it to show the benefits of AAP to your customer without deploying the demo.
 <!--ARCADE EMBED START-->
 <div style="position: relative; padding-bottom: calc(49.895833333333336% + 41px); height: 0; width: 100%;">
   <iframe src="https://demo.arcade.software/VwJyLb3dQ9gs6uGoKsUI?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true"
