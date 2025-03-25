@@ -98,6 +98,11 @@ The deployment time of HANA and S/4 HANA is approximately 30 minutes.
 The whole lab can be run as a quick demo, to show the end to end automation or as a workshop depending on the audience, the time and the level of detail you want to show from the lab.
 
 You can use this pre-recorded demo to familiarize yourself with the demo or use it to show the benefits of AAP to your customer without deploying the demo.
+
+#### Configure the Deployment for SAP S/4 HANA
+<!--ARCADE EMBED START--><div style="position: relative; padding-bottom: calc(49.895833333333336% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/8iuEXvRPoR4BBr5zVyg5?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="CY24Q4-S/4 HANA Configure Deployment with Ansible Automation Platform-PROD (copy)" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div><!--ARCADE EMBED END-->
+
+### Run the Deployment
 <!--ARCADE EMBED START-->
 <div style="position: relative; padding-bottom: calc(49.895833333333336% + 41px); height: 0; width: 100%;">
   <iframe src="https://demo.arcade.software/VwJyLb3dQ9gs6uGoKsUI?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true"
